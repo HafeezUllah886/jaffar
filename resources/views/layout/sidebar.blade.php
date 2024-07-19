@@ -4,19 +4,19 @@
         <!-- Dark Logo-->
         <a href="index.html" class="logo logo-dark">
             <span class="logo-sm">
-                <img src="{{ asset('assets/images/logo-sm.png') }}" alt="" height="22">
+                <h3 class="text-white">J&B</h3>
             </span>
             <span class="logo-lg">
-                <img src="{{ asset('assets/images/logo-dark.png') }}" alt="" height="17">
+                <h3 class="text-white mt-2">JABBAR & BROTHERS</h3>
             </span>
         </a>
         <!-- Light Logo-->
         <a href="index.html" class="logo logo-light">
             <span class="logo-sm">
-                <img src="{{ asset('assets/images/logo-sm.png') }}" alt="" height="22">
+                <h3 class="text-white">J&B</h3>
             </span>
             <span class="logo-lg">
-                <img src="{{ asset('assets/images/logo-light.png') }}" alt="" height="17">
+                <h3 class="text-white mt-2">JABBAR & BROTHERS</h3>
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
@@ -79,23 +79,6 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#production" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarApps">
-                        <i class="ri-paint-fill"></i><span data-key="t-apps">Production</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="production">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('production.create') }}" class="nav-link"
-                                    data-key="t-chat">Create</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('production.index') }}" class="nav-link" data-key="t-chat"> Production History</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link menu-link" href="#purchase" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarApps">
                         <i class="ri-shopping-cart-line"></i><span data-key="t-apps">Purchase</span>
@@ -123,10 +106,6 @@
                             <li class="nav-item">
                                 <a href="{{ route('product_stock.index') }}" class="nav-link" data-key="t-chat">Products Stock</a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{ route('material_stock.index') }}" class="nav-link" data-key="t-chat">
-                                    Raw Material Stock </a>
-                            </li>
                         </ul>
                     </div>
                 </li>
@@ -143,24 +122,6 @@
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('units.index') }}" class="nav-link" data-key="t-chat"> Units </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#material" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarApps">
-                        <i class="ri-seedling-line"></i> <span data-key="t-apps">Raw Material</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="material">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('material.index') }}" class="nav-link" data-key="t-chat">Material
-                                    List </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('rawunits.index') }}" class="nav-link" data-key="t-chat"> Units
-                                </a>
                             </li>
                         </ul>
                     </div>

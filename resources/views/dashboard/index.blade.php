@@ -1,6 +1,6 @@
 @extends('layout.app')
 @section('content')
-<h1>Web App is in Production Mode</h1>
+<h1>Web App is in Development Mode</h1>
 @endsection
 @section('page-js')
        <!-- apexcharts -->

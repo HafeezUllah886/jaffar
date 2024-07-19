@@ -15,9 +15,7 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
        $this->call(userSeeder::class);
-       $this->call(raw_units_seeder::class);
        $this->call(units_seeder::class);
-       $this->call(raw_material_seeder::class);
        $this->call(productsSeeder::class);
        $this->call(accountSeeder::class);
     }

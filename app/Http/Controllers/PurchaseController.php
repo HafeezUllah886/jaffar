@@ -32,8 +32,8 @@ class PurchaseController extends Controller
      */
     public function create()
     {
-        $products = material::orderby('name', 'asc')->get();
-        $units = raw_units::all();
+        $products = products::orderby('name', 'asc')->get();
+        $units = units::all();
         $vendors = accounts::vendor()->get();
         $accounts = accounts::business()->get();
         return view('purchase.create', compact('products', 'units', 'vendors', 'accounts'));
@@ -264,7 +264,7 @@ class PurchaseController extends Controller
 
     public function getSignleProduct($id)
     {
-        $product = material::find($id);
+        $product = products::find($id);
         return $product;
     }
 }
