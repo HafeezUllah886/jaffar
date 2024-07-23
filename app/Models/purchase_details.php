@@ -12,12 +12,12 @@ class purchase_details extends Model
 
     public function product()
     {
-        return $this->belongsTo(material::class, 'productID');
+        return $this->belongsTo(products::class, 'productID');
     }
 
     public function unit()
     {
-        return $this->belongsTo(raw_units::class, 'unitID');
+        return $this->belongsTo(units::class, 'unitID');
     }
-    
+
 }

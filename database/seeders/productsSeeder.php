@@ -14,8 +14,8 @@ class productsSeeder extends Seeder
     public function run(): void
     {
         $data = [
-            ['name' => "Patato Chips Regular", "unitID" => 1, "Price" => 10],
-            ['name' => "Patato Chips Spicy", "unitID" => 2, "Price" => 15],
+            ['name' => "Lemon Malt 250ml", "unitID" => 1, "price" => 1530, 'tp' => 1423.73, 'discount' => 10],
+            ['name' => "Peach Malt 250ml", "unitID" => 2, "price" => 1640, 'tp' => 1525.42, 'discount' => 10],
 
         ];
         products::insert($data);

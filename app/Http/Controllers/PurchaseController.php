@@ -66,7 +66,7 @@ class PurchaseController extends Controller
             $total = 0;
             foreach($ids as $key => $id)
             {
-                $unit = raw_units::find($request->unit[$key]);
+                $unit = units::find($request->unit[$key]);
                 $qty = $request->qty[$key] * $unit->value;
                 $price = $request->price[$key] / $unit->value;
                 $total += $request->amount[$key];
@@ -83,7 +83,7 @@ class PurchaseController extends Controller
                         'refID'         => $ref,
                     ]
                 );
-                createMaterialStock($id, $qty, 0, $request->date, "Purchased", $ref);
+                createStock($id, $qty, 0, $request->date, "Purchased", $ref);
             }
 
             if($request->status == 'paid')
@@ -131,8 +131,8 @@ class PurchaseController extends Controller
      */
     public function edit(purchase $purchase)
     {
-        $products = material::orderby('name', 'asc')->get();
-        $units = raw_units::all();
+        $products = products::orderby('name', 'asc')->get();
+        $units = units::all();
         $vendors = accounts::vendor()->get();
         $accounts = accounts::business()->get();
         return view('purchase.edit', compact('products', 'units', 'vendors', 'accounts', 'purchase'));

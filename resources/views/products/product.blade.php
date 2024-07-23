@@ -24,9 +24,9 @@
                             <th>#</th>
                             <th>Name</th>
                             <th>Unit</th>
+                            <th>TP</th>
                             <th>Price</th>
                             <th>Discount</th>
-                            <th>Scheme</th>
                             <th>Action</th>
                         </thead>
                         <tbody>
@@ -35,13 +35,12 @@
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->unit->name }}</td>
+                                    <td>{{ $item->tp }}</td>
                                     <td>{{ $item->price }}</td>
-                                    <td>{{ $item->discount }}%</td>
-                                    <td>{{ $item->scheme }}%</td>
+                                    <td>{{ $item->discount }}</td>
                                     <td>
                                         <button type="button" class="btn btn-info " data-bs-toggle="modal"
                                             data-bs-target="#edit_{{ $item->id }}">Edit</button>
-                                        <a href="{{route('ingredient.index')}}/{{$item->id}}" class="btn btn-secondary" >Ingredients</a>
                                     </td>
                                 </tr>
                                 <div id="edit_{{ $item->id }}" class="modal fade" tabindex="-1"
@@ -74,6 +73,12 @@
                                                         </select>
                                                     </div>
                                                     <div class="form-group mt-2">
+                                                        <label for="tp">TP</label>
+                                                        <input type="number" step="any" name="tp" required
+                                                            value="{{ $item->tp }}" min="0" id="tp"
+                                                            class="form-control">
+                                                    </div>
+                                                    <div class="form-group mt-2">
                                                         <label for="price">Price</label>
                                                         <input type="number" step="any" name="price" required
                                                             value="{{ $item->price }}" min="0" id="price"
@@ -85,12 +90,6 @@
                                                             value="{{ $item->discount }}" min="0" max="100"
                                                             id="discount" class="form-control">
                                                     </div>
-                                                    <div class="form-group mt-2">
-                                                        <label for="scheme">Scheme</label>
-                                                        <input type="number" step="any" name="scheme" required
-                                                            value="{{ $item->scheme }}" min="0" max="100"
-                                                            id="scheme" class="form-control">
-                                                    </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-light"
@@ -101,7 +100,7 @@
                                         </div><!-- /.modal-content -->
                                     </div><!-- /.modal-dialog -->
                                 </div><!-- /.modal -->
-                                
+
                             @endforeach
                         </tbody>
                     </table>
@@ -135,6 +134,11 @@
                             </select>
                         </div>
                         <div class="form-group mt-2">
+                            <label for="tp">TP</label>
+                            <input type="number" name="tp" required min="0" step="any" id="tp"
+                                class="form-control">
+                        </div>
+                        <div class="form-group mt-2">
                             <label for="price">Price</label>
                             <input type="number" name="price" required min="0" step="any" id="price"
                                 class="form-control">
@@ -144,12 +148,6 @@
                             <input type="number" step="any" name="discount" required
                                 value="0" min="0" max="100"
                                 id="discount" class="form-control">
-                        </div>
-                        <div class="form-group mt-2">
-                            <label for="scheme">Scheme</label>
-                            <input type="number" step="any" name="scheme" required
-                                value="0" min="0" max="100"
-                                id="scheme" class="form-control">
                         </div>
                     </div>
                     <div class="modal-footer">

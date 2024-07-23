@@ -18,33 +18,8 @@ function lastDayOfMonth()
     return $endOfMonth->format('Y-m-d');
 }
 
-function createMaterialStock($id, $cr, $db, $date, $notes, $ref)
-{
-    material_stock::create(
-        [
-            'productID' => $id,
-            'cr'        => $cr,
-            'db'        => $db,
-            'date'      => $date,
-            'notes'     => $notes,
-            'refID'     => $ref
-        ]
-    );
-}
 
-function getMaterialStock($id){
-    $stocks  = material_stock::where('productID', $id)->get();
-    $balance = 0;
-    foreach($stocks as $stock)
-    {
-        $balance += $stock->cr;
-        $balance -= $stock->db;
-    }
-
-    return $balance;
-}
-
-function createStock($id, $cr, $db, $date, $notes, $batch, $ref)
+function createStock($id, $cr, $db, $date, $notes, $ref)
 {
     stock::create(
         [
@@ -53,7 +28,6 @@ function createStock($id, $cr, $db, $date, $notes, $batch, $ref)
             'db'            => $db,
             'date'          => $date,
             'notes'         => $notes,
-            'batchNumber'   => $batch,
             'refID'         => $ref
         ]
     );

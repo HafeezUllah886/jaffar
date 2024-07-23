@@ -11,7 +11,7 @@
                             <div class="card-header border-bottom-dashed p-4">
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
-                                        <img src="{{ asset('assets/images/logo-dark.png') }}" class="card-logo card-logo-dark" alt="logo dark" height="30">
+                                        <h1>JABBAR & BROTHERS</h1>
                                         <div class="mt-sm-5 mt-4">
                                             <h6 class="text-muted text-uppercase fw-semibold">Address</h6>
                                             <p class="text-muted mb-1" id="address-details">Quetta, Pakistan</p>

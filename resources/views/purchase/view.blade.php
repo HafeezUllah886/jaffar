@@ -11,8 +11,8 @@
                             <div class="card-header border-bottom-dashed p-4">
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
-                                        <img src="{{ asset('assets/images/logo-dark.png') }}" class="card-logo card-logo-dark" alt="logo dark" height="30">
-                                        
+                                        <h1>JABBAR & BROTHERS</h1>
+
                                         {{-- <div class="mt-sm-5 mt-4">
                                             <h6 class="text-muted text-uppercase fw-semibold">Address</h6>
                                             <p class="text-muted mb-1" id="address-details">Quetta, Pakistan</p>
@@ -27,7 +27,7 @@
                             <!--end card-header-->
                         </div><!--end col-->
                         <div class="col-lg-12 ">
-                           
+
                             <div class="card-body p-4">
                                 <div class="row g-3">
                                     <div class="col-lg-3 col-6">
@@ -64,8 +64,10 @@
                                             <tr class="table-active">
                                                 <th scope="col" style="width: 50px;">#</th>
                                                 <th scope="col" class="text-start">Product</th>
-                                                <th scope="col" class="text-end">Price</th>
+
+                                                <th scope="col" class="text-end">Unit</th>
                                                 <th scope="col" class="text-end">Quantity</th>
+                                                <th scope="col" class="text-end">Price</th>
                                                 <th scope="col" class="text-end">Amount</th>
                                             </tr>
                                         </thead>
@@ -74,23 +76,24 @@
                                                <tr>
                                                 <td>{{$key+1}}</td>
                                                 <td class="text-start">{{$product->product->name}}</td>
+                                                <td class="text-end"> {{$product->unit->name}}</td>
+                                                <td class="text-end">{{number_format($product->qty / $product->unitValue)}}</td>
                                                 <td class="text-end">{{number_format($product->price * $product->unitValue)}}</td>
-                                                <td class="text-end">{{number_format($product->qty / $product->unitValue)}} / {{$product->unit->name}}</td>
                                                 <td class="text-end">{{number_format($product->amount)}}</td>
                                                </tr>
                                            @endforeach
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th colspan="4" class="text-end">Total</th>
+                                                <th colspan="5" class="text-end">Total</th>
                                                 <th class="text-end">{{number_format($purchase->details->sum('amount'))}}</th>
                                             </tr>
                                             <tr>
-                                                <th colspan="4" class="text-end">Paid</th>
+                                                <th colspan="5" class="text-end">Paid</th>
                                                 <th class="text-end">{{number_format($purchase->payments->sum('amount'))}}</th>
                                             </tr>
                                             <tr>
-                                                <th colspan="4" class="text-end">Due</th>
+                                                <th colspan="5" class="text-end">Due</th>
                                                 <th class="text-end">{{number_format($purchase->details->sum('amount') - $purchase->payments->sum('amount'))}}</th>
                                             </tr>
                                         </tfoot>
@@ -102,7 +105,7 @@
                             </div>
                             <!--end card-body-->
                         </div><!--end col-->
-                        
+
                     </div><!--end row-->
                 </div>
                 <!--end card-->

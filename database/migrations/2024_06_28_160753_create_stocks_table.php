@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('productID')->constrained('products', 'id');
             $table->date('date');
-            $table->string('batchNumber');
             $table->float('cr')->default(0);
             $table->float('db')->default(0);
             $table->text('notes')->nullable();

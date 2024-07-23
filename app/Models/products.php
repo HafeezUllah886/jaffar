@@ -14,11 +14,4 @@ class products extends Model
     {
         return $this->belongsTo(units::class, 'unitID');
     }
-
-    public function ingredient()
-    {
-        return $this->hasMany(recipe_management::class, 'productID');
-    }
-
-
 }

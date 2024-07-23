@@ -11,7 +11,7 @@
                             <div class="card-header border-bottom-dashed p-4">
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
-                                        <img src="{{ asset('assets/images/logo-dark.png') }}" class="card-logo card-logo-dark" alt="logo dark" height="30">
+                                        <h1>JABBAR & BROTHERS</h1>
                                     </div>
                                     <div class="flex-shrink-0 mt-sm-0 mt-3">
                                         <h3>Product Stock</h3>
@@ -60,7 +60,6 @@
                                                 <th scope="col" style="width: 50px;">#</th>
                                                 <th scope="col" style="width: 50px;">Ref#</th>
                                                 <th scope="col">Date</th>
-                                                <th scope="col">Batch</th>
                                                 <th scope="col" class="text-start">Notes</th>
                                                 <th scope="col" class="text-end">Credit</th>
                                                 <th scope="col" class="text-end">Debit</th>
@@ -80,7 +79,6 @@
                                                 <td>{{ $key+1 }}</td>
                                                 <td>{{ $stock->refID }}</td>
                                                 <td>{{ date('d M Y', strtotime($stock->date)) }}</td>
-                                                <td>{{ $stock->batchNumber }}</td>
                                                 <td class="text-start">{{ $stock->notes }}</td>
                                                 <td class="text-end">{{ number_format($stock->cr / $unit->value,2) }} {{$unit->name}}</td>
                                                 <td class="text-end">{{ number_format($stock->db / $unit->value,2) }} {{$unit->name}}</td>

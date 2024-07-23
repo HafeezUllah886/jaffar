@@ -10,7 +10,7 @@
                                 <div class="col-6"><h3> Create Purchase </h3></div>
                                 <div class="col-6 d-flex flex-row-reverse"><button onclick="window.close()" class="btn btn-danger">Close</button></div>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div><!--end row-->
@@ -95,7 +95,7 @@
                             <div class="col-12 mt-2">
                                 <button type="submit" class="btn btn-primary w-100">Create Purchase</button>
                             </div>
-                    
+
                 </div>
             </form>
             </div>
@@ -150,32 +150,21 @@
                         var id = product.id;
                         var html = '<tr id="row_' + id + '">';
                         html += '<td class="no-padding">' + product.name + '</td>';
-                        html +=
-                            '<td class="no-padding"><input type="number" name="qty[]" oninput="updateChanges(' +
-                            id +
-                            ')" min="0.1" required step="any" value="1" class="form-control text-center" id="qty_' +
-                            id + '"></td>';
-                        html +=
-                            '<td class="no-padding"><select name="unit[]" class="form-control text-center" id="unit_' +
-                            id + '">';
+                        html += '<td class="no-padding"><input type="number" name="qty[]" oninput="updateChanges(' + id + ')" min="0.1" required step="any" value="1" class="form-control text-center" id="qty_' + id + '"></td>';
+                        html += '<td class="no-padding"><select name="unit[]" class="form-control text-center" id="unit_' + id + '">';
                         units.forEach(function(unit) {
                             var isSelected = (unit.id == product.unitID);
                             html += '<option data-unit="'+unit.value+'" value="' + unit.id + '" ' + (isSelected ? 'selected' : '') + '>' + unit.name + '</option>';
                         });
                         html += '</select></td>';
-                        html +=
-                            '<td class="no-padding"><input type="number" name="price[]" oninput="updateChanges(' +
-                            id +
-                            ')" required step="any" value="0" min="1" class="form-control text-center" id="price_' +
-                            id + '"></td>';
-                        html +=
-                            '<td class="no-padding"><input type="number" name="amount[]" required step="any" readonly value="0.00" class="form-control text-end" id="amount_' +
-                            id + '"></td>';
+                        html += '<td class="no-padding"><input type="number" name="price[]" oninput="updateChanges(' + id + ')" required step="any" value="'+product.tp+'" min="1" class="form-control text-center" id="price_' + id + '"></td>';
+                        html += '<td class="no-padding"><input type="number" name="amount[]" required step="any" readonly value="0.00" class="form-control text-end" id="amount_' + id + '"></td>';
                         html += '<td> <span class="btn btn-sm btn-danger" onclick="deleteRow('+id+')">X</span> </td>';
                         html += '<input type="hidden" name="id[]" value="' + id + '">';
                         html += '</tr>';
                         $("#products_list").prepend(html);
                         existingProducts.push(id);
+                        updateChanges(id);
                     }
                 }
             });
@@ -208,6 +197,6 @@
             $('#row_'+id).remove();
             updateTotal();
         }
-    
+
     </script>
 @endsection

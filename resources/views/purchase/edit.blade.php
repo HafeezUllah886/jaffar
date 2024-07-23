@@ -20,7 +20,7 @@
                                 <div class="col-6"><h3> Edit Purchase </h3></div>
                                 <div class="col-6 d-flex flex-row-reverse"><button onclick="window.close()" class="btn btn-danger">Close</button></div>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div><!--end row-->
@@ -127,7 +127,7 @@
                             <div class="col-12 mt-2">
                                 <button type="submit" class="btn btn-primary w-100">Update Purchase</button>
                             </div>
-                    
+
                 </div>
             </form>
             </div>
@@ -197,7 +197,7 @@
                         html +=
                             '<td class="no-padding"><input type="number" name="price[]" oninput="updateChanges(' +
                             id +
-                            ')" required step="any" value="0" min="1" class="form-control text-center" id="price_' +
+                            ')" required step="any" value="'+product.tp+'" min="1" class="form-control text-center" id="price_' +
                             id + '"></td>';
                         html +=
                             '<td class="no-padding"><input type="number" name="amount[]" required step="any" readonly value="0.00" class="form-control text-end" id="amount_' +
@@ -207,6 +207,7 @@
                         html += '</tr>';
                         $("#products_list").prepend(html);
                         existingProducts.push(id);
+                        updateChanges(id);
                     }
                 }
             });
@@ -239,6 +240,6 @@
             $('#row_'+id).remove();
             updateTotal();
         }
-    
+
     </script>
 @endsection
