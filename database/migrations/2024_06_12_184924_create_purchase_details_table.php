@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('productID')->constrained('products', 'id');
             $table->float('price', 10);
             $table->float('qty');
+            $table->float('gst');
+            $table->float('gstValue');
             $table->float('amount');
             $table->date('date');
             $table->foreignId('unitID')->constrained('units', 'id');

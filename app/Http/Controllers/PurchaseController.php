@@ -76,6 +76,8 @@ class PurchaseController extends Controller
                         'productID'     => $id,
                         'price'         => $price,
                         'qty'           => $qty,
+                        'gst'           => $request->gst[$key],
+                        'gstValue'      => $request->gstValue[$key],
                         'amount'        => $request->amount[$key],
                         'date'          => $request->date,
                         'unitID'        => $unit->id,
@@ -105,7 +107,6 @@ class PurchaseController extends Controller
             {
                 createTransaction($request->vendorID, $request->date, $total, 0, "Pending Amount of Purchase No. $purchase->id", $ref);
             }
-
             DB::commit();
             return back()->with('success', "Purchase Created");
 

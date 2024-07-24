@@ -64,10 +64,11 @@
                                             <tr class="table-active">
                                                 <th scope="col" style="width: 50px;">#</th>
                                                 <th scope="col" class="text-start">Product</th>
-
                                                 <th scope="col" class="text-end">Unit</th>
                                                 <th scope="col" class="text-end">Quantity</th>
                                                 <th scope="col" class="text-end">Price</th>
+                                                <th scope="col" class="text-end">GST%</th>
+                                                <th scope="col" class="text-end">GST Value</th>
                                                 <th scope="col" class="text-end">Amount</th>
                                             </tr>
                                         </thead>
@@ -79,21 +80,23 @@
                                                 <td class="text-end"> {{$product->unit->name}}</td>
                                                 <td class="text-end">{{number_format($product->qty / $product->unitValue)}}</td>
                                                 <td class="text-end">{{number_format($product->price * $product->unitValue)}}</td>
+                                                <td class="text-end">{{number_format($product->gst)}}</td>
+                                                <td class="text-end">{{number_format($product->gstValue)}}</td>
                                                 <td class="text-end">{{number_format($product->amount)}}</td>
                                                </tr>
                                            @endforeach
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th colspan="5" class="text-end">Total</th>
+                                                <th colspan="7" class="text-end">Total</th>
                                                 <th class="text-end">{{number_format($purchase->details->sum('amount'))}}</th>
                                             </tr>
                                             <tr>
-                                                <th colspan="5" class="text-end">Paid</th>
+                                                <th colspan="7" class="text-end">Paid</th>
                                                 <th class="text-end">{{number_format($purchase->payments->sum('amount'))}}</th>
                                             </tr>
                                             <tr>
-                                                <th colspan="5" class="text-end">Due</th>
+                                                <th colspan="7" class="text-end">Due</th>
                                                 <th class="text-end">{{number_format($purchase->details->sum('amount') - $purchase->payments->sum('amount'))}}</th>
                                             </tr>
                                         </tfoot>
