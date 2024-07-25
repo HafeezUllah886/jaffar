@@ -49,6 +49,7 @@ class SalesController extends Controller
             {
                 throw new Exception('Please Select Atleast One Product');
             }
+
             DB::beginTransaction();
             $ref = getRef();
             $sale = sales::create(
@@ -65,13 +66,9 @@ class SalesController extends Controller
             $total = 0;
             foreach($ids as $key => $id)
             {
-
-
                 $unit = units::find($request->unit[$key]);
                 $qty = $request->qty[$key] * $unit->value;
                 $price = $request->price[$key];
-                $scheme = $price * $request->scheme[$key] / 100;
-                $discount = $price * $request->discount[$key] / 100;
                 $total += $request->amount[$key];
                 sale_details::create(
                     [
@@ -80,18 +77,18 @@ class SalesController extends Controller
                         'price'         => $price,
                         'qty'           => $qty,
                         'discount'      => $request->discount[$key],
-                        'discountValue' => $discount * $qty,
-                        'scheme'        => $request->scheme[$key],
-                        'schemeValue'   => $scheme * $qty,
+                        'te'            => $request->te[$key],
+                        'tp'            => $request->tp[$key],
+                        'gst'           => $request->gst[$key],
+                        'gstValue'      => $request->gstValue[$key],
                         'amount'        => $request->amount[$key],
                         'date'          => $request->date,
                         'unitID'        => $unit->id,
                         'unitValue'     => $unit->value,
-                        'batchNumber'   => $request->batchNumber[$key],
                         'refID'         => $ref,
                     ]
                 );
-                createStock($id,0, $qty, $request->date, "Sold in Inv # $sale->id", $request->batchNumber[$key], $ref);
+                createStock($id,0, $qty, $request->date, "Sold in Inv # $sale->id", $ref);
             }
 
             if($request->status == 'paid')
@@ -114,7 +111,7 @@ class SalesController extends Controller
                 createTransaction($request->customerID, $request->date, $total, 0, "Pending Amount of Inv No. $sale->id", $ref);
             }
 
-            DB::commit();
+           DB::commit();
             return to_route('sale.show', $sale->id)->with('success', "Sale Created");
 
         }
@@ -189,12 +186,11 @@ class SalesController extends Controller
     public function getSignleProduct($id)
     {
         $product = products::with('unit')->find($id);
-        $stocks = stock::select('batchNumber', DB::raw('SUM(cr) - SUM(db) AS balance'))
+        $stocks = stock::select(DB::raw('SUM(cr) - SUM(db) AS balance'))
                   ->where('productID', $product->id)
-                  ->groupBy('batchNumber')
                   ->get();
 
-        $product->batches = $stocks;
+        $product->stock = getStock($id);
         return $product;
     }
 }

@@ -11,23 +11,23 @@
                             <div class="card-header border-bottom-dashed p-4">
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
-                                        <img src="{{ asset('assets/images/logo-dark.png') }}" class="card-logo card-logo-dark" alt="logo dark" height="30">
-                                        
-                                        {{-- <div class="mt-sm-5 mt-4">
-                                            <h6 class="text-muted text-uppercase fw-semibold">Address</h6>
-                                            <p class="text-muted mb-1" id="address-details">Quetta, Pakistan</p>
-                                            <p class="text-muted mb-0" id="zip-code"><span>Zip-code:</span> 87300</p>
-                                        </div> --}}
+                                        <h1>JABBAR & BROTHERS</h1>
+
+                                        <div class="mt-sm-5 mt-4">
+                                            <h6 class="text-muted text-uppercase fw-semibold">Industrial Area, Sirki Road, Quetta</h6>
+                                            <p class="text-muted mb-1" id="address-details">NTN: 2645388-6</p>
+                                            <p class="text-muted mb-0" id="zip-code"><span>0331-8358638 | </span> jaffarqta92@gmail.com</p>
+                                        </div>
                                     </div>
                                     <div class="flex-shrink-0 mt-sm-0 mt-3">
-                                        <h3>Sales Invoice</h3>
+                                        <h3>Sales Tax Invoice</h3>
                                     </div>
                                 </div>
                             </div>
                             <!--end card-header-->
                         </div><!--end col-->
                         <div class="col-lg-12 ">
-                           
+
                             <div class="card-body p-4">
                                 <div class="row g-3">
                                     <div class="col-lg-3 col-6">
@@ -64,12 +64,14 @@
                                             <tr class="table-active">
                                                 <th scope="col" style="width: 50px;">#</th>
                                                 <th scope="col" class="text-start">Product</th>
-                                                <th scope="col" class="text-start">Batch</th>
                                                 <th scope="col" class="text-start">Unit</th>
-                                                <th scope="col" class="text-end">Quantity</th>
+                                                <th scope="col" class="text-end">Qty</th>
                                                 <th scope="col" class="text-end">Price</th>
                                                 <th scope="col" class="text-end">Discount</th>
-                                                <th scope="col" class="text-end">Scheme</th>
+                                                <th scope="col" class="text-end">Tax (Exc)</th>
+                                                <th scope="col" class="text-end">TP</th>
+                                                <th scope="col" class="text-end">GST%</th>
+                                                <th scope="col" class="text-end">GST</th>
                                                 <th scope="col" class="text-end">Amount</th>
                                             </tr>
                                         </thead>
@@ -78,39 +80,50 @@
                                                <tr>
                                                 <td>{{$key+1}}</td>
                                                 <td class="text-start">{{$product->product->name}}</td>
-                                                <td class="text-start">{{$product->batchNumber}}</td>
                                                 <td class="text-start">{{$product->unit->name}}</td>
                                                 <td class="text-end">{{number_format($product->qty / $product->unitValue)}}</td>
-                                                <td class="text-end">{{number_format($product->price)}}</td>
-                                                <td class="text-end">{{number_format($product->discountvalue, 1)}} ({{$product->discount}}%)</td>
-                                                <td class="text-end">{{number_format($product->schemeValue, 1)}} ({{$product->scheme}}%)</td>
+                                                <td class="text-end">{{number_format($product->price, 2)}}</td>
+                                                <td class="text-end">{{number_format($product->discount, 2)}}</td>
+                                                <td class="text-end">{{number_format($product->te, 2)}}</td>
+                                                <td class="text-end">{{number_format($product->tp, 2)}}</td>
+                                                <td class="text-end">{{number_format($product->gst, 2)}}</td>
+                                                <td class="text-end">{{number_format($product->gstValue, 2)}}</td>
                                                 <td class="text-end">{{number_format($product->amount, 1)}}</td>
                                                </tr>
                                            @endforeach
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th colspan="8" class="text-end">Total</th>
-                                                <th class="text-end">{{number_format($sale->details->sum('amount'))}}</th>
+                                                <th colspan="5" class="text-end">Total</th>
+                                                <th class="text-end">{{number_format($sale->details->sum('discount'),2)}}</th>
+                                                <th class="text-end">{{number_format($sale->details->sum('te'),2)}}</th>
+                                                <th class="text-end"></th>
+                                                <th class="text-end"></th>
+                                                <th class="text-end">{{number_format($sale->details->sum('gstValue'),2)}}</th>
+                                                <th class="text-end">{{number_format($sale->details->sum('amount'),2)}}</th>
                                             </tr>
                                             <tr>
-                                                <th colspan="8" class="text-end">Paid</th>
-                                                <th class="text-end">{{number_format($sale->payments->sum('amount'))}}</th>
+                                                <th colspan="10" class="text-end">Paid</th>
+                                                <th class="text-end">{{number_format($sale->payments->sum('amount'),2)}}</th>
                                             </tr>
                                             <tr>
-                                                <th colspan="8" class="text-end">Due</th>
-                                                <th class="text-end">{{number_format($sale->details->sum('amount') - $sale->payments->sum('amount'))}}</th>
+                                                <th colspan="10" class="text-end">Due</th>
+                                                <th class="text-end">{{number_format($sale->details->sum('amount') - $sale->payments->sum('amount'),2)}}</th>
                                             </tr>
                                         </tfoot>
                                     </table><!--end table-->
                                 </div>
                             </div>
                             <div class="card-footer">
+                                @if ($sale->notes != "")
                                 <p><strong>Notes: </strong>{{$sale->notes}}</p>
+                                @endif
+                               <p class="text-center"><strong>نوٹ: مال آپ کے آرڈر کے مطابق بھیجا جا رہا ہے۔ مال ایکسپائر یا خراب ہونے کی صورت میں واپس نہیں لیا جائے گا۔ دکاندار سیلزمین کے ساتھ کسی قسم کے ذاتی لین دین کا ذمہ دار خود ہوگا۔</strong></p>
+
                             </div>
                             <!--end card-body-->
                         </div><!--end col-->
-                        
+
                     </div><!--end row-->
                 </div>
                 <!--end card-->

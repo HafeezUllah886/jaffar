@@ -10,6 +10,7 @@ use App\Models\purchase;
 use App\Models\purchase_details;
 use App\Models\purchase_payments;
 use App\Models\raw_units;
+use App\Models\stock;
 use App\Models\transactions;
 use App\Models\units;
 use Exception;
@@ -158,7 +159,7 @@ class PurchaseController extends Controller
             }
             foreach($purchase->details as $product)
             {
-                material_stock::where('refID', $product->refID)->delete();
+                stock::where('refID', $product->refID)->delete();
                 $product->delete();
             }
             transactions::where('refID', $purchase->refID)->delete();
@@ -178,7 +179,7 @@ class PurchaseController extends Controller
             $total = 0;
             foreach($ids as $key => $id)
             {
-                $unit = raw_units::find($request->unit[$key]);
+                $unit = units::find($request->unit[$key]);
                 $qty = $request->qty[$key] * $unit->value;
                 $price = $request->price[$key] / $unit->value;
                 $total += $request->amount[$key];
@@ -188,6 +189,8 @@ class PurchaseController extends Controller
                         'productID'     => $id,
                         'price'         => $price,
                         'qty'           => $qty,
+                        'gst'           => $request->gst[$key],
+                        'gstValue'      => $request->gstValue[$key],
                         'amount'        => $request->amount[$key],
                         'date'          => $request->date,
                         'unitID'        => $unit->id,
@@ -195,7 +198,7 @@ class PurchaseController extends Controller
                         'refID'         => $ref,
                     ]
                 );
-                createMaterialStock($id, $qty, 0, $request->date, "Purchased", $ref);
+                createStock($id, $qty, 0, $request->date, "Purchased", $ref);
             }
 
             if($request->status == 'paid')
@@ -246,7 +249,7 @@ class PurchaseController extends Controller
             }
             foreach($purchase->details as $product)
             {
-                material_stock::where('refID', $product->refID)->delete();
+                stock::where('refID', $product->refID)->delete();
                 $product->delete();
             }
             transactions::where('refID', $purchase->refID)->delete();

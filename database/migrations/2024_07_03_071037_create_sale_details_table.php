@@ -18,14 +18,14 @@ return new class extends Migration
             $table->float('qty');
             $table->float('price', 10);
             $table->float('discount');
-            $table->float('discountValue');
-            $table->float('scheme');
-            $table->float('schemeValue');
+            $table->float('te');
+            $table->float('tp');
+            $table->float('gst');
+            $table->float('gstValue');
             $table->float('amount');
             $table->date('date');
             $table->foreignId('unitID')->constrained('units', 'id');
             $table->float('unitValue');
-            $table->string('batchNumber');
             $table->bigInteger('refID');
             $table->timestamps();
         });

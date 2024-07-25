@@ -181,7 +181,7 @@
             var gstValue = price * gst / 100;
             var newPrice = price + gstValue;
             var amount = qty * newPrice;
-            
+
             $("#gstValue_" + id).val(gstValue.toFixed(2));
             $("#amount_" + id).val(amount.toFixed(2));
             updateTotal();
@@ -195,7 +195,7 @@
                 total += parseFloat(inputValue);
             });
 
-            $("#total").html(total);
+            $("#total").html(total.toFixed(2));
         }
 
         function deleteRow(id) {

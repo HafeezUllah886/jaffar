@@ -44,11 +44,13 @@
 
                                 <table class="table table-striped table-hover">
                                     <thead>
-                                        <th width="20%">Item</th>
-                                        <th width="20%" class="text-center">Qty</th>
-                                        <th width="20%" class="text-center">Unit</th>
-                                        <th width="20%" class="text-center">Price</th>
-                                        <th width="20%" class="text-end">Amount</th>
+                                        <th width="40%">Item</th>
+                                        <th class="text-center">Qty</th>
+                                        <th width="10%" class="text-center">Unit</th>
+                                        <th class="text-center">Price</th>
+                                        <th class="text-center">GST %</th>
+                                        <th class="text-center">GST Value</th>
+                                        <th class="text-end">Amount</th>
                                         <th></th>
                                     </thead>
                                     <tbody id="products_list">
@@ -67,6 +69,8 @@
                                                 </select>
                                             </td>
                                             <td class="no-padding"><input type="number" name="price[]" oninput="updateChanges({{$id}})" required step="any" value="{{$product->price * $product->unitValue}}" min="1" class="form-control text-center" id="price_{{$id}}"></td>
+                                            <td class="no-padding"><input type="number" name="gst[]" oninput="updateChanges({{$id}})" required step="any" value="{{$product->gst}}" min="0" class="form-control text-center" id="gst_{{$id}}"></td>
+                                            <td class="no-padding"><input type="number" name="gstValue[]" readonly step="any" value="{{$product->gstValue}}" min="0" class="form-control text-center" id="gstValue_{{$id}}"></td>
                                             <td class="no-padding"><input type="number" name="amount[]" required step="any" readonly value="{{$product->amount}}" class="form-control text-end" id="amount_{{$id}}"></td>
                                             <td> <span class="btn btn-sm btn-danger" onclick="deleteRow({{$id}})">X</span> </td>
                                             <input type="hidden" name="id[]" value="{{$id}}">
@@ -75,7 +79,7 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th colspan="4" class="text-end">Total</th>
+                                            <th colspan="6" class="text-end">Total</th>
                                             <th class="text-end" id="total">0.00</th>
                                         </tr>
                                     </tfoot>
@@ -199,6 +203,8 @@
                             id +
                             ')" required step="any" value="'+product.tp+'" min="1" class="form-control text-center" id="price_' +
                             id + '"></td>';
+                            html += '<td class="no-padding"><input type="number" name="gst[]" oninput="updateChanges(' + id + ')" required step="any" value="18" min="0" class="form-control text-center" id="gst_' + id + '"></td>';
+                            html += '<td class="no-padding"><input type="number" name="gstValue[]" step="any" value="0" min="0" class="form-control text-center" id="gstValue_' + id + '"></td>';
                         html +=
                             '<td class="no-padding"><input type="number" name="amount[]" required step="any" readonly value="0.00" class="form-control text-end" id="amount_' +
                             id + '"></td>';
@@ -214,10 +220,14 @@
         }
 
         function updateChanges(id) {
-            var qty = $('#qty_' + id).val();
-            var price = $('#price_' + id).val();
-            var amount = qty * price;
+            var qty = parseFloat($('#qty_' + id).val());
+            var price = parseFloat($('#price_' + id).val());
+            var gst = parseFloat($('#gst_' + id).val());
+            var gstValue = price * gst / 100;
+            var newPrice = price + gstValue;
+            var amount = qty * newPrice;
 
+            $("#gstValue_" + id).val(gstValue.toFixed(2));
             $("#amount_" + id).val(amount.toFixed(2));
             updateTotal();
         }
@@ -230,7 +240,7 @@
                 total += parseFloat(inputValue);
             });
 
-            $("#total").html(total);
+            $("#total").html(total.toFixed(2));
         }
 
         function deleteRow(id) {

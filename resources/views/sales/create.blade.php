@@ -33,19 +33,26 @@
                                 <table class="table table-striped table-hover">
                                     <thead>
                                         <th width="20%">Product</th>
-                                        <th width="15%" class="text-center">Batch</th>
+                                        <th class="text-center">Qty</th>
                                         <th width="10%" class="text-center">Unit</th>
-                                        <th width="15%" class="text-center">Qty</th>
-                                        <th width="10%" class="text-center">Price</th>
-                                        <th width="10%" class="text-center">Discount</th>
-                                        <th width="10%" class="text-center">Scheme</th>
-                                        <th width="10%" class="text-end">Amount</th>
+                                        <th class="text-center">Price</th>
+                                        <th class="text-center">Disc</th>
+                                        <th class="text-center">Tax Exc</th>
+                                        <th class="text-center">TP</th>
+                                        <th class="text-center">GST%</th>
+                                        <th class="text-center">GST</th>
+                                        <th class="text-end">Amount</th>
                                         <th></th>
                                     </thead>
                                     <tbody id="products_list"></tbody>
                                     <tfoot>
                                         <tr>
-                                            <th colspan="7" class="text-end">Total</th>
+                                            <th colspan="4" class="text-end">Total</th>
+                                            <th class="text-end" id="totalDiscount">0.00</th>
+                                            <th class="text-end" id="totalTE">0.00</th>
+                                            <th></th>
+                                            <th></th>
+                                            <th class="text-end" id="totalGST">0.00</th>
                                             <th class="text-end" id="total">0.00</th>
                                         </tr>
                                     </tfoot>
@@ -97,7 +104,6 @@
                             <div class="col-12 mt-2">
                                 <button type="submit" class="btn btn-primary w-100">Create Sale</button>
                             </div>
-
                 </div>
             </form>
             </div>
@@ -152,46 +158,23 @@
                         var id = product.id;
                         var html = '<tr id="row_' + id + '">';
                         html += '<td class="no-padding">' + product.name + '</td>';
-                        html += '<td class="no-padding">';
-                            html += '<select class="form-control text-center" name="batchNumber[]" id="batch_'+id+'" onchange="updateChanges(' + id +')">';
-                                product.batches.forEach(function (b){
-                                    if(b.balance > 0)
-                                    {
-                                        html += '<option value="'+b.batchNumber+'" data-stock="'+b.balance+'">'+b.batchNumber+'</option>';
-                                    }
-                                });
-                            html += '</select>';
-                        html += '</td>';
-                        html +=
-                            '<td class="no-padding"><select name="unit[]" class="form-control text-center" onchange="updateChanges(' + id +')" id="unit_' + id + '">';
-                        units.forEach(function(unit) {
-                            var isSelected = (unit.id == product.unitID);
-                            html += '<option data-unit="'+unit.value+'" value="' + unit.id + '" ' + (isSelected ? 'selected' : '') + '>' + unit.name + '</option>';
-                        });
+                        html += '<td class="no-padding"><div class="input-group">  <span class="input-group-text" id="stockValue_'+id+'">'+product.stock +'</span><input type="number" max="'+product.stock+'" name="qty[]" oninput="updateChanges(' + id +')" min="0.1" required step="any" value="1" class="form-control text-center" id="qty_' + id + '"></div></td>';
+                        html += '<td class="no-padding"><select name="unit[]" class="form-control text-center" onchange="updateChanges(' + id +')" id="unit_' + id + '">';
+                            units.forEach(function(unit) {
+                                var isSelected = (unit.id == product.unitID);
+                                html += '<option data-unit="'+unit.value+'" value="' + unit.id + '" ' + (isSelected ? 'selected' : '') + '>' + unit.name + '</option>';
+                            });
                         html += '</select></td>';
-                        html += '<td class="no-padding"><div class="input-group">  <span class="input-group-text" id="stockValue_'+id+'">'+product.stock +'</span><input type="number" name="qty[]" oninput="updateChanges(' + id +')" min="0.1" required step="any" value="1" class="form-control text-center" id="qty_' +
-                            id + '"></div></td>';
-
-                        html +=
-                            '<td class="no-padding"><input type="number" name="price[]" oninput="updateChanges(' +
-                            id +
-                            ')" required step="any" value="'+product.price+'" min="1" class="form-control text-center" id="price_' +
-                            id + '"></td>';
-                            html +=
-                            '<td class="no-padding"><div class="input-group"> <input type="number" name="discount[]" oninput="updateChanges(' +
-                            id +
-                            ')" required step="any" value="'+product.discount+'" min="0" class="form-control text-center" id="discount_' +
-                            id + '"> <span class="input-group-text" id="discountValue_'+id+'">'+product.stock +'</span></div></td>';
-                            html +=
-                            '<td class="no-padding"><div class="input-group"> <input type="number" name="scheme[]" oninput="updateChanges(' +
-                            id +
-                            ')" required step="any" value="'+product.scheme+'" min="0" class="form-control text-center" id="scheme_' +
-                            id + '"> <span class="input-group-text" id="schemeValue_'+id+'">'+product.stock +'</span></div></td>';
-                        html +=
-                            '<td class="no-padding"><input type="number" name="amount[]" required step="any" readonly value="0.00" class="form-control text-end" id="amount_' +
-                            id + '"></td>';
+                        html += '<td class="no-padding"><input type="number" name="price[]" oninput="updateChanges(' + id + ')" required step="any" value="'+product.price+'" min="1" class="form-control text-center" id="price_' + id + '"></td>';
+                        html += '<td class="no-padding"><input type="number" name="discount[]" oninput="updateChanges(' + id + ')" required step="any" value="'+product.discount+'" min="0" class="form-control text-center" id="discount_' + id + '"></td>';
+                        html += '<td class="no-padding"><input type="number" name="te[]" required step="any" value="0.00" min="0" class="form-control text-center" id="te_' + id + '"></td>';
+                        html += '<td class="no-padding"><input type="number" name="tp[]" oninput="updateChanges(' + id + ')" required step="any" value="'+product.tp+'" min="0" class="form-control text-center" id="tp_' + id + '"></td>';
+                        html += '<td class="no-padding"><input type="number" name="gst[]" oninput="updateChanges(' + id + ')" required step="any" value="18" min="0" class="form-control text-center" id="gst_' + id + '"></td>';
+                        html += '<td class="no-padding"><input type="number" name="gstValue[]" required step="any" value="0.00" min="0" class="form-control text-center" id="gstValue_' + id + '"></td>';
+                        html += '<td class="no-padding"><input type="number" name="amount[]" step="any" readonly value="0.00" class="form-control text-end" id="amount_' + id + '"></td>';
                         html += '<td> <span class="btn btn-sm btn-danger" onclick="deleteRow('+id+')">X</span> </td>';
                         html += '<input type="hidden" name="id[]" value="' + id + '">';
+                        html += '<input type="hidden" id="stock_'+id+'" value="' + product.stock + '">';
                         html += '</tr>';
                         $("#products_list").prepend(html);
                         updateChanges(id);
@@ -206,23 +189,27 @@
             var price = $('#price_' + id).val();
             var unit = $('#unit_' + id).find('option:selected');
                 unit = unit.data('unit');
-            var stock = $('#batch_' + id).find('option:selected');
-                stock = stock.data('stock');
+            var stock = $('#stock_' + id).val();
             var discount = $('#discount_' + id).val();
-            var scheme = $('#scheme_' + id).val();
-
             var newQty = qty * unit;
-            var discountValue = price * discount / 100;
-            var schemeValue = price * scheme / 100;
-            var newPrice = price - discountValue - schemeValue;
-            var amount = newQty * newPrice;
+
+            var te = (newQty * price) - (newQty * discount);
+            $("#te_"+id).val(te);
+
+            var tp = $("#tp_"+id).val();
+            var gst = $("#gst_"+id).val();
+
+            var gstValue = (tp * gst / 100) * newQty;
+
+            $("#gstValue_"+id).val(gstValue.toFixed(2));
+
+            var newPrice = price - discount;
+            var amount = te + gstValue;
 
             $("#stockValue_"+id).html(stock / unit);
             $("#qty_"+id).attr("max", stock / unit);
-            $("#discountValue_"+id).html((discountValue * newQty).toFixed(1));
-            $("#schemeValue_"+id).html((schemeValue * newQty).toFixed(1));
 
-            $("#amount_" + id).val(amount.toFixed(1));
+            $("#amount_" + id).val(amount.toFixed(2));
             updateTotal();
         }
 
@@ -233,8 +220,31 @@
                 var inputValue = $(this).val();
                 total += parseFloat(inputValue);
             });
+            $("#total").html(total.toFixed(2));
 
-            $("#total").html(total);
+            var totalDiscount = 0;
+            $("input[id^='discount_']").each(function() {
+                var inputId = $(this).attr('id');
+                var inputValue = $(this).val();
+                totalDiscount += parseFloat(inputValue);
+            });
+            $("#totalDiscount").html(totalDiscount.toFixed(2));
+
+            var totalTE = 0;
+            $("input[id^='te_']").each(function() {
+                var inputId = $(this).attr('id');
+                var inputValue = $(this).val();
+                totalTE += parseFloat(inputValue);
+            });
+            $("#totalTE").html(totalTE.toFixed(2));
+
+            var totalGST = 0;
+            $("input[id^='gstValue_']").each(function() {
+                var inputId = $(this).attr('id');
+                var inputValue = $(this).val();
+                totalGST += parseFloat(inputValue);
+            });
+            $("#totalGST").html(totalGST.toFixed(2));
         }
 
         function deleteRow(id) {
