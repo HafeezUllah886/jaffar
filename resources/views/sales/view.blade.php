@@ -102,13 +102,25 @@
                                                 <th class="text-end">{{number_format($sale->details->sum('gstValue'),2)}}</th>
                                                 <th class="text-end">{{number_format($sale->details->sum('amount'),2)}}</th>
                                             </tr>
+                                            @php
+                                            $due = $sale->details->sum('amount') - $sale->payments->sum('amount');
+                                            $paid = $sale->payments->sum('amount');
+                                            @endphp
                                             <tr>
                                                 <th colspan="10" class="text-end">Paid</th>
-                                                <th class="text-end">{{number_format($sale->payments->sum('amount'),2)}}</th>
+                                                <th class="text-end">{{number_format($paid,2)}}</th>
                                             </tr>
                                             <tr>
                                                 <th colspan="10" class="text-end">Due</th>
-                                                <th class="text-end">{{number_format($sale->details->sum('amount') - $sale->payments->sum('amount'),2)}}</th>
+                                                <th class="text-end">{{number_format($due,2)}}</th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="10" class="text-end">Previous Balance</th>
+                                                <th class="text-end">{{number_format($balance,2)}}</th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="10" class="text-end">Net Account Balance</th>
+                                                <th class="text-end">{{number_format($balance + $due,2)}}</th>
                                             </tr>
                                         </tfoot>
                                     </table><!--end table-->
@@ -118,7 +130,7 @@
                                 @if ($sale->notes != "")
                                 <p><strong>Notes: </strong>{{$sale->notes}}</p>
                                 @endif
-                               <p class="text-center"><strong>نوٹ: مال آپ کے آرڈر کے مطابق بھیجا جا رہا ہے۔ مال ایکسپائر یا خراب ہونے کی صورت میں واپس نہیں لیا جائے گا۔ دکاندار سیلزمین کے ساتھ کسی قسم کے ذاتی لین دین کا ذمہ دار خود ہوگا۔</strong></p>
+                               <p class="text-center urdu"><strong>نوٹ: مال آپ کے آرڈر کے مطابق بھیجا جا رہا ہے۔ مال ایکسپائر یا خراب ہونے کی صورت میں واپس نہیں لیا جائے گا۔ دکاندار سیلزمین کے ساتھ کسی قسم کے ذاتی لین دین کا ذمہ دار خود ہوگا۔</strong></p>
 
                             </div>
                             <!--end card-body-->
@@ -140,6 +152,12 @@
 <link rel="stylesheet" href="{{ asset('assets/libs/datatable/responsive.bootstrap.min.css') }}" />
 
 <link rel="stylesheet" href="{{ asset('assets/libs/datatable/buttons.dataTables.min.css') }}">
+<link href='https://fonts.googleapis.com/css?family=Noto Nastaliq Urdu' rel='stylesheet'>
+<style>
+    .urdu {
+        font-family: 'Noto Nastaliq Urdu';font-size: 12px;
+    }
+    </style>
 @endsection
 @section('page-js')
     <script src="{{ asset('assets/libs/datatable/jquery.dataTables.min.js')}}"></script>

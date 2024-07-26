@@ -127,7 +127,10 @@ class SalesController extends Controller
      */
     public function show(sales $sale)
     {
-        return view('sales.view', compact('sale'));
+        $cr = transactions::where('accountID', $sale->customerID)->where('refID', '<', $sale->refID)->sum('cr');
+        $db = transactions::where('accountID', $sale->customerID)->where('refID', '<', $sale->refID)->sum('db');
+        $balance = $cr - $db;
+        return view('sales.view', compact('sale', 'balance'));
     }
 
     /**

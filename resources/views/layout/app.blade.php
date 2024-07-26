@@ -23,6 +23,7 @@
     <link href="{{ asset('assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
 
     <link href="{{ asset('assets/libs/toastify/toastify.min.css')}}" rel="stylesheet" type="text/css" />
+
     @yield('page-css')
 
 </head>
