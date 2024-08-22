@@ -87,7 +87,7 @@
                                                     <div class="form-group mt-2">
                                                         <label for="discount">Discount</label>
                                                         <input type="number" step="any" name="discount" required
-                                                            value="{{ $item->discount }}" min="0" max="100"
+                                                            value="{{ $item->discount }}" min="0"
                                                             id="discount" class="form-control">
                                                     </div>
                                                 </div>
@@ -146,7 +146,7 @@
                         <div class="form-group mt-2">
                             <label for="discount">Discount</label>
                             <input type="number" step="any" name="discount" required
-                                value="0" min="0" max="100"
+                                value="0" min="0"
                                 id="discount" class="form-control">
                         </div>
                     </div>

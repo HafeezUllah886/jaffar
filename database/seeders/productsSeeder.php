@@ -14,9 +14,9 @@ class productsSeeder extends Seeder
     public function run(): void
     {
         $data = [
-            ['name' => "Lemon Malt 250ml", "unitID" => 1, "price" => 1530, 'tp' => 1423.73, 'discount' => 10],
-            ['name' => "Peach Malt 250ml", "unitID" => 2, "price" => 1640, 'tp' => 1525.42, 'discount' => 10],
-
+            ['name' => "Lemon Malt 250ml", "unitID" => 1, "price" => 1640, 'tp' => 1525.42, 'discount' => 30],
+            ['name' => "Peach Malt 250ml", "unitID" => 1, "price" => 1640, 'tp' => 1525.42, 'discount' => 30],
+            ['name' => "Mango NR Juice", "unitID" => 1, "price" => 1050, 'tp' => 955.93, 'discount' => 150],
         ];
         products::insert($data);
     }

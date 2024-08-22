@@ -69,7 +69,7 @@ class SalesController extends Controller
                 $unit = units::find($request->unit[$key]);
                 $qty = $request->qty[$key] * $unit->value;
                 $price = $request->price[$key];
-                $total += $request->amount[$key];
+                $total += $request->ti[$key];
                 sale_details::create(
                     [
                         'salesID'       => $sale->id,
@@ -77,11 +77,10 @@ class SalesController extends Controller
                         'price'         => $price,
                         'qty'           => $qty,
                         'discount'      => $request->discount[$key],
-                        'te'            => $request->te[$key],
+                        'ti'            => $request->ti[$key],
                         'tp'            => $request->tp[$key],
                         'gst'           => $request->gst[$key],
                         'gstValue'      => $request->gstValue[$key],
-                        'amount'        => $request->amount[$key],
                         'date'          => $request->date,
                         'unitID'        => $unit->id,
                         'unitValue'     => $unit->value,

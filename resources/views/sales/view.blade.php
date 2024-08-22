@@ -68,59 +68,72 @@
                                                 <th scope="col" class="text-end">Qty</th>
                                                 <th scope="col" class="text-end">Price</th>
                                                 <th scope="col" class="text-end">Discount</th>
-                                                <th scope="col" class="text-end">Tax (Exc)</th>
+                                                <th scope="col" class="text-end">Tax (Inc)</th>
                                                 <th scope="col" class="text-end">TP</th>
                                                 <th scope="col" class="text-end">GST%</th>
                                                 <th scope="col" class="text-end">GST</th>
-                                                <th scope="col" class="text-end">Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody id="products-list">
                                            @foreach ($sale->details as $key => $product)
                                                <tr>
-                                                <td>{{$key+1}}</td>
-                                                <td class="text-start">{{$product->product->name}}</td>
-                                                <td class="text-start">{{$product->unit->name}}</td>
-                                                <td class="text-end">{{number_format($product->qty / $product->unitValue)}}</td>
-                                                <td class="text-end">{{number_format($product->price, 2)}}</td>
-                                                <td class="text-end">{{number_format($product->discount, 2)}}</td>
-                                                <td class="text-end">{{number_format($product->te, 2)}}</td>
-                                                <td class="text-end">{{number_format($product->tp, 2)}}</td>
-                                                <td class="text-end">{{number_format($product->gst, 2)}}</td>
-                                                <td class="text-end">{{number_format($product->gstValue, 2)}}</td>
-                                                <td class="text-end">{{number_format($product->amount, 1)}}</td>
+                                                <td class="m-1 p-1">{{$key+1}}</td>
+                                                <td class="text-start m-1 p-1">{{$product->product->name}}</td>
+                                                <td class="text-start m-1 p-1">{{$product->unit->name}}</td>
+                                                <td class="text-end m-1 p-1">{{number_format($product->qty / $product->unitValue)}}</td>
+                                                <td class="text-end m-1 p-1">{{number_format($product->price, 2)}}</td>
+                                                <td class="text-end m-1 p-1">{{number_format($product->discount, 2)}}</td>
+                                                <td class="text-end m-1 p-1">{{number_format($product->ti, 2)}}</td>
+                                                <td class="text-end m-1 p-1">{{number_format($product->tp, 2)}}</td>
+                                                <td class="text-end m-1 p-1">{{number_format($product->gst, 2)}}</td>
+                                                <td class="text-end m-1 p-1">{{number_format($product->gstValue, 2)}}</td>
                                                </tr>
                                            @endforeach
                                         </tbody>
                                         <tfoot>
-                                            <tr>
-                                                <th colspan="5" class="text-end">Total</th>
-                                                <th class="text-end">{{number_format($sale->details->sum('discount'),2)}}</th>
-                                                <th class="text-end">{{number_format($sale->details->sum('te'),2)}}</th>
-                                                <th class="text-end"></th>
-                                                <th class="text-end"></th>
-                                                <th class="text-end">{{number_format($sale->details->sum('gstValue'),2)}}</th>
-                                                <th class="text-end">{{number_format($sale->details->sum('amount'),2)}}</th>
-                                            </tr>
                                             @php
-                                            $due = $sale->details->sum('amount') - $sale->payments->sum('amount');
-                                            $paid = $sale->payments->sum('amount');
+                                                $totalDisc = $sale->details->sum('discount');
+                                                $totalTi = $sale->details->sum('ti');
+                                                $totalGstVal = $sale->details->sum('gstValue');
+
+                                                $due = $totalTi - $sale->payments->sum('amount');
+                                                $paid = $sale->payments->sum('amount');
                                             @endphp
                                             <tr>
-                                                <th colspan="10" class="text-end">Paid</th>
-                                                <th class="text-end">{{number_format($paid,2)}}</th>
+                                                <th colspan="5" class="text-end">Total</th>
+                                                <th class="text-end">{{number_format($totalDisc,2)}}</th>
+                                                <th class="text-end">{{number_format($totalTi,2)}}</th>
+                                                <th class="text-end"></th>
+                                                <th class="text-end"></th>
+                                                <th class="text-end">{{number_format($totalGstVal,2)}}</th>
                                             </tr>
-                                            <tr>
-                                                <th colspan="10" class="text-end">Due</th>
-                                                <th class="text-end">{{number_format($due,2)}}</th>
+                                            <tr class="m-0 p-0">
+                                                <th colspan="9" class="text-end p-0 m-0">Tax Exclusive</th>
+                                                <th class="text-end p-0 m-0">{{number_format($totalTi - $totalGstVal,2)}}</th>
                                             </tr>
-                                            <tr>
-                                                <th colspan="10" class="text-end">Previous Balance</th>
-                                                <th class="text-end">{{number_format($balance,2)}}</th>
+                                            <tr class="m-0 p-0">
+                                                <th colspan="9" class="text-end p-0 m-0">Sales Tax</th>
+                                                <th class="text-end p-0 m-0">{{number_format($totalGstVal,2)}}</th>
                                             </tr>
-                                            <tr>
-                                                <th colspan="10" class="text-end">Net Account Balance</th>
-                                                <th class="text-end">{{number_format($balance + $due,2)}}</th>
+                                            <tr class="m-0 p-0">
+                                                <th colspan="9" class="text-end p-0 m-0">Net Amount (Tax Inc)</th>
+                                                <th class="text-end p-0 m-0 border-2 border-start-0 border-end-0 border-dark">{{number_format($totalTi,2)}}</th>
+                                            </tr>
+                                            <tr class="m-0 p-0">
+                                                <th colspan="9" class="text-end p-0 m-0">Paid</th>
+                                                <th class="text-end p-0 m-0">{{number_format($paid,2)}}</th>
+                                            </tr>
+                                            <tr class="m-0 p-0">
+                                                <th colspan="9" class="text-end p-0 m-0">Due</th>
+                                                <th class="text-end p-0 m-0">{{number_format($due,2)}}</th>
+                                            </tr>
+                                            <tr class="m-0 p-0">
+                                                <th colspan="9" class="text-end p-0 m-0">Previous Balance</th>
+                                                <th class="text-end p-0 m-0">{{number_format($balance,2)}}</th>
+                                            </tr>
+                                            <tr class="m-0 p-0">
+                                                <th colspan="9" class="text-end p-0 m-0">Net Account Balance</th>
+                                                <th class="text-end p-0 m-0">{{number_format($balance + $due,2)}}</th>
                                             </tr>
                                         </tfoot>
                                     </table><!--end table-->
