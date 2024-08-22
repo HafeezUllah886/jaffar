@@ -46,6 +46,41 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-6 mt-2 customer" >
+                                <div class="form-group">
+                                    <label for="cnic">CNIC #</label>
+                                    <input type="text" name="cnic" id="cnic" value="{{ old('cnic') }}"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-6 mt-2 customer" >
+                                <div class="form-group">
+                                    <label for="contact">Contact #</label>
+                                    <input type="text" name="contact" id="contact" value="{{ old('contact') }}"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-6 mt-2 customer" >
+                                <div class="form-group">
+                                    <label for="address">Address</label>
+                                    <input type="text" name="address" id="address" value="{{ old('address') }}"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-6 mt-2 customer" >
+                                <div class="form-group">
+                                    <label for="ntn">NTN #</label>
+                                    <input type="text" name="ntn" id="ntn" value="{{ old('ntn') }}"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-6 mt-2 customer" >
+                                <div class="form-group">
+                                    <label for="strn">STRN #</label>
+                                    <input type="text" name="strn" id="strn" value="{{ old('strn') }}"
+                                        class="form-control">
+                                </div>
+                            </div>
                             <div class="col-12 mt-2">
                                 <div class="form-group">
                                     <label for="initial">Initial Amount</label>
@@ -78,6 +113,7 @@
 
 @section('page-js')
     <script>
+        $(".customer").hide();
         $("#type").on("change",  function (){
             var type = $("#type").find(":selected").val();
 
@@ -88,6 +124,15 @@
             else
             {
                 $("#catBox").hide();
+            }
+
+            if(type === "Customer")
+            {
+                $(".customer").show();
+            }
+            else
+            {
+                $(".customer").hide();
             }
         });
     </script>

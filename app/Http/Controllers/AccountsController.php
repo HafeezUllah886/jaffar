@@ -48,13 +48,32 @@ class AccountsController extends Controller
             DB::beginTransaction();
 
                 $ref = getRef();
-                $account = accounts::create(
-                    [
-                        'title' => $request->title,
-                        'type' => $request->type,
-                        'category' => $request->category
-                    ]
-                );
+                if($request->type == "Customer")
+                {
+                    $account = accounts::create(
+                        [
+                            'title' => $request->title,
+                            'type' => $request->type,
+                            'category' => $request->category,
+                            'cnic' => $request->cnic,
+                            'contact' => $request->contact,
+                            'address' => $request->address,
+                            'ntn' => $request->ntn,
+                            'strn' => $request->strn,
+                        ]
+                    );
+                }
+                else
+                {
+                    $account = accounts::create(
+                        [
+                            'title' => $request->title,
+                            'type' => $request->type,
+                            'category' => $request->category
+                        ]
+                    );
+                }
+
                 if($request->initial > 0)
                 {
                     if($request->initialType == '0')
@@ -92,7 +111,7 @@ class AccountsController extends Controller
         $cur_db = transactions::where('accountID', $id)->sum('db');
 
         $cur_balance = $cur_cr - $cur_db;
-       
+
         return view('Finance.accounts.statment', compact('account', 'transactions', 'pre_balance', 'cur_balance', 'from', 'to'));
     }
 
@@ -122,6 +141,12 @@ class AccountsController extends Controller
             [
                 'title' => $request->title,
                 'category' => $request->category,
+                'cnic' => $request->cnic ?? null,
+                'contact' => $request->contact ?? null,
+                'address' => $request->address ?? null,
+                'ntn' => $request->ntn ?? null,
+                'strn' => $request->strn ?? null,
+
             ]
         );
 

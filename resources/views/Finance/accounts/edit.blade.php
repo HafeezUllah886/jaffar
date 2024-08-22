@@ -25,11 +25,11 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="title">Account Title</label>
-                                    <input type="text" name="title" value="{{$account->title}}" id="title" 
+                                    <input type="text" name="title" value="{{$account->title}}" id="title"
                                         class="form-control">
                                 </div>
                             </div>
-                            
+
                             <div class="col-12 mt-2 {{$account->type != "Business" ? "d-none" : ""}}"  id="catBox">
                                 <div class="form-group">
                                     <label for="category">Category</label>
@@ -40,7 +40,45 @@
                                     </select>
                                 </div>
                             </div>
-                           
+
+                            @if ($account->type == 'Customer')
+                            <div class="col-6 mt-2 customer" >
+                                <div class="form-group">
+                                    <label for="cnic">CNIC #</label>
+                                    <input type="text" name="cnic" id="cnic" value="{{ $account->cnic }}"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-6 mt-2 customer" >
+                                <div class="form-group">
+                                    <label for="contact">Contact #</label>
+                                    <input type="text" name="contact" id="contact" value="{{ $account->contact }}"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-6 mt-2 customer" >
+                                <div class="form-group">
+                                    <label for="address">Address</label>
+                                    <input type="text" name="address" id="address" value="{{ $account->address }}"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-6 mt-2 customer" >
+                                <div class="form-group">
+                                    <label for="ntn">NTN #</label>
+                                    <input type="text" name="ntn" id="ntn" value="{{ $account->ntn }}"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-6 mt-2 customer" >
+                                <div class="form-group">
+                                    <label for="strn">STRN #</label>
+                                    <input type="text" name="strn" id="strn" value="{{ $account->strn }}"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            @endif
+
                             <div class="col-12 mt-3">
                                 <button type="submit" class="btn btn-secondary w-100">Update</button>
                             </div>
