@@ -30,26 +30,19 @@
 
                             <div class="card-body p-4">
                                 <div class="row g-3">
-                                    <div class="col-lg-3 col-6">
-                                        <p class="text-muted mb-2 text-uppercase fw-semibold">Inv #</p>
-                                        <h5 class="fs-14 mb-0">{{$sale->id}}</h5>
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-lg-3 col-6">
-                                        <p class="text-muted mb-2 text-uppercase fw-semibold">Date</p>
-                                        <h5 class="fs-14 mb-0">{{date("d M Y" ,strtotime($sale->date))}}</h5>
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-lg-3 col-6">
+                                    <div class="col-9">
                                         <p class="text-muted mb-2 text-uppercase fw-semibold">Customer</p>
-                                        <h5 class="fs-14 mb-0">{{$sale->customer->title}}</h5>
+                                        <h5 class="fs-14 mb-0"> <span class="text-muted">M/S :</span> {{$sale->customer->title}}</h5>
+                                        <h5 class="fs-14 mb-0"> <span class="text-muted">CNIC :</span> {{$sale->customer->cnic ?? "NA"}} | <span class="text-muted">Contact :</span> {{$sale->customer->contact ?? "NA"}}</h5>
+                                        <h5 class="fs-14 mb-0"> <span class="text-muted">NTN #</span> {{$sale->customer->ntn ?? "NA"}} | <span class="text-muted">STRN #</span> {{$sale->customer->strn ?? "NA"}}</h5>
+                                        <h5 class="fs-14 mb-0"> <span class="text-muted">Address :</span> {{$sale->customer->address ?? "NA"}}</h5>
+                                    </div>
+                                    <div class="col-3">
+                                        <p> <span class="text-muted mb-2 text-uppercase fw-semibold">Inv # </span><span class="fs-14 mb-0">{{$sale->id}}</span></p>
+                                        <p> <span class="text-muted mb-2 text-uppercase fw-semibold">Date : </span><span class="fs-14 mb-0">{{date("d M Y" ,strtotime($sale->date))}}</span></p>
                                     </div>
                                     <!--end col-->
-                                    <div class="col-lg-3 col-6">
-                                        <p class="text-muted mb-2 text-uppercase fw-semibold">Printed On</p>
-                                        <h5 class="fs-14 mb-0"><span id="total-amount">{{ date("d M Y") }}</span></h5>
-                                        {{-- <h5 class="fs-14 mb-0"><span id="total-amount">{{ \Carbon\Carbon::now()->format('h:i A') }}</span></h5> --}}
-                                    </div>
+
                                     <!--end col-->
                                 </div>
                                 <!--end row-->
