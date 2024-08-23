@@ -65,7 +65,7 @@
                                         @csrf
                                         <div class="mb-3">
                                             <label for="username" class="form-label">Username</label>
-                                            <input type="text" name="name" class="form-control" id="username" placeholder="Enter username">
+                                            <input type="text" name="name" class="form-control" autofocus id="username" placeholder="Enter username">
                                         </div>
 
                                         <div class="mb-3">
@@ -126,7 +126,7 @@
     <script src="{{ asset('assets/libs/node-waves/waves.min.js')}}"></script>
     <script src="{{ asset('assets/libs/feather-icons/feather.min.js')}}"></script>
     <script src="{{ asset('assets/js/pages/plugins/lord-icon-2.1.0.js')}}"></script>
- 
+
 
     <!-- particles js -->
     <script src="{{ asset('assets/libs/particles.js/particles.js')}}"></script>
@@ -136,7 +136,7 @@
     <script src="{{ asset('assets/js/pages/password-addon.init.js')}}"></script>
     <script src="{{ asset('assets/libs/toastify/toastify.min.js')}}"></script>
 
-   
+
     @if (Session::get('success'))
     <script>
        Toastify({

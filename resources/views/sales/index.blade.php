@@ -56,12 +56,12 @@
                                                         View
                                                     </button>
                                                 </li>
-                                                {{-- <li>
+                                                <li>
                                                     <a class="dropdown-item" onclick="newWindow('{{route('sale.edit', $sale->id)}}')">
                                                         <i class="ri-pencil-fill align-bottom me-2 text-muted"></i>
                                                         Edit
                                                     </a>
-                                                </li> --}}
+                                                </li>
                                                 <li>
                                                     <a class="dropdown-item" onclick="newWindow('{{route('salePayment.index', $sale->id)}}')">
                                                         <i class="ri-money-dollar-circle-fill align-bottom me-2 text-muted"></i>

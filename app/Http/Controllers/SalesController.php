@@ -147,9 +147,87 @@ class SalesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, sales $sales)
+    public function update(Request $request, $id)
     {
-        //
+        try
+        {
+            DB::beginTransaction();
+            $sale = sales::find($id);
+            foreach($sale->payments as $payment)
+            {
+                transactions::where('refID', $payment->refID)->delete();
+                $payment->delete();
+            }
+            foreach($sale->details as $product)
+            {
+                stock::where('refID', $product->refID)->delete();
+                $product->delete();
+            }
+            transactions::where('refID', $sale->refID)->delete();
+            $sale->update(
+                [
+                  'customerID'  => $request->customerID,
+                  'date'        => $request->date,
+                  'notes'       => $request->notes,
+                ]
+            );
+
+            $ids = $request->id;
+
+            $total = 0;
+            foreach($ids as $key => $id)
+            {
+                $unit = units::find($request->unit[$key]);
+                $qty = $request->qty[$key] * $unit->value;
+                $price = $request->price[$key];
+                $total += $request->ti[$key];
+                sale_details::create(
+                    [
+                        'salesID'       => $sale->id,
+                        'productID'     => $id,
+                        'price'         => $price,
+                        'qty'           => $qty,
+                        'discount'      => $request->discount[$key],
+                        'ti'            => $request->ti[$key],
+                        'tp'            => $request->tp[$key],
+                        'gst'           => $request->gst[$key],
+                        'gstValue'      => $request->gstValue[$key],
+                        'date'          => $request->date,
+                        'unitID'        => $unit->id,
+                        'unitValue'     => $unit->value,
+                        'refID'         => $sale->refID,
+                    ]
+                );
+                createStock($id,0, $qty, $request->date, "Sold in Inv # $sale->id", $sale->refID);
+            }
+
+            if($request->status == 'paid')
+            {
+                sale_payments::create(
+                    [
+                        'salesID'       => $sale->id,
+                        'accountID'     => $request->accountID,
+                        'date'          => $request->date,
+                        'amount'        => $total,
+                        'notes'         => "Full Paid",
+                        'refID'         => $sale->refID,
+                    ]
+                );
+
+                createTransaction($request->accountID, $request->date, $total, 0, "Payment of Inv No. $sale->id", $sale->refID);
+            }
+            else
+            {
+                createTransaction($request->customerID, $request->date, $total, 0, "Pending Amount of Inv No. $sale->id", $sale->refID);
+            }
+            DB::commit();
+            return to_route('sale.index')->with('success', "Sale Updated");
+        }
+        catch(\Exception $e)
+        {
+            DB::rollBack();
+            return to_route('sale.index')->with('error', $e->getMessage());
+        }
     }
 
     /**
