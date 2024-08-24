@@ -31,7 +31,7 @@
                         <tbody>
                             @foreach ($purchases as $key => $purchase)
                                 @php
-                                    $amount = $purchase->details->sum('amount');
+                                    $amount = $purchase->net;
                                     $paid = $purchase->payments->sum('amount');
                                     $due = $amount - $paid;
                                 @endphp

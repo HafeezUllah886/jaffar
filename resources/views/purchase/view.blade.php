@@ -58,50 +58,105 @@
                         </div><!--end col-->
                         <div class="col-lg-12">
                             <div class="card-body p-4">
-                                <div class="table-responsive">
-                                    <table class="table table-borderless text-center table-nowrap align-middle mb-0">
-                                        <thead>
-                                            <tr class="table-active">
-                                                <th scope="col" style="width: 50px;">#</th>
-                                                <th scope="col" class="text-start">Product</th>
-                                                <th scope="col" class="text-end">Unit</th>
-                                                <th scope="col" class="text-end">Quantity</th>
-                                                <th scope="col" class="text-end">Price</th>
-                                                <th scope="col" class="text-end">GST%</th>
-                                                <th scope="col" class="text-end">GST Value</th>
-                                                <th scope="col" class="text-end">Amount</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="products-list">
-                                           @foreach ($purchase->details as $key => $product)
-                                               <tr>
-                                                <td>{{$key+1}}</td>
-                                                <td class="text-start">{{$product->product->name}}</td>
-                                                <td class="text-end"> {{$product->unit->name}}</td>
-                                                <td class="text-end">{{number_format($product->qty / $product->unitValue)}}</td>
-                                                <td class="text-end">{{number_format($product->price * $product->unitValue)}}</td>
-                                                <td class="text-end">{{number_format($product->gst)}}</td>
-                                                <td class="text-end">{{number_format($product->gstValue)}}</td>
-                                                <td class="text-end">{{number_format($product->amount)}}</td>
-                                               </tr>
-                                           @endforeach
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <th colspan="7" class="text-end">Total</th>
-                                                <th class="text-end">{{number_format($purchase->details->sum('amount'))}}</th>
-                                            </tr>
-                                            <tr>
-                                                <th colspan="7" class="text-end">Paid</th>
-                                                <th class="text-end">{{number_format($purchase->payments->sum('amount'))}}</th>
-                                            </tr>
-                                            <tr>
-                                                <th colspan="7" class="text-end">Due</th>
-                                                <th class="text-end">{{number_format($purchase->details->sum('amount') - $purchase->payments->sum('amount'))}}</th>
-                                            </tr>
-                                        </tfoot>
-                                    </table><!--end table-->
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="table-responsive">
+                                            <table class="table table-borderless text-center table-nowrap align-middle mb-0">
+                                                <thead>
+                                                    <tr class="table-active">
+                                                        <th scope="col" style="width: 50px;">#</th>
+                                                        <th scope="col" class="text-start">Product</th>
+                                                        <th scope="col" class="text-end">Unit</th>
+                                                        <th scope="col" class="text-end">Quantity</th>
+                                                        <th scope="col" class="text-end">Price</th>
+                                                        <th scope="col" class="text-end">Tax Inc</th>
+                                                        <th scope="col" class="text-end">TP</th>
+                                                        <th scope="col" class="text-end">FED {{$purchase->fed}}%</th>
+                                                        <th scope="col" class="text-end">GST {{$purchase->gst}}%</th>
+                                                        <th scope="col" class="text-end">SED {{$purchase->sed}}%</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="products-list">
+                                                   @foreach ($purchase->details as $key => $product)
+                                                       <tr>
+                                                        <td class="p-1 m-1">{{$key+1}}</td>
+                                                        <td class="text-start p-1 m-1">{{$product->product->name}}</td>
+                                                        <td class="text-end p-1 m-1"> {{$product->unit->name}}</td>
+                                                        <td class="text-end p-1 m-1">{{number_format($product->qty / $product->unitValue)}}</td>
+                                                        <td class="text-end p-1 m-1">{{number_format($product->price * $product->unitValue)}}</td>
+                                                        <td class="text-end p-1 m-1">{{number_format($product->ti)}}</td>
+                                                        <td class="text-end p-1 m-1">{{number_format($product->tp)}}</td>
+                                                        <td class="text-end p-1 m-1">{{number_format($product->fedValue)}}</td>
+                                                        <td class="text-end p-1 m-1">{{number_format($product->gstValue)}}</td>
+                                                        <td class="text-end p-1 m-1">{{number_format($product->sedValue)}}</td>
+                                                       </tr>
+                                                   @endforeach
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th colspan="5" class="text-end">Total</th>
+                                                        <th class="text-end">{{number_format($purchase->details->sum('ti'))}}</th>
+                                                        <th class="text-end"></th>
+                                                        <th class="text-end">{{number_format($purchase->details->sum('fedValue'))}}</th>
+                                                        <th class="text-end">{{number_format($purchase->details->sum('gstValue'))}}</th>
+                                                        <th class="text-end">{{number_format($purchase->details->sum('sedValue'))}}</th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table><!--end table-->
+                                        </div>
+                                    </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-8"></div>
+                                    <div class="col-4">
+                                        @php
+                                            $amount = $purchase->details->sum('ti');
+                                            $gst = $purchase->details->sum('gstValue');
+                                            $te = $amount - $gst;
+                                            $salesTax = $purchase->stValue;
+                                            $whTax = $purchase->whValue;
+                                            $discount = $purchase->discount;
+                                            $comp = $purchase->compensation;
+                                            $net = $purchase->net;
+                                        @endphp
+                                        <table class="table">
+                                            <tr>
+                                                <th class="text-end p-1 m-1">Tax Exclusive</th>
+                                                <th class="text-end p-1 m-1">{{number_format($te, 2)}}</th>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-end p-1 m-1">GST {{$purchase->gst}}%</th>
+                                                <th class="text-end p-1 m-1">{{number_format($gst, 2)}}</th>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-end p-1 m-1">Tax Inclusive </th>
+                                                <th class="text-end p-1 m-1">{{number_format($amount, 2)}}</th>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-end p-1 m-1">Sales Tax {{$purchase->st}}% (+) </th>
+                                                <th class="text-end p-1 m-1">{{number_format($salesTax, 2)}}</th>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-end p-1 m-1">WH Tax {{$purchase->wh}}% (+) </th>
+                                                <th class="text-end p-1 m-1">{{number_format($whTax, 2)}}</th>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-end p-1 m-1">Discount (-) </th>
+                                                <th class="text-end p-1 m-1">{{number_format($discount, 2)}}</th>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-end p-1 m-1">Compensation (-) </th>
+                                                <th class="text-end p-1 m-1">{{number_format($comp, 2)}}</th>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-end p-1 m-1">Net Payable </th>
+                                                <th class="text-end p-1 m-1">{{number_format($net, 2)}}</th>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+
+
                             </div>
                             <div class="card-footer">
                                 <p><strong>Notes: </strong>{{$purchase->notes}}</p>

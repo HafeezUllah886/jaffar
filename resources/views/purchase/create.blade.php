@@ -18,9 +18,9 @@
                     <form action="{{ route('purchase.store') }}" method="post">
                         @csrf
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-6">
                                 <div class="form-group">
-                                    <label for="product">Raw Material</label>
+                                    <label for="product">Product</label>
                                     <select name="product" class="selectize" id="product">
                                         <option value="0"></option>
                                         @foreach ($products as $product)
@@ -29,36 +29,84 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label for="fed">FED</label>
+                                    <input type="number" name="fed" value="0" oninput="updateTaxes()" id="fed" class="form-control" step="any">
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label for="gst">GST</label>
+                                    <input type="number" name="gst" value="18" oninput="updateTaxes()" id="gst" class="form-control" step="any">
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label for="sed">SED</label>
+                                    <input type="number" name="sed" value="0" oninput="updateTaxes()" id="sed" class="form-control" step="any">
+                                </div>
+                            </div>
                             <div class="col-12">
 
                                 <table class="table table-striped table-hover">
                                     <thead>
-                                        <th width="40%">Item</th>
-                                        <th class="text-center">Qty</th>
+                                        <th width="30%">Item</th>
                                         <th width="10%" class="text-center">Unit</th>
+                                        <th class="text-center">Qty</th>
                                         <th class="text-center">Price</th>
-                                        <th class="text-center">GST%</th>
-                                        <th class="text-center">GST Value</th>
-                                        <th class="text-end">Amount</th>
+                                        <th class="text-center">Tax Inc</th>
+                                        <th class="text-center">TP</th>
+                                        <th class="text-center">FED</th>
+                                        <th class="text-center">GST</th>
+                                        <th class="text-center">SED</th>
                                         <th></th>
                                     </thead>
                                     <tbody id="products_list"></tbody>
                                     <tfoot>
                                         <tr>
-                                            <th colspan="6" class="text-end">Total</th>
-                                            <th class="text-end" id="total">0.00</th>
+                                            <th colspan="4" class="text-end">Total</th>
+                                            <th class="text-end" id="totalTI">0.00</th>
+                                            <th></th>
+                                            <th class="text-end" id="totalFED">0.00</th>
+                                            <th class="text-end" id="totalGST">0.00</th>
+                                            <th class="text-end" id="totalSED">0.00</th>
                                         </tr>
                                     </tfoot>
                                 </table>
                             </div>
                             <div class="col-3">
                                 <div class="form-group">
+                                    <label for="stTax">Sale Tax</label>
+                                    <input type="number" name="stTax" id="stTax" max="50" min="0" step="any" value="0" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="whTax">WH Tax</label>
+                                    <input type="number" name="whTax" id="whTax" max="50" min="0" step="any" value="0" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="discount">Discount</label>
+                                    <input type="number" name="discount" id="discount" step="any" value="0" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="comp">Compensation</label>
+                                    <input type="number" name="comp" id="comp" step="any" value="0" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-3 mt-2">
+                                <div class="form-group">
                                     <label for="date">Date</label>
                                     <input type="date" name="date" id="date" value="{{ date('Y-m-d') }}"
                                         class="form-control">
                                 </div>
                             </div>
-                            <div class="col-3">
+                            <div class="col-3 mt-2">
                                 <div class="form-group">
                                     <label for="vendor">Vendor</label>
                                     <select name="vendorID" id="vendor" class="selectize1">
@@ -69,7 +117,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-3">
+                            <div class="col-3 mt-2">
                                 <div class="form-group">
                                     <label for="account">Account</label>
                                     <select name="accountID" id="account" class="selectize1">
@@ -79,7 +127,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-3">
+                            <div class="col-3 mt-2">
                                 <div class="form-group">
                                     <label for="status">Payment Status</label>
                                     <select name="status" id="status" class="selectize1">
@@ -149,20 +197,23 @@
                     if (found.length > 0) {
 
                     } else {
+
                         var id = product.id;
                         var html = '<tr id="row_' + id + '">';
                         html += '<td class="no-padding">' + product.name + '</td>';
-                        html += '<td class="no-padding"><input type="number" name="qty[]" oninput="updateChanges(' + id + ')" min="0.1" required step="any" value="1" class="form-control text-center" id="qty_' + id + '"></td>';
-                        html += '<td class="no-padding"><select name="unit[]" class="form-control text-center" id="unit_' + id + '">';
+                        html += '<td class="no-padding"><select name="unit[]" class="form-control" onchange="updateChanges(' + id + ')" text-center" id="unit_' + id + '">';
                         units.forEach(function(unit) {
                             var isSelected = (unit.id == product.unitID);
                             html += '<option data-unit="'+unit.value+'" value="' + unit.id + '" ' + (isSelected ? 'selected' : '') + '>' + unit.name + '</option>';
                         });
                         html += '</select></td>';
-                        html += '<td class="no-padding"><input type="number" name="price[]" oninput="updateChanges(' + id + ')" required step="any" value="'+product.tp+'" min="1" class="form-control text-center" id="price_' + id + '"></td>';
-                        html += '<td class="no-padding"><input type="number" name="gst[]" oninput="updateChanges(' + id + ')" required step="any" value="18" min="0" class="form-control text-center" id="gst_' + id + '"></td>';
-                        html += '<td class="no-padding"><input type="number" name="gstValue[]" step="any" value="0" min="0" class="form-control text-center" id="gstValue_' + id + '"></td>';
-                        html += '<td class="no-padding"><input type="number" name="amount[]" required step="any" readonly value="0.00" class="form-control text-end" id="amount_' + id + '"></td>';
+                        html += '<td class="no-padding"><input type="number" name="qty[]" oninput="updateChanges(' + id + ')" min="0.1" required step="any" value="1" class="form-control text-center" id="qty_' + id + '"></td>';
+                        html += '<td class="no-padding"><input type="number" name="price[]" oninput="updateChanges(' + id + ')" required step="any" value="0" min="1" class="form-control text-center" id="price_' + id + '"></td>';
+                        html += '<td class="no-padding"><input type="number" name="ti[]" required step="any" readonly value="0.00" class="form-control text-end" id="ti_' + id + '"></td>';
+                        html += '<td class="no-padding"><input type="number" name="tp[]" oninput="updateChanges(' + id + ')" required step="any" value="'+product.tp+'" min="1" class="form-control text-center" id="tp_' + id + '"></td>';
+                        html += '<td class="no-padding"><input type="number" name="fedValue[]" step="any" value="0" min="0" readonly class="form-control text-center" id="fedValue_' + id + '"></td>';
+                        html += '<td class="no-padding"><input type="number" name="gstValue[]" step="any" value="0" min="0" readonly class="form-control text-center" id="gstValue_' + id + '"></td>';
+                        html += '<td class="no-padding"><input type="number" name="sedValue[]" step="any" value="0" min="0" readonly class="form-control text-center" id="sedValue_' + id + '"></td>';
                         html += '<td> <span class="btn btn-sm btn-danger" onclick="deleteRow('+id+')">X</span> </td>';
                         html += '<input type="hidden" name="id[]" value="' + id + '">';
                         html += '</tr>';
@@ -175,27 +226,69 @@
         }
 
         function updateChanges(id) {
-            var qty = parseFloat($('#qty_' + id).val());
-            var price = parseFloat($('#price_' + id).val());
-            var gst = parseFloat($('#gst_' + id).val());
-            var gstValue = price * gst / 100;
-            var newPrice = price + gstValue;
-            var amount = qty * newPrice;
 
-            $("#gstValue_" + id).val(gstValue.toFixed(2));
-            $("#amount_" + id).val(amount.toFixed(2));
+            var qty = parseFloat($('#qty_' + id).val());
+            var unit = $("#unit_"+id).find(':selected').data("unit");
+
+            qty = qty * unit;
+
+            var price = parseFloat($('#price_' + id).val());
+            var tp = parseFloat($('#tp_' + id).val());
+
+            var fed = parseFloat($("#fed").val());
+            var gst = parseFloat($("#gst").val());
+            var sed = parseFloat($("#sed").val());
+
+            var fedValue = (tp * fed / 100) * qty;
+            var gstValue = (tp * gst / 100) * qty;
+            var sedValue = (tp * sed / 100) * qty;
+
+            $("#fedValue_"+id).val(fedValue.toFixed(2));
+            $("#gstValue_"+id).val(gstValue.toFixed(2));
+            $("#sedValue_"+id).val(sedValue.toFixed(2));
+
+            var ti = qty * price;
+            $("#ti_" + id).val(ti.toFixed(2));
             updateTotal();
         }
 
         function updateTotal() {
-            var total = 0;
-            $("input[id^='amount_']").each(function() {
+            var ti = 0;
+            $("input[id^='ti_']").each(function() {
                 var inputId = $(this).attr('id');
                 var inputValue = $(this).val();
-                total += parseFloat(inputValue);
+                ti += parseFloat(inputValue);
             });
 
-            $("#total").html(total.toFixed(2));
+
+            $("#totalTI").html(ti.toFixed(2));
+
+            var fedValue = 0;
+            $("input[id^='fedValue_']").each(function() {
+                var inputId = $(this).attr('id');
+                var inputValue = $(this).val();
+                fedValue += parseFloat(inputValue);
+            });
+
+            $("#totalFED").html(fedValue.toFixed(2));
+
+            var gstValue = 0;
+            $("input[id^='gstValue_']").each(function() {
+                var inputId = $(this).attr('id');
+                var inputValue = $(this).val();
+                gstValue += parseFloat(inputValue);
+            });
+
+            $("#totalGST").html(gstValue.toFixed(2));
+
+            var sedValue = 0;
+            $("input[id^='sedValue_']").each(function() {
+                var inputId = $(this).attr('id');
+                var inputValue = $(this).val();
+                sedValue += parseFloat(inputValue);
+            });
+
+            $("#totalSED").html(sedValue.toFixed(2));
         }
 
         function deleteRow(id) {
@@ -204,6 +297,17 @@
             });
             $('#row_'+id).remove();
             updateTotal();
+        }
+
+        function updateTaxes()
+        {
+
+            $("input[id^='fedValue_']").each(function() {
+                var id = $(this).attr('id');
+                var splitString = id.split("_");
+                var textAfterUnderscore = splitString[1];
+                updateChanges(textAfterUnderscore);
+            });
         }
 
     </script>

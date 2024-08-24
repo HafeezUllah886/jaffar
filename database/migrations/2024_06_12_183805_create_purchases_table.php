@@ -15,7 +15,17 @@ return new class extends Migration
             $table->id();
             $table->foreignId('vendorID')->constrained('accounts', 'id');
             $table->date('date');
+            $table->float("st")->default(0);
+            $table->float('stValue')->default(0);
+            $table->float("wh")->default(0);
+            $table->float('whValue')->default(0);
+            $table->float('discount')->default(0);
+            $table->float('compensation')->default(0);
             $table->text('notes')->nullable();
+            $table->float('gst')->default(0);
+            $table->float('fed')->default(0);
+            $table->float('sed')->default(0);
+            $table->float('net')->default(0);
             $table->bigInteger('refID');
             $table->timestamps();
         });

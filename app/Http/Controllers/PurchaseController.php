@@ -3,13 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\accounts;
-use App\Models\material;
-use App\Models\material_stock;
 use App\Models\products;
 use App\Models\purchase;
 use App\Models\purchase_details;
 use App\Models\purchase_payments;
-use App\Models\raw_units;
 use App\Models\stock;
 use App\Models\transactions;
 use App\Models\units;
@@ -45,6 +42,7 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
+
         try
         {
             if($request->isNotFilled('id'))
@@ -55,10 +53,15 @@ class PurchaseController extends Controller
             $ref = getRef();
             $purchase = purchase::create(
                 [
-                  'vendorID'    => $request->vendorID,
-                  'date'        => $request->date,
-                  'notes'       => $request->notes,
-                  'refID'       => $ref,
+                  'vendorID'        => $request->vendorID,
+                  'date'            => $request->date,
+                  'notes'           => $request->notes,
+                  'discount'        => $request->discount,
+                  'compensation'    => $request->comp,
+                  'fed'             => $request->fed,
+                  'gst'             => $request->gst,
+                  'sed'             => $request->sed,
+                  'refID'           => $ref,
                 ]
             );
 
@@ -69,17 +72,21 @@ class PurchaseController extends Controller
             {
                 $unit = units::find($request->unit[$key]);
                 $qty = $request->qty[$key] * $unit->value;
-                $price = $request->price[$key] / $unit->value;
-                $total += $request->amount[$key];
+                $price = $request->price[$key];
+                $tp = $request->tp[$key];
+                $ti = $request->ti[$key];
+                $total += $ti;
                 purchase_details::create(
                     [
                         'purchaseID'    => $purchase->id,
                         'productID'     => $id,
                         'price'         => $price,
+                        'tp'            => $tp,
                         'qty'           => $qty,
-                        'gst'           => $request->gst[$key],
+                        'fedValue'      => $request->fedValue[$key],
                         'gstValue'      => $request->gstValue[$key],
-                        'amount'        => $request->amount[$key],
+                        'sedValue'      => $request->sedValue[$key],
+                        'ti'            => $ti,
                         'date'          => $request->date,
                         'unitID'        => $unit->id,
                         'unitValue'     => $unit->value,
@@ -89,6 +96,21 @@ class PurchaseController extends Controller
                 createStock($id, $qty, 0, $request->date, "Purchased", $ref);
             }
 
+            $salesTax = $total * $request->stTax / 100;
+            $whTax = $total * $request->whTax / 100;
+
+            $net = ($total + $salesTax + $whTax) - ($request->discount + $request->comp);
+
+            $purchase->update(
+                [
+                    'st'        => $request->stTax,
+                    'wh'        => $request->whTax,
+                    'stValue'   => $salesTax,
+                    'whValue'   => $whTax,
+                    'net'       => $net,
+                ]
+            );
+
             if($request->status == 'paid')
             {
                 purchase_payments::create(
@@ -96,17 +118,17 @@ class PurchaseController extends Controller
                         'purchaseID'    => $purchase->id,
                         'accountID'     => $request->accountID,
                         'date'          => $request->date,
-                        'amount'        => $total,
+                        'amount'        => $net,
                         'notes'         => "Full Paid",
                         'refID'         => $ref,
                     ]
                 );
 
-                createTransaction($request->accountID, $request->date, 0, $total, "Payment of Purchase No. $purchase->id", $ref);
+                createTransaction($request->accountID, $request->date, 0, $net, "Payment of Purchase No. $purchase->id", $ref);
             }
             else
             {
-                createTransaction($request->vendorID, $request->date, $total, 0, "Pending Amount of Purchase No. $purchase->id", $ref);
+                createTransaction($request->vendorID, $request->date, $net, 0, "Pending Amount of Purchase No. $purchase->id", $ref);
             }
             DB::commit();
             return back()->with('success', "Purchase Created");
