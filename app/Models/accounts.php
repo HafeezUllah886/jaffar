@@ -24,5 +24,11 @@ class accounts extends Model
     public function scopeVendor($query)
     {
         return $query->where('type', 'Vendor');
+
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(transactions::class, 'accountID');
     }
 }
