@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->foreignId('unitID')->constrained('units', 'id');
+            $table->float('pprice');
             $table->float('price');
+            $table->float('wsprice');
             $table->float('tp')->default(0);
             $table->float('discount')->default(0);
             $table->timestamps();

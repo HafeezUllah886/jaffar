@@ -25,7 +25,9 @@
                             <th>Name</th>
                             <th>Unit</th>
                             <th>TP</th>
-                            <th>Price</th>
+                            <th>Purchase Price</th>
+                            <th>WS Price</th>
+                            <th>RT Price</th>
                             <th>Discount</th>
                             <th>Action</th>
                         </thead>
@@ -36,6 +38,8 @@
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->unit->name }}</td>
                                     <td>{{ $item->tp }}</td>
+                                    <td>{{ $item->pprice }}</td>
+                                    <td>{{ $item->wsprice }}</td>
                                     <td>{{ $item->price }}</td>
                                     <td>{{ $item->discount }}</td>
                                     <td>
@@ -79,7 +83,19 @@
                                                             class="form-control">
                                                     </div>
                                                     <div class="form-group mt-2">
-                                                        <label for="price">Price</label>
+                                                        <label for="pprice">Purchase Price</label>
+                                                        <input type="number" step="any" name="pprice" required
+                                                            value="{{ $item->pprice }}" min="0" id="pprice"
+                                                            class="form-control">
+                                                    </div>
+                                                    <div class="form-group mt-2">
+                                                        <label for="wsprice">Whole Sale Price</label>
+                                                        <input type="number" step="any" name="wsprice" required
+                                                            value="{{ $item->wsprice }}" min="0" id="wsprice"
+                                                            class="form-control">
+                                                    </div>
+                                                    <div class="form-group mt-2">
+                                                        <label for="price">Retail Price</label>
                                                         <input type="number" step="any" name="price" required
                                                             value="{{ $item->price }}" min="0" id="price"
                                                             class="form-control">
@@ -139,8 +155,21 @@
                                 class="form-control">
                         </div>
                         <div class="form-group mt-2">
-                            <label for="price">Price</label>
-                            <input type="number" name="price" required min="0" step="any" id="price"
+                            <label for="pprice">Purchase Price</label>
+                            <input type="number" step="any" name="pprice" required
+                                value="" min="0" id="pprice"
+                                class="form-control">
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="wsprice">Whole Sale Price</label>
+                            <input type="number" step="any" name="wsprice" required
+                                value="" min="0" id="wsprice"
+                                class="form-control">
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="price">Retail Price</label>
+                            <input type="number" step="any" name="price" required
+                                value="" min="0" id="price"
                                 class="form-control">
                         </div>
                         <div class="form-group mt-2">

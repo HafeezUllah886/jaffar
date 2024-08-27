@@ -1,14 +1,5 @@
 @extends('layout.popups')
 @section('content')
-<script>
-    var existingProducts = [];
-    @foreach ($purchase->details as $product)
-        @php
-            $productID = $product->productID;
-        @endphp
-        existingProducts.push({{$productID}});
-    @endforeach
-</script>
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="card" id="demo">
@@ -24,9 +15,8 @@
                     </div>
                 </div><!--end row-->
                 <div class="card-body">
-                    <form action="{{ route('purchase.update', $purchase->id) }}" method="post">
+                    <form action="{{ route('purchase.store') }}" method="post">
                         @csrf
-                        @method("PUT")
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
@@ -42,19 +32,19 @@
                             <div class="col-2">
                                 <div class="form-group">
                                     <label for="fed">FED</label>
-                                    <input type="number" name="fed" value="{{$purchase->fed}}" oninput="updateTaxes()" id="fed" class="form-control" step="any">
+                                    <input type="number" name="fed" value="0" oninput="updateTaxes()" id="fed" class="form-control" step="any">
                                 </div>
                             </div>
                             <div class="col-2">
                                 <div class="form-group">
                                     <label for="gst">GST</label>
-                                    <input type="number" name="gst" value="{{$purchase->gst}}" oninput="updateTaxes()" id="gst" class="form-control" step="any">
+                                    <input type="number" name="gst" value="18" oninput="updateTaxes()" id="gst" class="form-control" step="any">
                                 </div>
                             </div>
                             <div class="col-2">
                                 <div class="form-group">
                                     <label for="sed">SED</label>
-                                    <input type="number" name="sed" value="{{$purchase->sed}}" oninput="updateTaxes()" id="sed" class="form-control" step="any">
+                                    <input type="number" name="sed" value="0" oninput="updateTaxes()" id="sed" class="form-control" step="any">
                                 </div>
                             </div>
                             <div class="col-12">
@@ -72,38 +62,7 @@
                                         <th class="text-center">SED</th>
                                         <th></th>
                                     </thead>
-                                    <tbody id="products_list">
-                                        @foreach ($purchase->details as $product)
-                                        @php
-                                            $id = $product->productID;
-                                        @endphp
-                                        <tr id="row_{{$id}}">
-                                            <td class="no-padding">{{$product->product->name}}</td>
-                                            <td class="no-padding">
-                                                <select name="unit[]" class="form-control text-center" id="unit_{{$id}}">
-                                                    @foreach ($units as $unit)
-                                                    @php
-                                                    if($unit->id == $product->unitID)
-                                                    {
-                                                        $unitValue = $product->unitValue;
-                                                    }
-                                                @endphp
-                                                    <option data-unit="{{$unit->value}}" value="{{$unit->id}}" @selected($unit->id == $product->unitID)>{{ $unit->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </td>
-                                            <td class="no-padding"><input type="number" name="qty[]" oninput="updateChanges({{$id}})" min="0.1" required step="any" value="{{$product->qty / $unitValue}}" class="form-control text-center" id="qty_{{$id}}"></td>
-                                            <td class="no-padding"><input type="number" name="price[]" oninput="updateChanges({{$id}})" required step="any" value="{{$product->price}}" min="1" class="form-control text-center" id="price_{{$id}}"></td>
-                                            <td class="no-padding"><input type="number" name="ti[]" required step="any" readonly value="{{$product->ti}}" class="form-control text-end" id="ti_{{$id}}"></td>
-                                            <td class="no-padding"><input type="number" name="tp[]" oninput="updateChanges({{$id}})" required step="any" value="{{$product->tp}}" min="1" class="form-control text-center" id="tp_{{$id}}"></td>
-                                            <td class="no-padding"><input type="number" name="fedValue[]" step="any" value="{{$product->fedValue}}" min="0" readonly class="form-control text-center" id="fedValue_{{$id}}"></td>
-                                            <td class="no-padding"><input type="number" name="gstValue[]" step="any" value="0" min="{{$product->gstValue}}" readonly class="form-control text-center" id="gstValue_{{$id}}"></td>
-                                            <td class="no-padding"><input type="number" name="sedValue[]" step="any" value="0" min="{{$product->sedValue}}" readonly class="form-control text-center" id="sedValue_{{$id}}"></td>
-                                            <td> <span class="btn btn-sm btn-danger" onclick="deleteRow({{$id}})">X</span> </td>
-                                            <input type="hidden" name="id[]" value="{{$id}}">
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
+                                    <tbody id="products_list"></tbody>
                                     <tfoot>
                                         <tr>
                                             <th colspan="4" class="text-end">Total</th>
@@ -119,31 +78,31 @@
                             <div class="col-3">
                                 <div class="form-group">
                                     <label for="stTax">Sale Tax</label>
-                                    <input type="number" name="stTax" id="stTax" max="50" min="0" step="any" value="{{$purchase->st}}" class="form-control">
+                                    <input type="number" name="stTax" id="stTax" max="50" min="0" step="any" value="0" class="form-control">
                                 </div>
                             </div>
                             <div class="col-3">
                                 <div class="form-group">
                                     <label for="whTax">WH Tax</label>
-                                    <input type="number" name="whTax" id="whTax" max="50" min="0" step="any" value="{{$purchase->wh}}" class="form-control">
+                                    <input type="number" name="whTax" id="whTax" max="50" min="0" step="any" value="0" class="form-control">
                                 </div>
                             </div>
                             <div class="col-3">
                                 <div class="form-group">
                                     <label for="discount">Discount</label>
-                                    <input type="number" name="discount" id="discount" step="any" value="{{$purchase->discount}}" class="form-control">
+                                    <input type="number" name="discount" id="discount" step="any" value="0" class="form-control">
                                 </div>
                             </div>
                             <div class="col-3">
                                 <div class="form-group">
                                     <label for="comp">Compensation</label>
-                                    <input type="number" name="comp" id="comp" step="any" value="{{$purchase->compensation}}" class="form-control">
+                                    <input type="number" name="comp" id="comp" step="any" value="0" class="form-control">
                                 </div>
                             </div>
                             <div class="col-3 mt-2">
                                 <div class="form-group">
                                     <label for="date">Date</label>
-                                    <input type="date" name="date" id="date" value="{{ date('Y-m-d', strtotime($purchase->date)) }}"
+                                    <input type="date" name="date" id="date" value="{{ date('Y-m-d') }}"
                                         class="form-control">
                                 </div>
                             </div>
@@ -152,7 +111,7 @@
                                     <label for="vendor">Vendor</label>
                                     <select name="vendorID" id="vendor" class="selectize1">
                                         @foreach ($vendors as $vendor)
-                                            <option value="{{ $vendor->id }}" @selected($vendor->id == $purchase->vendorID)>{{ $vendor->title }}</option>
+                                            <option value="{{ $vendor->id }}">{{ $vendor->title }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -180,7 +139,7 @@
                             <div class="col-12 mt-2">
                                 <div class="form-group">
                                     <label for="notes">Notes</label>
-                                    <textarea name="notes" id="notes" class="form-control" cols="30" rows="5">{{$purchase->notes}}</textarea>
+                                    <textarea name="notes" id="notes" class="form-control" cols="30" rows="5"></textarea>
                                 </div>
                             </div>
                             <div class="col-12 mt-2">
@@ -225,6 +184,7 @@
             },
         });
         var units = @json($units);
+        var existingProducts = [];
 
         function getSingleProduct(id) {
             $.ajax({
@@ -241,7 +201,7 @@
                         var id = product.id;
                         var html = '<tr id="row_' + id + '">';
                         html += '<td class="no-padding">' + product.name + '</td>';
-                        html += '<td class="no-padding"><select name="unit[]" class="form-control text-center" onchange="updateChanges(' + id + ')" id="unit_' + id + '">';
+                        html += '<td class="no-padding"><select name="unit[]" class="form-control text-center" onchange="updateChanges(' + id + ')"s id="unit_' + id + '">';
                         units.forEach(function(unit) {
                             var isSelected = (unit.id == product.unitID);
                             html += '<option data-unit="'+unit.value+'" value="' + unit.id + '" ' + (isSelected ? 'selected' : '') + '>' + unit.name + '</option>';
@@ -338,7 +298,6 @@
             $('#row_'+id).remove();
             updateTotal();
         }
-        updateTaxes();
 
         function updateTaxes()
         {
