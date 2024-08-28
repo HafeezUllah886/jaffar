@@ -81,14 +81,14 @@
                                                        <tr>
                                                         <td class="p-1 m-1">{{$key+1}}</td>
                                                         <td class="text-start p-1 m-1">{{$product->product->name}}</td>
-                                                        <td class="text-end p-1 m-1">{{number_format($product->pprice)}}</td>
-                                                        <td class="text-end p-1 m-1">{{number_format($product->price)}}</td>
-                                                        <td class="text-end p-1 m-1">{{number_format($product->wsprice)}}</td>
+                                                        <td class="text-end p-1 m-1">{{number_format($product->pprice,2)}}</td>
+                                                        <td class="text-end p-1 m-1">{{number_format($product->price,2)}}</td>
+                                                        <td class="text-end p-1 m-1">{{number_format($product->wsprice,2)}}</td>
                                                         <td class="text-end p-1 m-1">{{number_format($product->qty)}}</td>
                                                         <td class="text-end p-1 m-1">{{number_format($product->bonus)}}</td>
-                                                        <td class="text-end p-1 m-1">{{number_format($product->tp)}}</td>
+                                                        <td class="text-end p-1 m-1">{{number_format($product->tp,2)}}</td>
                                                         <td class="text-end p-1 m-1">{{number_format($product->gstValue, 2)}}</td>
-                                                        <td class="text-end p-1 m-1">{{number_format($product->amount)}}</td>
+                                                        <td class="text-end p-1 m-1">{{number_format($product->amount,2)}}</td>
 
                                                        </tr>
                                                    @endforeach
