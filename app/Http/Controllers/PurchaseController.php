@@ -77,7 +77,7 @@ class PurchaseController extends Controller
                 $tp = $request->tp[$key];
                 $amount = $pprice * $qty1;
                 $total += $amount;
-                $gstValue = $tp * 18 / 100;
+
                 purchase_details::create(
                     [
                         'purchaseID'    => $purchase->id,
@@ -87,7 +87,7 @@ class PurchaseController extends Controller
                         'wsprice'       => $wsprice,
                         'tp'            => $tp,
                         'qty'           => $qty1,
-                        'gstValue'      => $gstValue,
+                        'gstValue'      => $request->gstValue[$key],
                         'amount'        => $amount,
                         'date'          => $request->date,
                         'bonus'         => $request->bonus[$key],
@@ -108,8 +108,7 @@ class PurchaseController extends Controller
 
             $whTax = $total * $request->whTax / 100;
 
-            $net = ($total +  $request->fright + $whTax) - $request->discount;
-            $net1 = ($total + $whTax) - $request->discount;
+            $net = ($total + $whTax) - ($request->discount + $request->fright);
 
             $purchase->update(
                 [
@@ -137,17 +136,7 @@ class PurchaseController extends Controller
             else
             {
                 createTransaction($request->vendorID, $request->date, $net, 0, "Pending Amount of Purchase No. $purchase->id", $ref);
-                createTransaction($request->accountID, $request->date, 0, $request->fright, "Fright of Purchase No. $purchase->id", $ref);
-                purchase_payments::create(
-                    [
-                        'purchaseID'    => $purchase->id,
-                        'accountID'     => $request->accountID,
-                        'date'          => $request->date,
-                        'amount'        => $request->fright,
-                        'notes'         => "Only Fright Paid",
-                        'refID'         => $ref,
-                    ]
-                );
+
             }
             DB::commit();
             return back()->with('success', "Purchase Created");

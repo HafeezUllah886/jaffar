@@ -139,11 +139,7 @@
                                                 <th class="text-end p-1 m-1">{{number_format($discount, 2)}}</th>
                                             </tr>
                                             <tr>
-                                                <th class="text-end p-1 m-1">Gross </th>
-                                                <th class="text-end p-1 m-1">{{number_format($gross, 2)}}</th>
-                                            </tr>
-                                            <tr>
-                                                <th class="text-end p-1 m-1">Fright (+) </th>
+                                                <th class="text-end p-1 m-1">Fright (-) </th>
                                                 <th class="text-end p-1 m-1">{{number_format($fright, 2)}}</th>
                                             </tr>
                                             <tr>

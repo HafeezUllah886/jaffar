@@ -40,6 +40,7 @@
                                         <th class="text-center">WS Price</th>
                                         <th class="text-center">Trade Price</th>
                                         <th class="text-center">Qty</th>
+                                        <th class="text-center">GST 18%</th>
                                         <th class="text-center">Amount</th>
                                         <th class="text-center">Bonus</th>
                                         <th></th>
@@ -49,6 +50,7 @@
                                         <tr>
                                             <th colspan="6" class="text-end">Total</th>
 
+                                            <th class="text-end" id="totalGst">0.00</th>
                                             <th class="text-end" id="totalAmount">0.00</th>
                                             <th></th>
                                         </tr>
@@ -197,7 +199,8 @@
                         html += '<td class="no-padding"><input type="number" name="wsprice[]" required step="any" value="'+product.wsprice+'" min="1" class="form-control text-center" id="wsprice_' + id + '"></td>';
                         html += '<td class="no-padding"><input type="number" name="tp[]" required step="any" value="'+product.tp+'" min="1" class="form-control text-center" id="tp_' + id + '"></td>';
                         html += '<td class="no-padding"><input type="number" name="qty[]" oninput="updateChanges(' + id + ')" min="0.1" required step="any" value="1" class="form-control text-center" id="qty_' + id + '"></td>';
-                        html += '<td class="no-padding"><input type="number" name="amount[]" min="0.1" required step="any" value="1" class="form-control text-center" id="amount_' + id + '"></td>';
+                        html += '<td class="no-padding"><input type="number" name="gstValue[]" readonly required step="any" value="0" class="form-control text-center" id="gstValue_' + id + '"></td>';
+                        html += '<td class="no-padding"><input type="number" name="amount[]" min="0.1" readonly required step="any" value="1" class="form-control text-center" id="amount_' + id + '"></td>';
                         html += '<td class="no-padding"><input type="number" name="bonus[]" min="0" required step="any" value="0" class="form-control text-center" id="bonus_' + id + '"></td>';
                         html += '<td> <span class="btn btn-sm btn-danger" onclick="deleteRow('+id+')">X</span> </td>';
                         html += '<input type="hidden" name="id[]" value="' + id + '">';
@@ -214,9 +217,12 @@
 
             var qty = parseFloat($('#qty_' + id).val());
             var pprice = parseFloat($('#pprice_' + id).val());
+            var tp = parseFloat($('#tp_' + id).val());
 
+            var gstValue = (tp * 18 / 100) * qty;
             var amount = qty * pprice;
             $("#amount_"+id).val(amount.toFixed(2));
+            $("#gstValue_"+id).val(gstValue.toFixed(2));
             updateTotal();
         }
 
@@ -230,6 +236,15 @@
 
             $("#totalAmount").html(total.toFixed(2));
 
+            var gst = 0;
+            $("input[id^='gstValue_']").each(function() {
+                var inputId = $(this).attr('id');
+                var inputValue = $(this).val();
+                gst += parseFloat(inputValue);
+            });
+
+            $("#totalGst").html(gst.toFixed(2));
+
             var discount = parseFloat($("#discount").val());
             var fright = parseFloat($("#fright").val());
             var whTax = parseFloat($("#whTax").val());
@@ -238,7 +253,7 @@
 
             $(".whTaxValue").html(taxValue.toFixed(2));
 
-            var net = (total + taxValue + fright) - discount;
+            var net = (total + taxValue) - (discount + fright);
 
             $("#net").val(net.toFixed(2));
         }
