@@ -70,7 +70,7 @@
                             <div class="col-3">
                                 <div class="form-group">
                                     <label for="fright">Fright</label>
-                                    <input type="number" name="fright" id="fright" oninput="updateTotal()" max="50" min="0" step="any" value="0" class="form-control">
+                                    <input type="number" name="fright" id="fright" oninput="updateTotal()" min="0" step="any" value="0" class="form-control">
                                 </div>
                             </div>
                             <div class="col-2">
