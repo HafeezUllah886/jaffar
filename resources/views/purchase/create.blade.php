@@ -75,10 +75,10 @@
                             </div>
                             <div class="col-2">
                                 <div class="form-group">
-                                    <label for="stTax">Sale Tax</label>
+                                    <label for="whTax">WH Tax</label>
                                     <div class="input-group mb-3">
-                                        <input type="number" name="stTax" id="stTax" oninput="updateTotal()" max="50" min="0" step="any" value="0" aria-describedby="basic-addon2" class="form-control">
-                                        <span class="input-group-text stTaxValue" id="basic-addon2">0</span>
+                                        <input type="number" name="whTax" id="whTax" oninput="updateTotal()" max="50" min="0" step="any" value="0" aria-describedby="basic-addon2" class="form-control">
+                                        <span class="input-group-text whTaxValue" id="basic-addon2">0</span>
                                       </div>
 
                                 </div>
@@ -198,7 +198,7 @@
                         html += '<td class="no-padding"><input type="number" name="tp[]" required step="any" value="'+product.tp+'" min="1" class="form-control text-center" id="tp_' + id + '"></td>';
                         html += '<td class="no-padding"><input type="number" name="qty[]" oninput="updateChanges(' + id + ')" min="0.1" required step="any" value="1" class="form-control text-center" id="qty_' + id + '"></td>';
                         html += '<td class="no-padding"><input type="number" name="amount[]" min="0.1" required step="any" value="1" class="form-control text-center" id="amount_' + id + '"></td>';
-                        html += '<td class="no-padding"><input type="number" name="bonus[]" min="0.1" required step="any" value="0" class="form-control text-center" id="bonus_' + id + '"></td>';
+                        html += '<td class="no-padding"><input type="number" name="bonus[]" min="0" required step="any" value="0" class="form-control text-center" id="bonus_' + id + '"></td>';
                         html += '<td> <span class="btn btn-sm btn-danger" onclick="deleteRow('+id+')">X</span> </td>';
                         html += '<input type="hidden" name="id[]" value="' + id + '">';
                         html += '</tr>';
@@ -232,11 +232,11 @@
 
             var discount = parseFloat($("#discount").val());
             var fright = parseFloat($("#fright").val());
-            var stTax = parseFloat($("#stTax").val());
+            var whTax = parseFloat($("#whTax").val());
 
-            var taxValue = total * stTax / 100;
+            var taxValue = total * whTax / 100;
 
-            $(".stTaxValue").html(taxValue.toFixed(2));
+            $(".whTaxValue").html(taxValue.toFixed(2));
 
             var net = (total + taxValue + fright) - discount;
 

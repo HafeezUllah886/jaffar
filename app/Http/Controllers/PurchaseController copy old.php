@@ -57,9 +57,10 @@ class PurchaseController extends Controller
                   'date'            => $request->date,
                   'notes'           => $request->notes,
                   'discount'        => $request->discount,
-                  'fright'          => $request->fright,
-                  'wh'              => $request->whTax,
-                  'inv'             => $request->inv,
+                  'compensation'    => $request->comp,
+                  'fed'             => $request->fed,
+                  'gst'             => $request->gst,
+                  'sed'             => $request->sed,
                   'refID'           => $ref,
                 ]
             );
@@ -69,51 +70,42 @@ class PurchaseController extends Controller
             $total = 0;
             foreach($ids as $key => $id)
             {
-                $qty = $request->qty[$key] * $request->bonus[$key];
-                $qty1 = $request->qty[$key];
-                $pprice = $request->pprice[$key];
+                $unit = units::find($request->unit[$key]);
+                $qty = $request->qty[$key] * $unit->value;
                 $price = $request->price[$key];
-                $wsprice = $request->wsprice[$key];
                 $tp = $request->tp[$key];
-                $amount = $pprice * $qty1;
-                $total += $amount;
-                $gstValue = $tp * 18 / 100;
+                $ti = $request->ti[$key];
+                $total += $ti;
                 purchase_details::create(
                     [
                         'purchaseID'    => $purchase->id,
                         'productID'     => $id,
-                        'pprice'        => $pprice,
                         'price'         => $price,
-                        'wsprice'       => $wsprice,
                         'tp'            => $tp,
-                        'qty'           => $qty1,
-                        'gstValue'      => $gstValue,
-                        'amount'        => $amount,
+                        'qty'           => $qty,
+                        'fedValue'      => $request->fedValue[$key],
+                        'gstValue'      => $request->gstValue[$key],
+                        'sedValue'      => $request->sedValue[$key],
+                        'ti'            => $ti,
                         'date'          => $request->date,
-                        'bonus'         => $request->bonus[$key],
+                        'unitID'        => $unit->id,
+                        'unitValue'     => $unit->value,
                         'refID'         => $ref,
                     ]
                 );
                 createStock($id, $qty, 0, $request->date, "Purchased", $ref);
-
-                $product = products::find($id);
-                $product->update(
-                    [
-                        'pprice' => $pprice,
-                        'price'  => $price,
-                        'wsprice' => $wsprice,
-                    ]
-                );
             }
 
+            $salesTax = $total * $request->stTax / 100;
             $whTax = $total * $request->whTax / 100;
 
-            $net = ($total +  $request->fright + $whTax) - $request->discount;
-            $net1 = ($total + $whTax) - $request->discount;
+            $net = ($total + $salesTax + $whTax) - ($request->discount + $request->comp);
 
             $purchase->update(
                 [
-
+                    'st'        => $request->stTax,
+                    'wh'        => $request->whTax,
+                    'stValue'   => $salesTax,
                     'whValue'   => $whTax,
                     'net'       => $net,
                 ]
@@ -137,17 +129,6 @@ class PurchaseController extends Controller
             else
             {
                 createTransaction($request->vendorID, $request->date, $net, 0, "Pending Amount of Purchase No. $purchase->id", $ref);
-                createTransaction($request->accountID, $request->date, 0, $request->fright, "Fright of Purchase No. $purchase->id", $ref);
-                purchase_payments::create(
-                    [
-                        'purchaseID'    => $purchase->id,
-                        'accountID'     => $request->accountID,
-                        'date'          => $request->date,
-                        'amount'        => $request->fright,
-                        'notes'         => "Only Fright Paid",
-                        'refID'         => $ref,
-                    ]
-                );
             }
             DB::commit();
             return back()->with('success', "Purchase Created");
