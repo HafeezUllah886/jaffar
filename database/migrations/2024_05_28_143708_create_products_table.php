@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->string('code')->unique();
             $table->string('name')->unique();
             $table->foreignId('unitID')->constrained('units', 'id');
             $table->float('pprice');

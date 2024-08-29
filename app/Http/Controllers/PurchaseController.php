@@ -91,6 +91,8 @@ class PurchaseController extends Controller
                         'amount'        => $amount,
                         'date'          => $request->date,
                         'bonus'         => $request->bonus[$key],
+                        'expDate'       => $request->expDate[$key],
+                        'batch'         => $request->batch[$key],
                         'refID'         => $ref,
                     ]
                 );
