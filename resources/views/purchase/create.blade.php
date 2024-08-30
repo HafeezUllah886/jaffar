@@ -196,16 +196,16 @@
                         var id = product.id;
                         var html = '<tr id="row_' + id + '">';
                         html += '<td class="no-padding">' + product.code + ' | ' + product.name + '</td>';
-                        html += '<td class="no-padding"><input type="text" name="batch[]" required step="any" class="form-control text-center no-padding" id="batch_' + id + '"></td>';
-                        html += '<td class="no-padding"><input type="date" name="expDate[]" required step="any" class="form-control text-center no-padding" id="expDate_' + id + '"></td>';
+                        html += '<td class="no-padding"><input type="text" name="batch[]" step="any" class="form-control text-center no-padding" id="batch_' + id + '"></td>';
+                        html += '<td class="no-padding"><input type="date" name="expDate[] step="any" class="form-control text-center no-padding" id="expDate_' + id + '"></td>';
                         html += '<td class="no-padding"><input type="number" name="pprice[]" oninput="updateChanges(' + id + ')" required step="any" value="'+product.pprice+'" min="1" class="form-control text-center no-padding" id="pprice_' + id + '"></td>';
-                        html += '<td class="no-padding"><input type="number" name="price[]" required step="any" value="'+product.price+'" min="1" class="form-control text-center no-padding" id="price_' + id + '"></td>';
+                        html += '<td class="no-padding"><input type="number" name="price[]" required step="any" value="'+product.price+'" min="0" class="form-control text-center no-padding" id="price_' + id + '"></td>';
                         html += '<td class="no-padding"><input type="number" name="wsprice[]" required step="any" value="'+product.wsprice+'" min="1" class="form-control text-center no-padding" id="wsprice_' + id + '"></td>';
                         html += '<td class="no-padding"><input type="number" name="tp[]" required step="any" value="'+product.tp+'" min="1" class="form-control text-center no-padding" id="tp_' + id + '"></td>';
-                        html += '<td class="no-padding"><input type="number" name="qty[]" oninput="updateChanges(' + id + ')" min="0.1" required step="any" value="1" class="form-control text-center no-padding" id="qty_' + id + '"></td>';
+                        html += '<td class="no-padding"><input type="number" name="qty[]" oninput="updateChanges(' + id + ')" min="0" required step="any" value="0" class="form-control text-center no-padding" id="qty_' + id + '"></td>';
                         html += '<td class="no-padding"><input type="number" name="gstValue[]" readonly required step="any" value="0" class="form-control text-center no-padding" id="gstValue_' + id + '"></td>';
                         html += '<td class="no-padding"><input type="number" name="amount[]" min="0.1" readonly required step="any" value="1" class="form-control text-center no-padding" id="amount_' + id + '"></td>';
-                        html += '<td class="no-padding"><input type="number" name="bonus[]" min="0" required step="any" value="0" class="form-control text-center no-padding" id="bonus_' + id + '"></td>';
+                        html += '<td class="no-padding"><input type="number" name="bonus[]" min="0" required step="any" value="0" oninput="updateChanges(' + id + ')" class="form-control text-center no-padding" id="bonus_' + id + '"></td>';
                         html += '<td class="no-padding"> <span class="btn btn-sm btn-danger" onclick="deleteRow('+id+')">X</span> </td>';
                         html += '<input type="hidden" name="id[]" value="' + id + '">';
                         html += '</tr>';
@@ -218,12 +218,12 @@
         }
 
         function updateChanges(id) {
-
             var qty = parseFloat($('#qty_' + id).val());
             var pprice = parseFloat($('#pprice_' + id).val());
             var tp = parseFloat($('#tp_' + id).val());
+            var bonus = parseFloat($('#bonus_' + id).val());
 
-            var gstValue = (tp * 18 / 100) * qty;
+            var gstValue = (tp * 18 / 100) * (qty + bonus);
             var amount = qty * pprice;
             $("#amount_"+id).val(amount.toFixed(2));
             $("#gstValue_"+id).val(gstValue.toFixed(2));
