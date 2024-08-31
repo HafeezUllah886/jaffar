@@ -55,7 +55,7 @@ class SalePaymentsController extends Controller
             );
 
             createTransaction($request->accountID, $request->date,$request->amount, 0, "Payment of Inv No. $sale->id", $ref);
-            createTransaction($sale->customerID, $request->date,$request->amount, 0, "Payment of Inv No. $sale->id", $ref);
+            createTransaction($sale->customerID, $request->date,0, $request->amount, "Payment of Inv No. $sale->id", $ref);
 
             DB::commit();
             return back()->with('success', "Payment Saved");
