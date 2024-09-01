@@ -12,42 +12,32 @@
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
                                         <h1>JABBAR & BROTHERS</h1>
-
                                         <div class="mt-sm-5 mt-4">
-                                            <h6 class="text-muted text-uppercase fw-semibold">Industrial Area, Sirki Road, Quetta</h6>
-                                            <p class="text-muted mb-1" id="address-details">NTN: 2645388-6</p>
-                                            <p class="text-muted mb-0" id="zip-code"><span>0331-8358638 | </span> jaffarqta92@gmail.com</p>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <h6 class="text-muted text-uppercase fw-semibold">Industrial Area, Sirki Road, Quetta</h6>
+                                                    <p class="text-muted mb-1" id="address-details">NTN: 2645388-6</p>
+                                                    <p class="text-muted mb-0" id="zip-code"><span>0331-8358638 | </span> jaffarqta92@gmail.com</p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <p class="text-muted mb-2 text-uppercase fw-semibold">Customer</p>
+                                                    <h5 class="fs-14 mb-0"> <span class="text-muted">M/S :</span> {{$sale->customer->title}}</h5>
+                                                    <h5 class="fs-14 mb-0"> <span class="text-muted">CNIC :</span> {{$sale->customer->cnic ?? "NA"}} | <span class="text-muted">Contact :</span> {{$sale->customer->contact ?? "NA"}}</h5>
+                                                    <h5 class="fs-14 mb-0"> <span class="text-muted">NTN #</span> {{$sale->customer->ntn ?? "NA"}} | <span class="text-muted">STRN #</span> {{$sale->customer->strn ?? "NA"}}</h5>
+                                                    <h5 class="fs-14 mb-0"> <span class="text-muted">Address :</span> {{$sale->customer->address ?? "NA"}}</h5>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
                                     <div class="flex-shrink-0 mt-sm-0 mt-3">
                                         <h3>Sales Tax Invoice</h3>
+                                        <p> <span class="text-muted text-uppercase fw-semibold mt-0 mb-0">Inv # </span><span class="fs-14 mb-0">{{$sale->id}}</span></p>
+                                        <p> <span class="text-muted text-uppercase fw-semibold mt-0 mb-0">Date : </span><span class="fs-14 mb-0">{{date("d M Y" ,strtotime($sale->date))}}</span></p>
                                     </div>
                                 </div>
                             </div>
                             <!--end card-header-->
-                        </div><!--end col-->
-                        <div class="col-lg-12 ">
-
-                            <div class="card-body p-4">
-                                <div class="row g-3">
-                                    <div class="col-9">
-                                        <p class="text-muted mb-2 text-uppercase fw-semibold">Customer</p>
-                                        <h5 class="fs-14 mb-0"> <span class="text-muted">M/S :</span> {{$sale->customer->title}}</h5>
-                                        <h5 class="fs-14 mb-0"> <span class="text-muted">CNIC :</span> {{$sale->customer->cnic ?? "NA"}} | <span class="text-muted">Contact :</span> {{$sale->customer->contact ?? "NA"}}</h5>
-                                        <h5 class="fs-14 mb-0"> <span class="text-muted">NTN #</span> {{$sale->customer->ntn ?? "NA"}} | <span class="text-muted">STRN #</span> {{$sale->customer->strn ?? "NA"}}</h5>
-                                        <h5 class="fs-14 mb-0"> <span class="text-muted">Address :</span> {{$sale->customer->address ?? "NA"}}</h5>
-                                    </div>
-                                    <div class="col-3">
-                                        <p> <span class="text-muted mb-2 text-uppercase fw-semibold">Inv # </span><span class="fs-14 mb-0">{{$sale->id}}</span></p>
-                                        <p> <span class="text-muted mb-2 text-uppercase fw-semibold">Date : </span><span class="fs-14 mb-0">{{date("d M Y" ,strtotime($sale->date))}}</span></p>
-                                    </div>
-                                    <!--end col-->
-
-                                    <!--end col-->
-                                </div>
-                                <!--end row-->
-                            </div>
-                            <!--end card-body-->
                         </div><!--end col-->
                         <div class="col-lg-12">
                             <div class="card-body p-4">
@@ -114,15 +104,15 @@
                                             </tr>
                                             <tr class="m-0 p-0">
                                                 <th colspan="9" class="text-end p-0 m-0">WH Tax {{$sale->wh}}% (+)</th>
-                                                <th class="text-end p-0 m-0 border-2 border-start-0">{{number_format($sale->whValue,2)}}</th>
+                                                <th class="text-end p-0 m-0">{{number_format($sale->whValue,2)}}</th>
                                             </tr>
                                             <tr class="m-0 p-0">
                                                 <th colspan="9" class="text-end p-0 m-0">Discount (-)</th>
-                                                <th class="text-end p-0 m-0 border-2 border-start-0">{{number_format($sale->discount,2)}}</th>
+                                                <th class="text-end p-0 m-0 ">{{number_format($sale->discount,2)}}</th>
                                             </tr>
                                             <tr class="m-0 p-0">
                                                 <th colspan="9" class="text-end p-0 m-0">Fright (-)</th>
-                                                <th class="text-end p-0 m-0 border-2 border-start-0">{{number_format($sale->fright,2)}}</th>
+                                                <th class="text-end p-0 m-0 ">{{number_format($sale->fright,2)}}</th>
                                             </tr>
                                             <tr class="m-0 p-0">
                                                 <th colspan="9" class="text-end p-0 m-0">Net Bill</th>
@@ -142,7 +132,7 @@
                                             </tr>
                                             <tr class="m-0 p-0">
                                                 <th colspan="9" class="text-end p-0 m-0">Net Account Balance</th>
-                                                <th class="text-end p-0 m-0">{{number_format($balance + $due,2)}}</th>
+                                                <th class="text-end p-0 m-0">{{number_format($balance - $due,2)}}</th>
                                             </tr>
                                         </tfoot>
                                     </table><!--end table-->
