@@ -44,7 +44,6 @@
                                 <table class="table table-striped table-hover">
                                     <thead>
                                         <th width="20%">Product</th>
-
                                         <th width="10%" class="text-center">Unit</th>
                                         <th class="text-center">Qty</th>
                                         <th class="text-center">Price</th>

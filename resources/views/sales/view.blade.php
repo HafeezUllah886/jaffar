@@ -114,15 +114,19 @@
                                             </tr>
                                             <tr class="m-0 p-0">
                                                 <th colspan="9" class="text-end p-0 m-0">WH Tax {{$sale->wh}}% (+)</th>
-                                                <th class="text-end p-0 m-0 border-2 border-start-0 border-end-0 border-dark">{{number_format($sale->whValue,2)}}</th>
+                                                <th class="text-end p-0 m-0 border-2 border-start-0">{{number_format($sale->whValue,2)}}</th>
                                             </tr>
                                             <tr class="m-0 p-0">
                                                 <th colspan="9" class="text-end p-0 m-0">Discount (-)</th>
-                                                <th class="text-end p-0 m-0 border-2 border-start-0 border-end-0 border-dark">{{number_format($sale->discount,2)}}</th>
+                                                <th class="text-end p-0 m-0 border-2 border-start-0">{{number_format($sale->discount,2)}}</th>
                                             </tr>
                                             <tr class="m-0 p-0">
                                                 <th colspan="9" class="text-end p-0 m-0">Fright (-)</th>
-                                                <th class="text-end p-0 m-0 border-2 border-start-0 border-end-0 border-dark">{{number_format($sale->fright,2)}}</th>
+                                                <th class="text-end p-0 m-0 border-2 border-start-0">{{number_format($sale->fright,2)}}</th>
+                                            </tr>
+                                            <tr class="m-0 p-0">
+                                                <th colspan="9" class="text-end p-0 m-0">Net Bill</th>
+                                                <th class="text-end p-0 m-0 border-2 border-start-0 border-end-0 border-dark">{{number_format($sale->net,2)}}</th>
                                             </tr>
                                             <tr class="m-0 p-0">
                                                 <th colspan="9" class="text-end p-0 m-0">Paid</th>
