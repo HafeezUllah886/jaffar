@@ -17,7 +17,7 @@ class SalePaymentsController extends Controller
     public function index($id)
     {
         $sale = sales::with('details', 'payments')->find($id);
-        $amount = $sale->details->sum('ti');
+        $amount = $sale->net;
         $paid = $sale->payments->sum('amount');
         $due = $amount - $paid;
 
@@ -55,7 +55,7 @@ class SalePaymentsController extends Controller
             );
 
             createTransaction($request->accountID, $request->date,$request->amount, 0, "Payment of Inv No. $sale->id", $ref);
-            createTransaction($sale->customerID, $request->date,0, $request->amount, "Payment of Inv No. $sale->id", $ref);
+            createTransaction($sale->customerID, $request->date,$request->amount, 0, "Payment of Inv No. $sale->id", $ref);
 
             DB::commit();
             return back()->with('success', "Payment Saved");

@@ -58,6 +58,35 @@
                             </div>
                             <div class="col-3">
                                 <div class="form-group">
+                                    <label for="discount">Discount</label>
+                                    <input type="number" name="discount1" oninput="updateTotal()" id="discount" step="any" value="0" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="fright">Fright</label>
+                                    <input type="number" name="fright" id="fright" oninput="updateTotal()" min="0" step="any" value="0" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="whTax">WH Tax</label>
+                                    <div class="input-group mb-3">
+                                        <input type="number" name="whTax" id="whTax" oninput="updateTotal()" max="50" min="0" step="any" value="0" aria-describedby="basic-addon2" class="form-control">
+                                        <span class="input-group-text whTaxValue" id="basic-addon2">0</span>
+                                      </div>
+
+                                </div>
+
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="net">Net Amount</label>
+                                    <input type="number" name="net" id="net" step="any" readonly value="0" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
                                     <label for="date">Date</label>
                                     <input type="date" name="date" id="date" value="{{ date('Y-m-d') }}"
                                         class="form-control">
@@ -234,6 +263,18 @@
                 totalGST += parseFloat(inputValue);
             });
             $("#totalGST").html(totalGST.toFixed(2));
+
+            var discount = parseFloat($("#discount").val());
+            var fright = parseFloat($("#fright").val());
+            var whTax = parseFloat($("#whTax").val());
+
+            var taxValue = totalTI * whTax / 100;
+
+            $(".whTaxValue").html(taxValue.toFixed(2));
+
+            var net = (totalTI + taxValue) - (discount + fright);
+
+            $("#net").val(net.toFixed(2));
         }
 
         function deleteRow(id) {

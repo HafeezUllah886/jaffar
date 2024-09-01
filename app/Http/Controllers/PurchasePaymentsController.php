@@ -53,10 +53,10 @@ class PurchasePaymentsController extends Controller
                     'refID'         => $ref,
                 ]
             );
-    
+
             createTransaction($request->accountID, $request->date, 0, $request->amount, "Payment of Purchase No. $purchase->id", $ref);
-            createTransaction($purchase->vendorID, $request->date, 0, $request->amount, "Payment of Purchase No. $purchase->id", $ref);
-           
+            createTransaction($purchase->vendorID, $request->date, $request->amount, 0, "Payment of Purchase No. $purchase->id", $ref);
+
             DB::commit();
             return back()->with('success', "Payment Saved");
         }
@@ -65,7 +65,7 @@ class PurchasePaymentsController extends Controller
             DB::rollBack();
             return back()->with('error', $e->getMessage());
         }
-       
+
     }
 
     /**

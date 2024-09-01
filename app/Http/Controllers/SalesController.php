@@ -57,6 +57,9 @@ class SalesController extends Controller
                   'customerID'  => $request->customerID,
                   'date'        => $request->date,
                   'notes'       => $request->notes,
+                  'discount'    => $request->discount1,
+                  'fright'      => $request->fright,
+                  'wh'          => $request->whTax,
                   'refID'       => $ref,
                 ]
             );
@@ -90,6 +93,18 @@ class SalesController extends Controller
                 createStock($id,0, $qty, $request->date, "Sold in Inv # $sale->id", $ref);
             }
 
+            $whTax = $total * $request->whTax / 100;
+
+            $net = ($total + $whTax) - ($request->discount1 + $request->fright);
+
+            $sale->update(
+                [
+
+                    'whValue'   => $whTax,
+                    'net'       => $net,
+                ]
+            );
+
             if($request->status == 'paid')
             {
                 sale_payments::create(
@@ -97,17 +112,17 @@ class SalesController extends Controller
                         'salesID'       => $sale->id,
                         'accountID'     => $request->accountID,
                         'date'          => $request->date,
-                        'amount'        => $total,
+                        'amount'        => $net,
                         'notes'         => "Full Paid",
                         'refID'         => $ref,
                     ]
                 );
 
-                createTransaction($request->accountID, $request->date, $total, 0, "Payment of Inv No. $sale->id", $ref);
+                createTransaction($request->accountID, $request->date, $net, 0, "Payment of Inv No. $sale->id", $ref);
             }
             else
             {
-                createTransaction($request->customerID, $request->date, $total, 0, "Pending Amount of Inv No. $sale->id", $ref);
+                createTransaction($request->customerID, $request->date, 0, $net, "Pending Amount of Inv No. $sale->id", $ref);
             }
 
            DB::commit();
@@ -164,12 +179,17 @@ class SalesController extends Controller
                 $product->delete();
             }
             transactions::where('refID', $sale->refID)->delete();
+            $ref = $sale->refID;
             $sale->update(
                 [
-                  'customerID'  => $request->customerID,
-                  'date'        => $request->date,
-                  'notes'       => $request->notes,
-                ]
+                    'customerID'  => $request->customerID,
+                    'date'        => $request->date,
+                    'notes'       => $request->notes,
+                    'discount'    => $request->discount1,
+                    'fright'      => $request->fright,
+                    'wh'          => $request->whTax,
+                    'refID'       => $ref,
+                  ]
             );
 
             $ids = $request->id;
@@ -201,6 +221,18 @@ class SalesController extends Controller
                 createStock($id,0, $qty, $request->date, "Sold in Inv # $sale->id", $sale->refID);
             }
 
+            $whTax = $total * $request->whTax / 100;
+
+            $net = ($total + $whTax) - ($request->discount1 + $request->fright);
+
+            $sale->update(
+                [
+
+                    'whValue'   => $whTax,
+                    'net'       => $net,
+                ]
+            );
+
             if($request->status == 'paid')
             {
                 sale_payments::create(
@@ -208,17 +240,16 @@ class SalesController extends Controller
                         'salesID'       => $sale->id,
                         'accountID'     => $request->accountID,
                         'date'          => $request->date,
-                        'amount'        => $total,
+                        'amount'        => $net,
                         'notes'         => "Full Paid",
                         'refID'         => $sale->refID,
                     ]
                 );
-
-                createTransaction($request->accountID, $request->date, $total, 0, "Payment of Inv No. $sale->id", $sale->refID);
+                createTransaction($request->accountID, $request->date, $net, 0, "Payment of Inv No. $sale->id", $sale->refID);
             }
             else
             {
-                createTransaction($request->customerID, $request->date, $total, 0, "Pending Amount of Inv No. $sale->id", $sale->refID);
+                createTransaction($request->customerID, $request->date, 0, $net, "Pending Amount of Inv No. $sale->id", $sale->refID);
             }
             DB::commit();
             return to_route('sale.index')->with('success', "Sale Updated");

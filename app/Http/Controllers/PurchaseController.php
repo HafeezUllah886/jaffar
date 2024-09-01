@@ -137,7 +137,7 @@ class PurchaseController extends Controller
             }
             else
             {
-                createTransaction($request->vendorID, $request->date, $net, 0, "Pending Amount of Purchase No. $purchase->id", $ref);
+                createTransaction($request->vendorID, $request->date, 0, $net, "Pending Amount of Purchase No. $purchase->id", $ref);
 
             }
             DB::commit();
@@ -282,7 +282,7 @@ class PurchaseController extends Controller
             }
             else
             {
-                createTransaction($request->vendorID, $request->date, $net, 0, "Pending Amount of Purchase No. $purchase->id", $ref);
+                createTransaction($request->vendorID, $request->date, 0, $net, "Pending Amount of Purchase No. $purchase->id", $ref);
             }
             DB::commit();
             return back()->with('success', "Purchase Updated");

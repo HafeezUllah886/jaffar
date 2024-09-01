@@ -94,6 +94,7 @@
                                             <td class="no-padding"><input type="number" name="gstValue[]" required step="any" value="{{$product->gstValue}}" min="0" class="form-control text-center" id="gstValue_{{ $id }}"></td>
                                             <td> <span class="btn btn-sm btn-danger" onclick="deleteRow({{$id}})">X</span> </td>
                                             <input type="hidden" name="id[]" value="{{ $id }}">
+                                            <input type="hidden" id="stock_{{$id}}" value="{{ getStock($id) }}">
                                         </tr>
                                     @endforeach
                                     </tbody>
@@ -108,6 +109,35 @@
                                         </tr>
                                     </tfoot>
                                 </table>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="discount">Discount</label>
+                                    <input type="number" name="discount1" oninput="updateTotal()" id="discount" step="any" value="{{$sale->discount}}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="fright">Fright</label>
+                                    <input type="number" name="fright" id="fright" oninput="updateTotal()" min="0" step="any" value="{{$sale->fright}}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="whTax">WH Tax</label>
+                                    <div class="input-group mb-3">
+                                        <input type="number" name="whTax" id="whTax" oninput="updateTotal()" max="50" min="0" step="any" value="{{$sale->wh}}" aria-describedby="basic-addon2" class="form-control">
+                                        <span class="input-group-text whTaxValue" id="basic-addon2">0</span>
+                                      </div>
+
+                                </div>
+
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="net">Net Amount</label>
+                                    <input type="number" name="net" id="net" step="any" readonly value="0" class="form-control">
+                                </div>
                             </div>
                             <div class="col-3">
                                 <div class="form-group">
@@ -224,7 +254,7 @@
                         html += '<td class="no-padding"><input type="number" name="gstValue[]" required step="any" value="0.00" min="0" class="form-control text-center" id="gstValue_' + id + '"></td>';
                         html += '<td> <span class="btn btn-sm btn-danger" onclick="deleteRow('+id+')">X</span> </td>';
                         html += '<input type="hidden" name="id[]" value="' + id + '">';
-                        html += '<input type="hidden" id="stock_'+id+'" value="' + product.stock + '">';
+                        html += '<input type="hidden" id="stock_' + id + '" value="' + product.stock + '">';
                         html += '</tr>';
                         $("#products_list").prepend(html);
                         updateChanges(id);
@@ -288,6 +318,18 @@
                 totalGST += parseFloat(inputValue);
             });
             $("#totalGST").html(totalGST.toFixed(2));
+
+            var discount = parseFloat($("#discount").val());
+            var fright = parseFloat($("#fright").val());
+            var whTax = parseFloat($("#whTax").val());
+
+            var taxValue = totalTI * whTax / 100;
+
+            $(".whTaxValue").html(taxValue.toFixed(2));
+
+            var net = (totalTI + taxValue) - (discount + fright);
+
+            $("#net").val(net.toFixed(2));
         }
 
         function deleteRow(id) {

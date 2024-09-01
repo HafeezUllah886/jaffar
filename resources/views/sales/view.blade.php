@@ -89,7 +89,7 @@
                                                 $totalTi = $sale->details->sum('ti');
                                                 $totalGstVal = $sale->details->sum('gstValue');
 
-                                                $due = $totalTi - $sale->payments->sum('amount');
+                                                $due = $sale->net - $sale->payments->sum('amount');
                                                 $paid = $sale->payments->sum('amount');
                                             @endphp
                                             <tr>
@@ -109,8 +109,20 @@
                                                 <th class="text-end p-0 m-0">{{number_format($totalGstVal,2)}}</th>
                                             </tr>
                                             <tr class="m-0 p-0">
-                                                <th colspan="9" class="text-end p-0 m-0">Net Amount (Tax Inc)</th>
+                                                <th colspan="9" class="text-end p-0 m-0">Gross</th>
                                                 <th class="text-end p-0 m-0 border-2 border-start-0 border-end-0 border-dark">{{number_format($totalTi,2)}}</th>
+                                            </tr>
+                                            <tr class="m-0 p-0">
+                                                <th colspan="9" class="text-end p-0 m-0">WH Tax {{$sale->wh}}% (+)</th>
+                                                <th class="text-end p-0 m-0 border-2 border-start-0 border-end-0 border-dark">{{number_format($sale->whValue,2)}}</th>
+                                            </tr>
+                                            <tr class="m-0 p-0">
+                                                <th colspan="9" class="text-end p-0 m-0">Discount (-)</th>
+                                                <th class="text-end p-0 m-0 border-2 border-start-0 border-end-0 border-dark">{{number_format($sale->discount,2)}}</th>
+                                            </tr>
+                                            <tr class="m-0 p-0">
+                                                <th colspan="9" class="text-end p-0 m-0">Fright (-)</th>
+                                                <th class="text-end p-0 m-0 border-2 border-start-0 border-end-0 border-dark">{{number_format($sale->fright,2)}}</th>
                                             </tr>
                                             <tr class="m-0 p-0">
                                                 <th colspan="9" class="text-end p-0 m-0">Paid</th>
