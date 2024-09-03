@@ -56,7 +56,17 @@
                                     </tfoot>
                                 </table>
                             </div>
-                            <div class="col-3">
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label for="salesman">Salesman</label>
+                                    <select name="salesmanID" id="salesman" class="selectize1">
+                                        @foreach ($salesmans as $man)
+                                            <option value="{{ $man->id }}">{{ $man->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-2">
                                 <div class="form-group">
                                     <label for="discount">Discount</label>
                                     <input type="number" name="discount1" oninput="updateTotal()" id="discount" step="any" value="0" class="form-control">
@@ -79,7 +89,7 @@
                                 </div>
 
                             </div>
-                            <div class="col-3">
+                            <div class="col-2">
                                 <div class="form-group">
                                     <label for="net">Net Amount</label>
                                     <input type="number" name="net" id="net" step="any" readonly value="0" class="form-control">

@@ -7,6 +7,7 @@ use App\Models\products;
 use App\Models\sale_details;
 use App\Models\sale_payments;
 use App\Models\sales;
+use App\Models\salesman;
 use App\Models\stock;
 use App\Models\transactions;
 use App\Models\units;
@@ -34,7 +35,8 @@ class SalesController extends Controller
         $units = units::all();
         $customers = accounts::customer()->get();
         $accounts = accounts::business()->get();
-        return view('sales.create', compact('products', 'units', 'customers', 'accounts'));
+        $salesmans = salesman::all();
+        return view('sales.create', compact('products', 'units', 'customers', 'accounts', 'salesmans'));
     }
 
     /**
@@ -60,6 +62,7 @@ class SalesController extends Controller
                   'discount'    => $request->discount1,
                   'fright'      => $request->fright,
                   'wh'          => $request->whTax,
+                  'salesmanID'  => $request->salesmanID,
                   'refID'       => $ref,
                 ]
             );
@@ -188,6 +191,7 @@ class SalesController extends Controller
                     'discount'    => $request->discount1,
                     'fright'      => $request->fright,
                     'wh'          => $request->whTax,
+                    'salesmanID'  => $request->salesmanID,
                     'refID'       => $ref,
                   ]
             );

@@ -32,8 +32,9 @@
                                     </div>
                                     <div class="flex-shrink-0 mt-sm-0 mt-3">
                                         <h3>Sales Tax Invoice</h3>
-                                        <p> <span class="text-muted text-uppercase fw-semibold mt-0 mb-0">Inv # </span><span class="fs-14 mb-0">{{$sale->id}}</span></p>
-                                        <p> <span class="text-muted text-uppercase fw-semibold mt-0 mb-0">Date : </span><span class="fs-14 mb-0">{{date("d M Y" ,strtotime($sale->date))}}</span></p>
+                                        <p> <span class="text-muted text-uppercase fw-semibold mt-0 m-0 p-0">Inv # </span><span class="fs-14 m-0 p-0">{{$sale->id}}</span></p>
+                                        <p> <span class="text-muted text-uppercase fw-semibold mt-0 m-0 p-0">Date : </span><span class="fs-14 m-0 p-0">{{date("d M Y" ,strtotime($sale->date))}}</span></p>
+                                        <p> <span class="text-muted text-uppercase fw-semibold mt-0 m-0 p-0">Salesman : </span><span class="fs-14 m-0 p-0">{{$sale->salesman->name}}</span></p>
                                     </div>
                                 </div>
                             </div>
