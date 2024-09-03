@@ -159,7 +159,8 @@ class SalesController extends Controller
         $units = units::all();
         $customers = accounts::customer()->get();
         $accounts = accounts::business()->get();
-        return view('sales.edit', compact('products', 'units', 'customers', 'accounts', 'sale'));
+        $salesmans = salesman::all();
+        return view('sales.edit', compact('products', 'units', 'customers', 'accounts', 'sale', 'salesmans'));
     }
 
     /**

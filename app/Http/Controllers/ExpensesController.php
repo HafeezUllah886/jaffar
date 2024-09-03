@@ -3,21 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\accounts;
+use App\Models\expenses;
 use App\Models\transactions;
-use App\Models\transfer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class TransferController extends Controller
+class ExpensesController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $transfers = transfer::orderby('id', 'desc')->get();
-        $accounts = accounts::where('type', '!=', 'Customer')->get();
-        return view('Finance.transfer.index', compact('transfers', 'accounts'));
+        $expenses = expenses::orderby('id', 'desc')->get();
+        $accounts = accounts::business()->get();
+        return view('Finance.expense.index', compact('expenses', 'accounts'));
     }
 
     /**
@@ -33,35 +33,24 @@ class TransferController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(
-            [
-                'to' => 'different:from'
-            ],
-            [
-                'to.different' => "From and To Accounts Must be different"
-            ]
-        );
-
         try
         {
             DB::beginTransaction();
             $ref = getRef();
-            $transfer = transfer::create(
+            expenses::create(
                 [
-                    'from' => $request->from,
-                    'to' => $request->to,
-                    'date' => $request->date,
+                    'accountID' => $request->accountID,
                     'amount' => $request->amount,
+                    'date' => $request->date,
                     'notes' => $request->notes,
                     'refID' => $ref,
                 ]
             );
-            $fromAccount = $transfer->fromAccount->title;
-            $toAccount = $transfer->toAccount->title;
-            createTransaction($request->from,$request->date, 0, $request->amount, "Transfered to $toAccount", $ref);
-            createTransaction($request->to, $request->date, $request->amount, 0, "Transfered from $fromAccount", $ref);
+
+            createTransaction($request->accountID, $request->date, 0, $request->amount, "Expense - ".$request->notes, $ref);
+
             DB::commit();
-            return back()->with('success', "Transfered Successfully");
+            return back()->with('success', 'Expense Saved');
         }
         catch(\Exception $e)
         {
@@ -73,7 +62,7 @@ class TransferController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(transfer $transfer)
+    public function show(expenses $expenses)
     {
         //
     }
@@ -81,7 +70,7 @@ class TransferController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(transfer $transfer)
+    public function edit(expenses $expenses)
     {
         //
     }
@@ -89,7 +78,7 @@ class TransferController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, transfer $transfer)
+    public function update(Request $request, expenses $expenses)
     {
         //
     }
@@ -102,17 +91,17 @@ class TransferController extends Controller
         try
         {
             DB::beginTransaction();
-            transfer::where('refID', $ref)->delete();
+            expenses::where('refID', $ref)->delete();
             transactions::where('refID', $ref)->delete();
             DB::commit();
             session()->forget('confirmed_password');
-            return redirect()->route('transfers.index')->with('success', "Transfer Deleted");
+            return redirect()->route('expenses.index')->with('success', "Expense Deleted");
         }
         catch(\Exception $e)
         {
             DB::rollBack();
             session()->forget('confirmed_password');
-            return redirect()->route('transfers.index')->with('error', $e->getMessage());
+            return redirect()->route('expenses.index')->with('error', $e->getMessage());
         }
     }
 }

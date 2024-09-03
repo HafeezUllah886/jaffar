@@ -79,36 +79,36 @@
     <div class="col-xl-12">
         <div class="card">
             <div class="card-header border-0 align-items-center d-flex">
-                <h4 class="card-title mb-0 flex-grow-1">Revenue (Test Value)</h4>
+                <h4 class="card-title mb-0 flex-grow-1">Revenue (Monthly)</h4>
             </div><!-- end card header -->
 
             <div class="card-header p-0 border-0 bg-light-subtle">
                 <div class="row g-0 text-center">
                     <div class="col-6 col-sm-3">
                         <div class="p-3 border border-dashed border-start-0">
-                            <h5 class="mb-1"><span class="counter-value" data-target="7585">0</span></h5>
-                            <p class="text-muted mb-0">Orders</p>
+                            <h5 class="mb-1"><span class="counter-value" data-target="{{$last_sale}}">0</span></h5>
+                            <p class="text-muted mb-0">Sales</p>
                         </div>
                     </div>
                     <!--end col-->
                     <div class="col-6 col-sm-3">
                         <div class="p-3 border border-dashed border-start-0">
-                            <h5 class="mb-1">$<span class="counter-value" data-target="22.89">0</span>k</h5>
-                            <p class="text-muted mb-0">Earnings</p>
+                            <h5 class="mb-1"><span class="counter-value" data-target="{{$last_expense}}">0</span></h5>
+                            <p class="text-muted mb-0">Expenses</p>
                         </div>
                     </div>
                     <!--end col-->
                     <div class="col-6 col-sm-3">
                         <div class="p-3 border border-dashed border-start-0">
-                            <h5 class="mb-1"><span class="counter-value" data-target="367">0</span></h5>
-                            <p class="text-muted mb-0">Refunds</p>
+                            <h5 class="mb-1"><span class="counter-value" data-target="{{$last_profit}}">0</span></h5>
+                            <p class="text-muted mb-0">Profit</p>
                         </div>
                     </div>
                     <!--end col-->
                     <div class="col-6 col-sm-3">
                         <div class="p-3 border border-dashed border-start-0 border-end-0">
-                            <h5 class="mb-1 text-success"><span class="counter-value" data-target="18.92">0</span>%</h5>
-                            <p class="text-muted mb-0">Conversation Ratio</p>
+                            <h5 class="mb-1 text-success"><span class="counter-value" data-target="{{$last_profit - $last_expense}}">0</span></h5>
+                            <p class="text-muted mb-0">Net Profit</p>
                         </div>
                     </div>
                     <!--end col-->
@@ -449,10 +449,70 @@
 
 @endsection
 @section('page-js')
-       <!-- apexcharts -->
        <script src="{{ asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
-       <!-- Dashboard init -->
-       <script src="{{ asset('assets/js/pages/dashboard-crm.init.js') }}"></script>
-       <script src="assets/js/pages/dashboard-ecommerce.init.js"></script>
+       <script src="{{asset('assets/js/pages/dashboard-ecommerce.init.js')}}"></script>
+       <script>
+
+
+        function updateCustomerImpressionChart(ordersData, earningsData, refundsData, months) {
+            var t = getChartColorsArray("customer_impression_charts");
+            if (t) {
+                var e = {
+                    series: [
+                        { name: "Sales", type: "area", data: ordersData },   // Updated Orders data
+                        { name: "Profit", type: "bar", data: earningsData }, // Updated Earnings data
+                        { name: "Expense", type: "line", data: refundsData } // Updated Refunds data
+                    ],
+                    chart: { height: 370, type: "line", toolbar: { show: !1 } },
+                    stroke: { curve: "straight", dashArray: [0, 0, 8], width: [2, 0, 2.2] },
+                    fill: { opacity: [0.1, 0.9, 1] },
+                    markers: { size: [0, 0, 0], strokeWidth: 2, hover: { size: 4 } },
+                    xaxis: { categories: months, axisTicks: { show: !1 }, axisBorder: { show: !1 } },
+                    grid: { show: !0, xaxis: { lines: { show: !0 } }, yaxis: { lines: { show: !1 } }, padding: { top: 0, right: -2, bottom: 15, left: 10 } },
+                    legend: { show: !0, horizontalAlign: "center", offsetX: 0, offsetY: -5, markers: { width: 9, height: 9, radius: 6 }, itemMargin: { horizontal: 10, vertical: 0 } },
+                    plotOptions: { bar: { columnWidth: "30%", barHeight: "70%" } },
+                    colors: t,
+                    tooltip: {
+                        shared: !0,
+                        y: [
+                            {
+                                formatter: function (e) {
+                                    return void 0 !== e ? e.toFixed(0) : e;
+                                },
+                            },
+                            {
+                                formatter: function (e) {
+                                    return void 0 !== e ? e.toFixed(2) : e;
+                                },
+                            },
+                            {
+                                formatter: function (e) {
+                                    return void 0 !== e ? e.toFixed(0) : e;
+                                },
+                            },
+                        ],
+                    },
+                };
+                if (customerImpressionChart) {
+                    customerImpressionChart.destroy();
+                }
+                customerImpressionChart = new ApexCharts(document.querySelector("#customer_impression_charts"), e);
+                customerImpressionChart.render();
+            }
+        }
+
+        var sales = @json($sales);
+        var months = @json($monthNames);
+        var expenses = @json($expenses);
+        var profits = @json($profits);
+        updateCustomerImpressionChart(
+            sales,
+            profits,
+            expenses,
+            months
+        )
+
+
+       </script>
 @endsection
 
