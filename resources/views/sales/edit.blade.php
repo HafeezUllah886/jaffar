@@ -49,7 +49,7 @@
                                         <th class="text-center">Price</th>
                                         <th class="text-center">Disc</th>
                                         <th class="text-center">Tax Inc</th>
-                                        <th class="text-center">TP</th>
+                                        <th class="text-center">RP</th>
                                         <th class="text-center">GST%</th>
                                         <th class="text-center">GST</th>
                                         <th></th>

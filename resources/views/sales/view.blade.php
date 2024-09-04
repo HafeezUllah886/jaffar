@@ -53,7 +53,7 @@
                                                 <th scope="col" class="text-end">Price</th>
                                                 <th scope="col" class="text-end">Discount</th>
                                                 <th scope="col" class="text-end">Tax (Inc)</th>
-                                                <th scope="col" class="text-end">TP</th>
+                                                <th scope="col" class="text-end">RP</th>
                                                 <th scope="col" class="text-end">GST%</th>
                                                 <th scope="col" class="text-end">GST</th>
                                             </tr>
