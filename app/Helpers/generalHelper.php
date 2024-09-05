@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\material_stock;
+use App\Models\sale_details;
 use App\Models\stock;
 use Carbon\Carbon;
 
@@ -43,5 +44,27 @@ function getStock($id){
     }
 
     return $balance;
+}
+
+function avgSalePrice($from, $to, $id)
+{
+    $sales = sale_details::where('productID', $id);
+    if($from != 'all' && $to != 'all')
+    {
+        $sales->whereBetween('date', [$from, $to]);
+    }
+    $sales_amount = $sales->sum('ti');
+    $sales_qty = $sales->sum('qty');
+
+    if($sales_qty > 0)
+    {
+        $sale_price = $sales_amount / $sales_qty;
+    }
+    else
+    {
+        $sale_price = 0;
+    }
+
+    return $sale_price;
 }
 

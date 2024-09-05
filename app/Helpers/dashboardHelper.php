@@ -27,7 +27,7 @@ function totalPurchaseGst()
 
 function myBalance()
 {
-    $accounts = accounts::business()->get();
+    $accounts = accounts::all();
     $balance = 0;
     foreach($accounts as $account)
     {

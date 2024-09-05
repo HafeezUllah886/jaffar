@@ -60,17 +60,17 @@
                                         </thead>
                                         <tbody id="products-list">
                                            @foreach ($sale->details as $key => $product)
-                                               <tr>
-                                                <td class="m-1 p-1">{{$key+1}}</td>
-                                                <td class="text-start m-1 p-1">{{$product->product->name}}</td>
-                                                <td class="text-start m-1 p-1">{{$product->unit->name}}</td>
-                                                <td class="text-end m-1 p-1">{{number_format($product->qty / $product->unitValue)}}</td>
-                                                <td class="text-end m-1 p-1">{{number_format($product->price, 2)}}</td>
-                                                <td class="text-end m-1 p-1">{{number_format($product->discount, 2)}}</td>
-                                                <td class="text-end m-1 p-1">{{number_format($product->ti, 2)}}</td>
-                                                <td class="text-end m-1 p-1">{{number_format($product->tp, 2)}}</td>
-                                                <td class="text-end m-1 p-1">{{number_format($product->gst, 2)}}</td>
-                                                <td class="text-end m-1 p-1">{{number_format($product->gstValue, 2)}}</td>
+                                               <tr class="border-1 border-dark">
+                                                <td class="m-1 p-1 border-1 border-dark">{{$key+1}}</td>
+                                                <td class="text-start m-1 p-1 border-1 border-dark">{{$product->product->name}}</td>
+                                                <td class="text-start m-1 p-1 border-1 border-dark">{{$product->unit->name}}</td>
+                                                <td class="text-end m-1 p-1 border-1 border-dark">{{number_format($product->qty / $product->unitValue)}}</td>
+                                                <td class="text-end m-1 p-1 border-1 border-dark">{{number_format($product->price, 2)}}</td>
+                                                <td class="text-end m-1 p-1 border-1 border-dark">{{number_format($product->discount, 2)}}</td>
+                                                <td class="text-end m-1 p-1 border-1 border-dark">{{number_format($product->ti, 2)}}</td>
+                                                <td class="text-end m-1 p-1 border-1 border-dark">{{number_format($product->tp, 2)}}</td>
+                                                <td class="text-end m-1 p-1 border-1 border-dark">{{number_format($product->gst, 2)}}</td>
+                                                <td class="text-end m-1 p-1 border-1 border-dark">{{number_format($product->gstValue, 2)}}</td>
                                                </tr>
                                            @endforeach
                                         </tbody>
@@ -83,7 +83,7 @@
                                                 $due = $sale->net - $sale->payments->sum('amount');
                                                 $paid = $sale->payments->sum('amount');
                                             @endphp
-                                            <tr>
+                                            <tr class="border-1 border-dark">
                                                 <th colspan="5" class="text-end">Total</th>
                                                 <th class="text-end">{{number_format($totalDisc,2)}}</th>
                                                 <th class="text-end">{{number_format($totalTi,2)}}</th>

@@ -31,4 +31,9 @@ class accounts extends Model
     {
         return $this->hasMany(transactions::class, 'accountID');
     }
+
+    public function sale()
+    {
+        return $this->hasMany(sales::class, 'customerID');
+    }
 }

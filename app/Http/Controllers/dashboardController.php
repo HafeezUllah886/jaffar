@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\accounts;
 use App\Models\expenses;
 use App\Models\products;
 use App\Models\purchase_details;
@@ -96,7 +97,49 @@ class dashboardController extends Controller
             }
 
 
+            /// Top five products
 
-        return view('dashboard.index', compact('sales', 'monthNames', 'expenses', 'profits', 'last_sale', 'last_expense', 'last_profit'));
+            $topProducts = products::withSum('saleDetails', 'qty')->withSum('saleDetails', 'ti')
+            ->orderByDesc('sale_details_sum_qty')
+            ->take(5)
+            ->get();
+
+
+
+            $topProductsArray = [];
+
+            foreach($topProducts as $product)
+            {
+                $stock = getStock($product->id);
+                $price = avgSalePrice('all', 'all', $product->id);
+
+                $topProductsArray [] = ['name' => $product->name, 'price' => $price, 'stock' => $stock, 'amount' => $product->sale_details_sum_ti, 'sold' => $product->sale_details_sum_qty];
+            }
+
+            /// Top Customers
+
+            $topCustomers = accounts::where('type', 'Customer')
+            ->withSum('sale', 'net')
+            ->orderByDesc('sale_sum_net')
+            ->take(5)
+            ->get();
+
+            $topCustomersArray = [];
+
+            foreach($topCustomers as $customer)
+            {
+                if($customer->id != 2)
+                {
+                    $balance = getAccountBalance($customer->id);
+                    $customer_purchases = $customer->sale_sum_net;
+
+                    $topCustomersArray [] = ['name' => $customer->title, 'purchases' => $customer_purchases, 'balance' => $balance];
+                }
+
+            }
+
+
+
+        return view('dashboard.index', compact('sales', 'monthNames', 'expenses', 'profits', 'last_sale', 'last_expense', 'last_profit', 'topProductsArray', 'topCustomersArray'));
     }
 }
