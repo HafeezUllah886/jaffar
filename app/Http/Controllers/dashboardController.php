@@ -88,7 +88,7 @@ class dashboardController extends Controller
                     $profit += $ppp;
                 }
 
-                $profits[] = $profit - $expense;
+                $profits[] = number_format($profit - $expense,0);
 
                 $last_sale = $sale;
                 $last_expense = $expense;
