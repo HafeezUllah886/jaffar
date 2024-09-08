@@ -11,7 +11,7 @@
                             <div class="card-header border-bottom-dashed p-4">
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
-                                        <h1>JABBAR & BROTHERS</h1>
+                                        <img src="{{asset('assets/images/logo.png')}}" style="width:250px;">
                                         <div class="mt-sm-5 mt-4">
                                             <div class="row">
                                                 <div class="col-6">
@@ -129,11 +129,11 @@
                                             </tr>
                                             <tr class="m-0 p-0">
                                                 <th colspan="9" class="text-end p-0 m-0">Previous Balance</th>
-                                                <th class="text-end p-0 m-0">{{number_format($balance,2)}}</th>
+                                                <th class="text-end p-0 m-0">{{number_format(spotBalanceBefore($sale->customerID, $sale->refID),2)}}</th>
                                             </tr>
                                             <tr class="m-0 p-0">
                                                 <th colspan="9" class="text-end p-0 m-0">Net Account Balance</th>
-                                                <th class="text-end p-0 m-0">{{number_format($balance - $due,2)}}</th>
+                                                <th class="text-end p-0 m-0">{{number_format(spotBalance($sale->customerID, $sale->refID),2)}}</th>
                                             </tr>
                                         </tfoot>
                                     </table><!--end table-->

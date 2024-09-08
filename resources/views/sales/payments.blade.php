@@ -71,9 +71,13 @@
                                             <td>{{ $payment->account->title }}</td>
                                             <td>{{ $payment->notes }}</td>
                                             <td class="text-end">{{ number_format($payment->amount) }}</td>
-                                            <td class="text-center"><a
-                                                    href="{{ route('salePayment.delete', [$sale->id, $payment->refID]) }}"
-                                                    class="btn btn-danger btn-sm">X</a></td>
+                                            <td class="text-center">
+                                                <a href="{{ route('salePayment.show', $payment->id) }}"
+                                                    class="btn btn-info btn-sm">Print</a>
+                                                <a href="{{ route('salePayment.delete', [$sale->id, $payment->refID]) }}"
+                                                    class="btn btn-danger btn-sm">X</a>
+
+                                                </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

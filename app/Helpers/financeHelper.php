@@ -398,3 +398,24 @@ function lowStockReminder()
         }
     }
 }
+
+function numberToWords($number)
+{
+    $f = new NumberFormatter("en", NumberFormatter::SPELLOUT);
+    return ucfirst($f->format($number));
+}
+
+
+function spotBalanceBefore($id, $ref)
+{
+    $cr = transactions::where('accountID', $id)->where('refID', '<', $ref)->sum('cr');
+    $db = transactions::where('accountID', $id)->where('refID', '<', $ref)->sum('db');
+    return $balance = $cr - $db;
+}
+
+function spotBalance($id, $ref)
+{
+    $cr = transactions::where('accountID', $id)->where('refID', '<=', $ref)->sum('cr');
+    $db = transactions::where('accountID', $id)->where('refID', '<=', $ref)->sum('db');
+    return $balance = $cr - $db;
+}

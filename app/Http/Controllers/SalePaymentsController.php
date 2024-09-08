@@ -67,12 +67,11 @@ class SalePaymentsController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(sale_payments $sale_payments)
+    public function show($id)
     {
-        //
+        $payment = sale_payments::find($id);
+
+        return view('sales.receipt', compact('payment'));
     }
 
     /**

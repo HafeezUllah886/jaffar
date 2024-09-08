@@ -144,9 +144,7 @@ class SalesController extends Controller
      */
     public function show(sales $sale)
     {
-        $cr = transactions::where('accountID', $sale->customerID)->where('refID', '<', $sale->refID)->sum('cr');
-        $db = transactions::where('accountID', $sale->customerID)->where('refID', '<', $sale->refID)->sum('db');
-        $balance = $cr - $db;
+        $balance = spotBalance($sale->customerID, $sale->refID);
         return view('sales.view', compact('sale', 'balance'));
     }
 

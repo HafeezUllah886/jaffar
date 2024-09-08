@@ -9,10 +9,12 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('sale', SalesController::class);
 
+
     Route::get("sales/getproduct/{id}", [SalesController::class, 'getSignleProduct']);
     Route::get("sales/delete/{id}", [SalesController::class, 'destroy'])->name('sale.delete')->middleware(confirmPassword::class);
 
     Route::get('salepayment/{id}', [SalePaymentsController::class, 'index'])->name('salePayment.index');
+    Route::get('salepayment/show/{id}', [SalePaymentsController::class, 'show'])->name('salePayment.show');
     Route::get('salepayment/delete/{id}/{ref}', [SalePaymentsController::class, 'destroy'])->name('salePayment.delete')->middleware(confirmPassword::class);
     Route::resource('sale_payment', SalePaymentsController::class);
 
