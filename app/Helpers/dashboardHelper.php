@@ -31,11 +31,13 @@ function myBalance()
     $balance = 0;
     foreach($accounts as $account)
     {
-        $cr = $account->transactions->sum('cr');
-        $db = $account->transactions->sum('db');
-
-        $balance += $cr - $db;
+        $balance += getAccountBalance($account->id);
     }
+
+    $stockValue = stockValue();
+
+    $balance = $balance + $stockValue;
 
     return $balance;
 }
+

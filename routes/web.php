@@ -12,6 +12,7 @@ require __DIR__ . '/finance.php';
 require __DIR__ . '/purchase.php';
 require __DIR__ . '/stock.php';
 require __DIR__ . '/sale.php';
+require __DIR__ . '/reports.php';
 
 Route::middleware('auth')->group(function () {
 
@@ -20,7 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('units', UnitsController::class);
     Route::resource('product', ProductsController::class);
     Route::resource('salesman', SalesmanController::class);
-   
+
 });
 
 

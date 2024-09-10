@@ -1,9 +1,25 @@
 <?php
 
 use App\Models\material_stock;
+use App\Models\products;
+use App\Models\purchase_details;
+use App\Models\ref;
 use App\Models\sale_details;
 use App\Models\stock;
 use Carbon\Carbon;
+
+function getRef(){
+    $ref = ref::first();
+    if($ref){
+        $ref->ref = $ref->ref + 1;
+    }
+    else{
+        $ref = new ref();
+        $ref->ref = 1;
+    }
+    $ref->save();
+    return $ref->ref;
+}
 
 function firstDayOfMonth()
 {
@@ -66,5 +82,49 @@ function avgSalePrice($from, $to, $id)
     }
 
     return $sale_price;
+}
+
+
+function avgPurchasePrice($from, $to, $id)
+{
+    $purchases = purchase_details::where('productID', $id);
+    if($from != 'all' && $to != 'all')
+    {
+        $purchases->whereBetween('date', [$from, $to]);
+    }
+    $purchase_amount = $purchases->sum('amount');
+    $purchase_qty = $purchases->sum('qty');
+
+    if($purchase_qty > 0)
+    {
+        $purchase_price = $purchase_amount / $purchase_qty;
+    }
+    else
+    {
+        $purchase_price = 0;
+    }
+
+    return $purchase_price;
+}
+
+function stockValue()
+{
+    $products = products::all();
+
+    $value = 0;
+    foreach($products as $product)
+    {
+        $value += productStockValue($product->id);
+    }
+
+    return $value;
+}
+
+function productStockValue($id)
+{
+    $stock = getStock($id);
+    $price = avgPurchasePrice('all', 'all', $id);
+
+    return $price * $stock;
 }
 
