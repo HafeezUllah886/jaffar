@@ -70,7 +70,7 @@
                                                         @php
                                                             if($unit->id == $product->unitID)
                                                             {
-                                                                $new_balance = $balance / $product->unitValue;
+                                                                $new_balance = ($balance + $product->qty) / $product->unitValue;
                                                                 $unitValue = $product->unitValue;
                                                             }
                                                         @endphp
@@ -93,7 +93,7 @@
                                             <td class="no-padding"><input type="number" name="gstValue[]" required step="any" value="{{$product->gstValue}}" min="0" class="form-control text-center" id="gstValue_{{ $id }}"></td>
                                             <td> <span class="btn btn-sm btn-danger" onclick="deleteRow({{$id}})">X</span> </td>
                                             <input type="hidden" name="id[]" value="{{ $id }}">
-                                            <input type="hidden" id="stock_{{$id}}" value="{{ getStock($id) }}">
+                                            <input type="hidden" id="stock_{{$id}}" value="{{ getStock($id) + $product->qty}}">
                                         </tr>
                                     @endforeach
                                     </tbody>

@@ -26,7 +26,7 @@ class profitController extends Controller
             $ppu = $saleRate - $purchaseRate;
             $profit = $ppu * $sold;
             $stock = getStock($product->id);
-            $stockValue = stockValue($product->id);
+            $stockValue = productStockValue($product->id);
 
             $data[] = ['name' => $product->name, 'purchaseRate' => $purchaseRate, 'saleRate' => $saleRate, 'sold' => $sold, 'ppu' => $ppu, 'profit' => $profit, 'stock' => $stock, 'stockValue' => $stockValue];
         }
