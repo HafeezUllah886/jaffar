@@ -32,6 +32,11 @@ class SalesController extends Controller
     public function create()
     {
         $products = products::orderby('name', 'asc')->get();
+        foreach($products as $product)
+        {
+            $stock = getStock($product->id);
+            $product->stock = $stock;
+        }
         $units = units::all();
         $customers = accounts::customer()->get();
         $accounts = accounts::business()->get();

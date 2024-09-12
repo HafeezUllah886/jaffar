@@ -190,6 +190,10 @@
                                 <a href="{{ route('reportProfit') }}" class="nav-link"
                                     data-key="t-basic-elements">Profit / Loss</a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('reportSalesman') }}" class="nav-link"
+                                    data-key="t-basic-elements">Salesman Report</a>
+                            </li>
                         </ul>
                     </div>
                 </li>

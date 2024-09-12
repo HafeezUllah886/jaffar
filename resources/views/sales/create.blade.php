@@ -23,7 +23,9 @@
                                     <select name="product" class="selectize" id="product">
                                         <option value="0"></option>
                                         @foreach ($products as $product)
-                                            <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                            @if ($product->stock > 0)
+                                                <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>

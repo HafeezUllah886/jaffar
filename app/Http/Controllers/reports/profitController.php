@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\reports;
 
+use App\Http\Controllers\Controller;
 use App\Models\expenses;
 use App\Models\products;
 use App\Models\sale_details;
