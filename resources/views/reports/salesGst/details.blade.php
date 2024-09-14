@@ -50,38 +50,51 @@
                                     <table class="table table-borderless text-center table-nowrap align-middle mb-0">
                                         <thead>
                                             <tr class="table-active">
-                                                <th scope="col" style="width: 50px;">#</th>
-                                                <th scope="col">Customer #</th>
+                                                <th scope="col" style="width: 50px;">Inv #</th>
                                                 <th scope="col" class="text-start">Customer Name</th>
                                                 <th scope="col">CNIC #</th>
-                                                <th scope="col">NTN #</th>
-                                                <th scope="col">STRN #</th>
-                                                <th scope="col" class="text-end">GST Value</th>
+                                                <th scope="col">Bill Date</th>
+                                                <th scope="col">Tax Exc</th>
+                                                <th scope="col" class="text-end">GST (18%)</th>
+                                                <th scope="col" class="text-end">Qty</th>
                                             </tr>
                                         </thead>
                                         <tbody >
                                             @php
-                                                $total = 0;
+                                                $totalTi = 0;
+                                                $totalGst = 0;
+                                                $totalQty = 0;
+                                                $totalTe = 0;
                                             @endphp
-                                        @foreach ($groupedData as $key => $item)
+                                        @foreach ($sales as $key => $item)
                                         @php
-                                            $total += $item['gst'];
+                                        $ti = $item->details->sum('ti');
+                                        $gst = $item->details->sum('gstValue');
+                                        $qty = $item->details->sum('qty');
+                                        $te = $ti - $gst;
+                                        $totalTi += $ti;
+                                        $totalGst += $gst;
+                                        $totalQty += $qty;
+                                        $totalTe += $te;
+
                                         @endphp
                                             <tr>
-                                                <td>{{ $key+1 }}</td>
-                                                <td>{{ $item['id'] }}</td>
-                                                <td class="text-start">{{ $item['name'] }}</td>
-                                                <td>{{ $item['cnic'] ?? "-"}}</td>
-                                                <td>{{ $item['ntn'] ?? "-" }}</td>
-                                                <td>{{ $item['strn'] ?? "-" }}</td>
-                                                <td class="text-end">{{ number_format($item['gst'],2) }}</td>
+                                                <td>{{ $item->id}}</td>
+                                                <td class="text-start">{{ $item->customer->title }}</td>
+                                                <td >{{ $item->customer->cnic ?? "-" }}</td>
+                                                <td>{{ date("d M Y", strtotime($item->date))}}</td>
+                                                <td class="text-end">{{ number_format($te, 2) }}</td>
+                                                <td class="text-end">{{ number_format($gst, 2) }}</td>
+                                                <td class="text-end">{{ number_format($qty, 2) }}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th colspan="6" class="text-end">Total GST</th>
-                                                <th class="text-end">{{number_format($total, 2)}}</th>
+                                                <th colspan="4" class="text-end">Total</th>
+                                                <th class="text-end">{{number_format($totalTe, 2)}}</th>
+                                                <th class="text-end">{{number_format($totalGst, 2)}}</th>
+                                                <th class="text-end">{{number_format($totalQty, 2)}}</th>
                                             </tr>
                                         </tfoot>
                                     </table><!--end table-->
