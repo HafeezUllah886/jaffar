@@ -53,6 +53,8 @@
                                                 <th scope="col" style="width: 50px;">Inv #</th>
                                                 <th scope="col" class="text-start">Customer Name</th>
                                                 <th scope="col">CNIC #</th>
+                                                <th scope="col">NTN #</th>
+                                                <th scope="col">STRN #</th>
                                                 <th scope="col">Bill Date</th>
                                                 <th scope="col">Tax Exc</th>
                                                 <th scope="col" class="text-end">GST (18%)</th>
@@ -82,6 +84,8 @@
                                                 <td>{{ $item->id}}</td>
                                                 <td class="text-start">{{ $item->customer->title }}</td>
                                                 <td >{{ $item->customer->cnic ?? "-" }}</td>
+                                                <td >{{ $item->customer->ntn ?? "-" }}</td>
+                                                <td >{{ $item->customer->strn ?? "-" }}</td>
                                                 <td>{{ date("d M Y", strtotime($item->date))}}</td>
                                                 <td class="text-end">{{ number_format($te, 2) }}</td>
                                                 <td class="text-end">{{ number_format($gst, 2) }}</td>
@@ -91,7 +95,7 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th colspan="4" class="text-end">Total</th>
+                                                <th colspan="6" class="text-end">Total</th>
                                                 <th class="text-end">{{number_format($totalTe, 2)}}</th>
                                                 <th class="text-end">{{number_format($totalGst, 2)}}</th>
                                                 <th class="text-end">{{number_format($totalQty, 2)}}</th>
