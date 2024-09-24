@@ -202,6 +202,10 @@
                                 <a href="{{ route('reportPurchasesGst') }}" class="nav-link"
                                     data-key="t-basic-elements">Purchases GST</a>
                             </li>
+                            <li class="nav-item">
+                                <a onclick="newWindow('{{ route('reportProductSummary') }}')" class="nav-link"
+                                    data-key="t-basic-elements">Products Summary</a>
+                            </li>
                         </ul>
                     </div>
                 </li>

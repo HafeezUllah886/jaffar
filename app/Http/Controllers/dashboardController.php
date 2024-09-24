@@ -104,8 +104,6 @@ class dashboardController extends Controller
             ->take(5)
             ->get();
 
-
-
             $topProductsArray = [];
 
             foreach($topProducts as $product)
