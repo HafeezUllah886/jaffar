@@ -206,6 +206,14 @@
                                 <a onclick="newWindow('{{ route('reportProductSummary') }}')" class="nav-link"
                                     data-key="t-basic-elements">Products Summary</a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('reportSales') }}" class="nav-link"
+                                    data-key="t-basic-elements">Sales Report</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('reportCashbook') }}" class="nav-link"
+                                    data-key="t-basic-elements">Daily Cash Book</a>
+                            </li>
                         </ul>
                     </div>
                 </li>
