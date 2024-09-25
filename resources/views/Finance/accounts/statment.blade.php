@@ -12,17 +12,10 @@
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
                                         <h1>JABBAR & BROTHERS</h1>
-                                        <div class="mt-sm-5 mt-4">
-                                            <h6 class="text-muted text-uppercase fw-semibold">Address</h6>
-                                            <p class="text-muted mb-1" id="address-details">Quetta, Pakistan</p>
-                                            <p class="text-muted mb-0" id="zip-code"><span>Zip-code:</span> 87300</p>
-                                        </div>
+                                        
                                     </div>
                                     <div class="flex-shrink-0 mt-sm-0 mt-3">
-                                        <h6><span class="text-muted fw-normal">Registration No:</span><span id="legal-register-no">987654</span></h6>
-                                        <h6><span class="text-muted fw-normal">Email:</span><span id="email">test@email.com</span></h6>
-                                        <h6><span class="text-muted fw-normal">Website:</span> <a href="#" class="link-primary" target="_blank" id="website">www.testWeb.com</a></h6>
-                                        <h6 class="mb-0"><span class="text-muted fw-normal">Contact No: </span><span id="contact-no"> +(01) 234 6789</span></h6>
+                                        <h3>Account Statement</h3>
                                     </div>
                                 </div>
                             </div>
