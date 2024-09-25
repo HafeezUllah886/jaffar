@@ -15,7 +15,7 @@ class purchaseGstReportController extends Controller
 
     public function data($from, $to)
     {
-        $purchases = purchase::with('vendor', 'details')->whereBetween('date', [$from, $to])->get();
+       /*  $purchases = purchase::with('vendor', 'details')->whereBetween('date', [$from, $to])->get();
 
         $data = [];
 
@@ -48,6 +48,9 @@ class purchaseGstReportController extends Controller
     }
 
     $groupedData = array_values($groupedData);
-            return view('reports.purchaseGst.details', compact('from', 'to', 'groupedData'));
+            return view('reports.purchaseGst.details', compact('from', 'to', 'groupedData')); */
+            $purchases = purchase::with('vendor', 'details')->whereBetween('date', [$from, $to])->get();
+
+            return view('reports.purchaseGst.details', compact('from', 'to', 'purchases'));
     }
 }

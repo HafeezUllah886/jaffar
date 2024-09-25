@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\reports\profitController;
 use App\Http\Controllers\reports;
+use App\Http\Controllers\reports\balanceSheetReport;
 use App\Http\Controllers\reports\dailycashbookController;
 use App\Http\Controllers\reports\productSummaryReport;
 use App\Http\Controllers\reports\purchaseGstReportController;
@@ -32,4 +33,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/reports/dailycashbook', [dailycashbookController::class, 'index'])->name('reportCashbook');
     Route::get('/reports/dailycashbook/{date}', [dailycashbookController::class, 'details'])->name('reportCashbookData');
+
+    Route::get('/reports/balanceSheet', [balanceSheetReport::class, 'index'])->name('reportBalanceSheet');
+    Route::get('/reports/balanceSheet/{type}/{from}/{to}', [balanceSheetReport::class, 'data'])->name('reportBalanceSheetData');
 });

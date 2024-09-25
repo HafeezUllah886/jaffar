@@ -214,6 +214,10 @@
                                 <a href="{{ route('reportCashbook') }}" class="nav-link"
                                     data-key="t-basic-elements">Daily Cash Book</a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('reportBalanceSheet') }}" class="nav-link"
+                                    data-key="t-basic-elements">Balance Sheet</a>
+                            </li>
                         </ul>
                     </div>
                 </li>
