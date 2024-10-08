@@ -166,19 +166,7 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#salesman" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarApps">
-                        <i class="ri-group-line"></i> <span data-key="t-apps">Salesman</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="salesman">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('salesman.index') }}" class="nav-link" data-key="t-chat">Salesman List</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarReports" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarReports">

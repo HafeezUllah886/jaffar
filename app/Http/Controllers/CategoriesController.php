@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\salesman;
+use App\Models\categories;
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Attributes\BackupGlobals;
 
-class SalesmanController extends Controller
+class CategoriesController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $salesmans = salesman::all();
+        $cats = categories::orderBy('name', 'asc')->get();
 
-        return view('salesmans.index', compact('salesmans'));
+        return view('products.categories', compact('cats'));
     }
 
     /**
@@ -30,15 +31,14 @@ class SalesmanController extends Controller
      */
     public function store(Request $request)
     {
-        salesman::create($request->all());
-
-        return back()->with('success', "Salesman Created");
+        categories::create($request->all());
+        return back()->with('msg', 'Category Created');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(salesman $salesman)
+    public function show(categories $categories)
     {
         //
     }
@@ -46,7 +46,7 @@ class SalesmanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(salesman $salesman)
+    public function edit(categories $categories)
     {
         //
     }
@@ -56,16 +56,14 @@ class SalesmanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $man = salesman::find($id);
-        $man->update($request->all());
-
-        return back()->with('success', 'Salesman Updated');
+        categories::find($id)->update($request->all());
+        return back()->with('msg', 'Category Updated');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(salesman $salesman)
+    public function destroy(categories $categories)
     {
         //
     }

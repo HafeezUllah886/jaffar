@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\categories;
 use App\Models\products;
 use App\Models\units;
 use Illuminate\Http\Request;
@@ -15,7 +16,8 @@ class ProductsController extends Controller
     {
         $items = products::all();
         $units = units::all();
-        return view('products.product', compact('items', 'units'));
+        $cats = categories::orderBy('name', 'asc')->get();
+        return view('products.product', compact('items', 'units', 'cats'));
     }
 
     /**
@@ -37,7 +39,7 @@ class ProductsController extends Controller
             ],
             [
             'name.unique' => "Product already Existing",
-            ]   
+            ]
         );
 
         products::create($request->all());
@@ -72,7 +74,7 @@ class ProductsController extends Controller
             ],
             [
             'name.unique' => "Product already Existing",
-            ]   
+            ]
         );
 
         $product = products::find($id);

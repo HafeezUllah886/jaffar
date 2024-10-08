@@ -2,22 +2,22 @@
 
 namespace Database\Seeders;
 
-use App\Models\salesman;
+use App\Models\categories;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class salesmanSeeder extends Seeder
+class categorySeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $mans = [
-            ['name' => 'Test Salesman I'],
-            ['name' => 'Test Salesman II'],
+        $cats = [
+            ['name' => 'Category 1'],
+            ['name' => 'Category 2'],
         ];
 
-        salesman::insert($mans);
+        categories::insert($cats);
     }
 }

@@ -95,7 +95,7 @@
                                         src="{{ asset('assets/images/users/avatar-1.jpg') }}" alt="Header Avatar">
                                     <span class="text-start ms-xl-2">
                                         <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ auth()->user()->name }}</span>
-                                        <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">{{ auth()->user()->role == 1 ? "Admin" : "Operator" }}</span>
+                                        <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">{{ auth()->user()->role }}</span>
                                     </span>
                                 </span>
                             </button>
