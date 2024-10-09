@@ -134,6 +134,24 @@ return [
         ),
     ],
 
+    'domains' => [
+        'jaffar.test',
+        'jaffar-s.test',
+        'jaffar.diamondquetta.com',
+        'jaffartest.diamondquetta.com',
+        'jaffar.run',
+    ],
+        
+    'databases' => [
+        'jaffar',
+        'test',
+    ],
+
+    'files' => 
+    [
+        '219974',
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Maintenance Mode Driver

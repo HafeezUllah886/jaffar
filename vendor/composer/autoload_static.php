@@ -332,8 +332,8 @@ class ComposerStaticInitda9b7a1dc1dd923105198c572cc7df8d
         ),
         'Spatie\\Ignition\\' => 
         array (
-            0 => __DIR__ . '/..' . '/spatie/ignition/src',
-            1 => __DIR__ . '/..' . '/spatie/error-solutions/legacy/ignition',
+            0 => __DIR__ . '/..' . '/spatie/error-solutions/legacy/ignition',
+            1 => __DIR__ . '/..' . '/spatie/ignition/src',
         ),
         'Spatie\\FlareClient\\' => 
         array (
@@ -369,8 +369,8 @@ class ComposerStaticInitda9b7a1dc1dd923105198c572cc7df8d
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -541,9 +541,12 @@ class ComposerStaticInitda9b7a1dc1dd923105198c572cc7df8d
 
     public static $classMap = array (
         'App\\Http\\Controllers\\AccountsController' => __DIR__ . '/../..' . '/app/Http/Controllers/AccountsController.php',
+        'App\\Http\\Controllers\\CategoriesController' => __DIR__ . '/../..' . '/app/Http/Controllers/CategoriesController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\DepositWithdrawController' => __DIR__ . '/../..' . '/app/Http/Controllers/DepositWithdrawController.php',
-        'App\\Http\\Controllers\\ProductionController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProductionController.php',
+        'App\\Http\\Controllers\\ExpensesController' => __DIR__ . '/../..' . '/app/Http/Controllers/ExpensesController.php',
+        'App\\Http\\Controllers\\OrderbookerController' => __DIR__ . '/../..' . '/app/Http/Controllers/OrderbookerController.php',
+        'App\\Http\\Controllers\\OrdersController' => __DIR__ . '/../..' . '/app/Http/Controllers/OrdersController.php',
         'App\\Http\\Controllers\\ProductsController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProductsController.php',
         'App\\Http\\Controllers\\PurchaseController' => __DIR__ . '/../..' . '/app/Http/Controllers/PurchaseController.php',
         'App\\Http\\Controllers\\PurchasePaymentsController' => __DIR__ . '/../..' . '/app/Http/Controllers/PurchasePaymentsController.php',
@@ -557,11 +560,24 @@ class ComposerStaticInitda9b7a1dc1dd923105198c572cc7df8d
         'App\\Http\\Controllers\\confirmPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/confirmPasswordController.php',
         'App\\Http\\Controllers\\dashboardController' => __DIR__ . '/../..' . '/app/Http/Controllers/dashboardController.php',
         'App\\Http\\Controllers\\profileController' => __DIR__ . '/../..' . '/app/Http/Controllers/profileController.php',
+        'App\\Http\\Controllers\\purchaseGstReportController' => __DIR__ . '/../..' . '/app/Http/Controllers/purchaseGstReportController.php',
+        'App\\Http\\Controllers\\reports\\balanceSheetReport' => __DIR__ . '/../..' . '/app/Http/Controllers/reports/balanceSheetReport.php',
+        'App\\Http\\Controllers\\reports\\dailycashbookController' => __DIR__ . '/../..' . '/app/Http/Controllers/reports/dailycashbookController.php',
+        'App\\Http\\Controllers\\reports\\productSummaryReport' => __DIR__ . '/../..' . '/app/Http/Controllers/reports/productSummaryReport.php',
+        'App\\Http\\Controllers\\reports\\profitController' => __DIR__ . '/../..' . '/app/Http/Controllers/reports/profitController.php',
+        'App\\Http\\Controllers\\reports\\purchaseGstReportController' => __DIR__ . '/../..' . '/app/Http/Controllers/reports/purchaseGstReportController.php',
+        'App\\Http\\Controllers\\reports\\salesGstReportController' => __DIR__ . '/../..' . '/app/Http/Controllers/reports/salesGstReportController.php',
+        'App\\Http\\Controllers\\reports\\salesManReportController' => __DIR__ . '/../..' . '/app/Http/Controllers/reports/salesManReportController.php',
+        'App\\Http\\Controllers\\reports\\salesReportController' => __DIR__ . '/../..' . '/app/Http/Controllers/reports/salesReportController.php',
+        'App\\Http\\Middleware\\adminCheck' => __DIR__ . '/../..' . '/app/Http/Middleware/adminCheck.php',
         'App\\Http\\Middleware\\confirmPassword' => __DIR__ . '/../..' . '/app/Http/Middleware/confirmPassword.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
         'App\\Models\\accounts' => __DIR__ . '/../..' . '/app/Models/accounts.php',
+        'App\\Models\\categories' => __DIR__ . '/../..' . '/app/Models/categories.php',
         'App\\Models\\deposit_withdraw' => __DIR__ . '/../..' . '/app/Models/deposit_withdraw.php',
         'App\\Models\\expenses' => __DIR__ . '/../..' . '/app/Models/expenses.php',
+        'App\\Models\\order_details' => __DIR__ . '/../..' . '/app/Models/order_details.php',
+        'App\\Models\\orders' => __DIR__ . '/../..' . '/app/Models/orders.php',
         'App\\Models\\products' => __DIR__ . '/../..' . '/app/Models/products.php',
         'App\\Models\\purchase' => __DIR__ . '/../..' . '/app/Models/purchase.php',
         'App\\Models\\purchase_details' => __DIR__ . '/../..' . '/app/Models/purchase_details.php',
@@ -695,6 +711,7 @@ class ComposerStaticInitda9b7a1dc1dd923105198c572cc7df8d
         'Database\\Factories\\UserFactory' => __DIR__ . '/../..' . '/database/factories/UserFactory.php',
         'Database\\Seeders\\DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeders/DatabaseSeeder.php',
         'Database\\Seeders\\accountSeeder' => __DIR__ . '/../..' . '/database/seeders/accountSeeder.php',
+        'Database\\Seeders\\categorySeeder' => __DIR__ . '/../..' . '/database/seeders/categorySeeder.php',
         'Database\\Seeders\\productsSeeder' => __DIR__ . '/../..' . '/database/seeders/productsSeeder.php',
         'Database\\Seeders\\units_seeder' => __DIR__ . '/../..' . '/database/seeders/units_seeder.php',
         'Database\\Seeders\\userSeeder' => __DIR__ . '/../..' . '/database/seeders/userSeeder.php',

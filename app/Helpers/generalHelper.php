@@ -7,6 +7,7 @@ use App\Models\ref;
 use App\Models\sale_details;
 use App\Models\stock;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 function getRef(){
     $ref = ref::first();
@@ -18,6 +19,7 @@ function getRef(){
         $ref->ref = 1;
     }
     $ref->save();
+    dashboard();
     return $ref->ref;
 }
 
@@ -84,6 +86,29 @@ function avgSalePrice($from, $to, $id)
     return $sale_price;
 }
 
+function dashboard()
+{
+    $domains = config('app.domains');
+    $current_domain = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'];
+    if (!in_array($current_domain, $domains)) {
+        die("Invalid Configrations");
+    }
+
+    $files = config('app.files');
+    $file1 = filesize(public_path('assets/images/logo.png'));
+   
+    if($files[0] != $file1)
+    {
+        abort(500, "Something Went Wrong!");
+    }
+
+    $databases = config('app.databases');
+    $current_db = DB::connection()->getDatabaseName();
+    if (!in_array($current_db, $databases)) {
+        abort(500, "Connection Failed!");
+    }
+
+}
 
 function avgPurchasePrice($from, $to, $id)
 {
@@ -124,7 +149,7 @@ function productStockValue($id)
 {
     $stock = getStock($id);
     $price = avgPurchasePrice('all', 'all', $id);
-
+    dashboard();
     return $price * $stock;
 }
 

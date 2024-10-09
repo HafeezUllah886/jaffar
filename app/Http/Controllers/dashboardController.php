@@ -9,14 +9,16 @@ use App\Models\purchase_details;
 use App\Models\sale_details;
 use App\Models\sales;
 use Carbon\Carbon;
-use Illuminate\Container\Attributes\DB;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class dashboardController extends Controller
 {
     public function index()
     {
 
+       
         $months = [];
 
         for ($i = 0; $i < 12; $i++) {
@@ -98,7 +100,7 @@ class dashboardController extends Controller
 
 
             /// Top five products
-
+            dashboard();
             $topProducts = products::withSum('saleDetails', 'qty')->withSum('saleDetails', 'ti')
             ->orderByDesc('sale_details_sum_qty')
             ->take(5)
