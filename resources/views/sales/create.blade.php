@@ -60,10 +60,10 @@
                             </div>
                             <div class="col-2">
                                 <div class="form-group">
-                                    <label for="salesman">Salesman</label>
-                                    <select name="salesmanID" id="salesman" class="selectize1">
-                                        @foreach ($salesmans as $man)
-                                            <option value="{{ $man->id }}">{{ $man->name }}</option>
+                                    <label for="orderbooker">Order Booker</label>
+                                    <select name="orderbookerID" id="orderbooker" class="selectize1">
+                                        @foreach ($orderbookers as $booker)
+                                            <option value="{{ $booker->id }}">{{ $booker->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>

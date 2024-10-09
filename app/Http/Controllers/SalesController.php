@@ -11,6 +11,7 @@ use App\Models\salesman;
 use App\Models\stock;
 use App\Models\transactions;
 use App\Models\units;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -40,8 +41,8 @@ class SalesController extends Controller
         $units = units::all();
         $customers = accounts::customer()->get();
         $accounts = accounts::business()->get();
-        $salesmans = salesman::all();
-        return view('sales.create', compact('products', 'units', 'customers', 'accounts', 'salesmans'));
+        $orderbookers = User::where('role', 'Orderbooker')->get();
+        return view('sales.create', compact('products', 'units', 'customers', 'accounts', 'orderbookers'));
     }
 
     /**
