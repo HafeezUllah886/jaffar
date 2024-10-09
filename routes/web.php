@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\dashboardController;
+use App\Http\Controllers\OrderbookerController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\SalesmanController;
 use App\Http\Controllers\UnitsController;
@@ -21,7 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('units', UnitsController::class);
     Route::resource('categories', CategoriesController::class);
     Route::resource('product', ProductsController::class);
-
+   
 });
 
 
