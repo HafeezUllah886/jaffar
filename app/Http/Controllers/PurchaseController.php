@@ -58,6 +58,7 @@ class PurchaseController extends Controller
                   'notes'           => $request->notes,
                   'discount'        => $request->discount,
                   'fright'          => $request->fright,
+                  'fright1'          => $request->fright1,
                   'wh'              => $request->whTax,
                   'inv'             => $request->inv,
                   'refID'           => $ref,
@@ -91,8 +92,6 @@ class PurchaseController extends Controller
                         'amount'        => $amount,
                         'date'          => $request->date,
                         'bonus'         => $request->bonus[$key],
-                        'expDate'       => $request->expDate[$key],
-                        'batch'         => $request->batch[$key],
                         'refID'         => $ref,
                     ]
                 );
@@ -110,7 +109,7 @@ class PurchaseController extends Controller
 
             $whTax = $total * $request->whTax / 100;
 
-            $net = ($total + $whTax) - ($request->discount + $request->fright);
+            $net = ($total + $whTax + $request->fright1) - ($request->discount + $request->fright);
 
             $purchase->update(
                 [
@@ -203,6 +202,7 @@ class PurchaseController extends Controller
                     'notes'           => $request->notes,
                     'discount'        => $request->discount,
                     'fright'          => $request->fright,
+                    'fright1'          => $request->fright1,
                     'wh'              => $request->whTax,
                     'inv'             => $request->inv,
                   ]
@@ -236,8 +236,6 @@ class PurchaseController extends Controller
                         'amount'        => $amount,
                         'date'          => $request->date,
                         'bonus'         => $request->bonus[$key],
-                        'expDate'       => $request->expDate[$key],
-                        'batch'         => $request->batch[$key],
                         'refID'         => $ref,
                     ]
                 );
@@ -255,7 +253,7 @@ class PurchaseController extends Controller
 
             $whTax = $total * $request->whTax / 100;
 
-            $net = ($total + $whTax) - ($request->discount + $request->fright);
+            $net = ($total + $whTax + $request->fright1) - ($request->discount + $request->fright);
 
             $purchase->update(
                 [

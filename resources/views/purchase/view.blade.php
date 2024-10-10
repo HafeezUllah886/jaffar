@@ -118,6 +118,7 @@
                                             $whTax = $purchase->whValue;
                                             $discount = $purchase->discount;
                                             $fright = $purchase->fright;
+                                            $fright1 = $purchase->fright1;
                                             $gross = ($amount + $whTax) - $discount;
                                             $net = $purchase->net;
                                         @endphp
@@ -145,6 +146,10 @@
                                             <tr>
                                                 <th class="text-end p-1 m-1">Fright (-) </th>
                                                 <th class="text-end p-1 m-1">{{number_format($fright, 2)}}</th>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-end p-1 m-1">Fright (+) </th>
+                                                <th class="text-end p-1 m-1">{{number_format($fright1, 2)}}</th>
                                             </tr>
                                             <tr>
                                                 <th class="text-end p-1 m-1">Net Bill </th>

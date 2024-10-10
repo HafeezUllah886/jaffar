@@ -34,7 +34,7 @@
                                         <h3>Sales Tax Invoice</h3>
                                         <p> <span class="text-muted text-uppercase fw-semibold mt-0 m-0 p-0">Inv # </span><span class="fs-14 m-0 p-0">{{$sale->id}}</span></p>
                                         <p> <span class="text-muted text-uppercase fw-semibold mt-0 m-0 p-0">Date : </span><span class="fs-14 m-0 p-0">{{date("d M Y" ,strtotime($sale->date))}}</span></p>
-                                        <p> <span class="text-muted text-uppercase fw-semibold mt-0 m-0 p-0">Salesman : </span><span class="fs-14 m-0 p-0">{{$sale->salesman->name}}</span></p>
+                                        <p> <span class="text-muted text-uppercase fw-semibold mt-0 m-0 p-0">Order Booker : </span><span class="fs-14 m-0 p-0">{{$sale->orderbooker->name}}</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -116,6 +116,10 @@
                                             <tr class="m-0 p-0">
                                                 <th colspan="10" class="text-end p-0 m-0">Fright (-)</th>
                                                 <th class="text-end p-0 m-0 ">{{number_format($sale->fright,2)}}</th>
+                                            </tr>
+                                            <tr class="m-0 p-0">
+                                                <th colspan="10" class="text-end p-0 m-0">Fright (+)</th>
+                                                <th class="text-end p-0 m-0 ">{{number_format($sale->fright1,2)}}</th>
                                             </tr>
                                             <tr class="m-0 p-0">
                                                 <th colspan="10" class="text-end p-0 m-0">Net Bill</th>

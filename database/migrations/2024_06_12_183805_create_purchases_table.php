@@ -19,6 +19,7 @@ return new class extends Migration
             $table->float('whValue')->default(0);
             $table->float('discount')->default(0);
             $table->float('fright')->default(0);
+            $table->float('fright1')->default(0);
             $table->text('notes')->nullable();
             $table->string("inv")->nullable();
             $table->float('net')->default(0);

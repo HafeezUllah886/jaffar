@@ -45,8 +45,6 @@
                                 <table class="table table-striped table-hover">
                                     <thead>
                                         <th width="30%">Item</th>
-                                        <th class="text-center">Batch No.</th>
-                                        <th class="text-center">Exp Date</th>
                                         <th class="text-center">P-Price</th>
                                         <th class="text-center">S-Price</th>
                                         <th class="text-center">WS Price</th>
@@ -64,8 +62,6 @@
                                         @endphp
                                         <tr id="row_{{$id}}">
                                             <td class="no-padding">{{$product->product->code . " | " . $product->product->name}}</td>
-                                            <td class="no-padding"><input type="text" name="batch[]" value="{{$product->batch}}" class="form-control text-center no-padding" id="batch_{{$id}}"></td>
-                                            <td class="no-padding"><input type="date" name="expDate[]" value="{{$product->expDate}}" class="form-control text-center no-padding" id="expDate_{{$id}}"></td>
                                             <td class="no-padding"><input type="number" name="pprice[]" oninput="updateChanges({{$id}})" required step="any" value="{{$product->pprice}}" min="1" class="form-control text-center no-padding" id="pprice_{{$id}}"></td>
                                             <td class="no-padding"><input type="number" name="price[]" required step="any" value="{{$product->price}}" min="0" class="form-control text-center no-padding" id="price_{{$id}}"></td>
                                             <td class="no-padding"><input type="number" name="wsprice[]" required step="any" value="{{$product->wsprice}}" min="1" class="form-control text-center no-padding" id="wsprice_{{$id}}"></td>
@@ -81,7 +77,7 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th colspan="8" class="text-end">Total</th>
+                                            <th colspan="6" class="text-end">Total</th>
 
                                             <th class="text-end" id="totalGst">0.00</th>
                                             <th class="text-end" id="totalAmount">0.00</th>
@@ -96,16 +92,22 @@
                                     <input type="text" name="inv" value="{{$purchase->inv}}" id="inv" class="form-control">
                                 </div>
                             </div>
-                            <div class="col-3">
+                            <div class="col-2">
                                 <div class="form-group">
                                     <label for="discount">Discount</label>
                                     <input type="number" name="discount" value="{{$purchase->discount}}" oninput="updateTotal()" id="discount" step="any" value="0" class="form-control">
                                 </div>
                             </div>
-                            <div class="col-3">
+                            <div class="col-2">
                                 <div class="form-group">
-                                    <label for="fright">Fright</label>
+                                    <label for="fright">Fright (-)</label>
                                     <input type="number" name="fright" id="fright" value="{{$purchase->fright}}" oninput="updateTotal()" min="0" step="any" value="0" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label for="fright1">Fright (+)</label>
+                                    <input type="number" name="fright1" id="fright1" value="{{$purchase->fright1}}" oninput="updateTotal()" min="0" step="any" value="0" class="form-control">
                                 </div>
                             </div>
                             <div class="col-2">
@@ -282,13 +284,14 @@
 
             var discount = parseFloat($("#discount").val());
             var fright = parseFloat($("#fright").val());
+            var fright1 = parseFloat($("#fright1").val());
             var whTax = parseFloat($("#whTax").val());
 
             var taxValue = total * whTax / 100;
 
             $(".whTaxValue").html(taxValue.toFixed(2));
 
-            var net = (total + taxValue) - (discount + fright);
+            var net = (total + taxValue + fright1) - (discount + fright);
 
             $("#net").val(net.toFixed(2));
         }

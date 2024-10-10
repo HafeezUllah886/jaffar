@@ -67,8 +67,9 @@ class SalesController extends Controller
                   'notes'       => $request->notes,
                   'discount'    => $request->discount1,
                   'fright'      => $request->fright,
+                  'fright1'      => $request->fright1,
                   'wh'          => $request->whTax,
-                  'salesmanID'  => $request->salesmanID,
+                  'orderbookerID'  => $request->orderbookerID,
                   'refID'       => $ref,
                 ]
             );
@@ -104,7 +105,7 @@ class SalesController extends Controller
 
             $whTax = $total * $request->whTax / 100;
 
-            $net = ($total + $whTax) - ($request->discount1 + $request->fright);
+            $net = ($total + $whTax + $request->fright1) - ($request->discount1 + $request->fright);
 
             $sale->update(
                 [
@@ -163,8 +164,8 @@ class SalesController extends Controller
         $units = units::all();
         $customers = accounts::customer()->get();
         $accounts = accounts::business()->get();
-        $salesmans = salesman::all();
-        return view('sales.edit', compact('products', 'units', 'customers', 'accounts', 'sale', 'salesmans'));
+        $orderbookers = User::where('role', 'Orderbooker')->get();
+        return view('sales.edit', compact('products', 'units', 'customers', 'accounts', 'sale', 'orderbookers'));
     }
 
     /**
@@ -195,6 +196,7 @@ class SalesController extends Controller
                     'notes'       => $request->notes,
                     'discount'    => $request->discount1,
                     'fright'      => $request->fright,
+                    'fright1'      => $request->fright1,
                     'wh'          => $request->whTax,
                     'salesmanID'  => $request->salesmanID,
                     'refID'       => $ref,
@@ -232,7 +234,7 @@ class SalesController extends Controller
 
             $whTax = $total * $request->whTax / 100;
 
-            $net = ($total + $whTax) - ($request->discount1 + $request->fright);
+            $net = ($total + $whTax + $request->fright1) - ($request->discount1 + $request->fright);
 
             $sale->update(
                 [

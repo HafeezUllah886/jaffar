@@ -26,8 +26,8 @@ class sales extends Model
         return $this->hasMany(sale_payments::class, 'salesID');
     }
 
-    public function salesman()
+    public function orderbooker()
     {
-        return $this->belongsTo(salesman::class, 'salesmanID');
+        return $this->belongsTo(User::class, 'orderbookerID');
     }
 }

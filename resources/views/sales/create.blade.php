@@ -74,13 +74,19 @@
                                     <input type="number" name="discount1" oninput="updateTotal()" id="discount" step="any" value="0" class="form-control">
                                 </div>
                             </div>
-                            <div class="col-3">
+                            <div class="col-2">
                                 <div class="form-group">
-                                    <label for="fright">Fright</label>
+                                    <label for="fright">Fright(-)</label>
                                     <input type="number" name="fright" id="fright" oninput="updateTotal()" min="0" step="any" value="0" class="form-control">
                                 </div>
                             </div>
-                            <div class="col-3">
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label for="fright1">Fright(+)</label>
+                                    <input type="number" name="fright1" id="fright1" oninput="updateTotal()" min="0" step="any" value="0" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-2">
                                 <div class="form-group">
                                     <label for="whTax">WH Tax</label>
                                     <div class="input-group mb-3">
@@ -278,13 +284,14 @@
 
             var discount = parseFloat($("#discount").val());
             var fright = parseFloat($("#fright").val());
+            var fright1 = parseFloat($("#fright1").val());
             var whTax = parseFloat($("#whTax").val());
 
             var taxValue = totalTI * whTax / 100;
 
             $(".whTaxValue").html(taxValue.toFixed(2));
 
-            var net = (totalTI + taxValue) - (discount + fright);
+            var net = (totalTI + taxValue + fright1) - (discount + fright);
 
             $("#net").val(net.toFixed(2));
         }
