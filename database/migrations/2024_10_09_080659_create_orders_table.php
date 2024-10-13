@@ -16,13 +16,9 @@ return new class extends Migration
             $table->foreignId('customerID')->constrained('accounts', 'id');
             $table->foreignId('orderbookerID')->constrained('users', 'id');
             $table->date('date');
-            $table->float("wh")->default(0);
-            $table->float('whValue')->default(0);
-            $table->float('discount')->default(0);
-            $table->float('fright')->default(0);
             $table->float('net')->default(0);
+            $table->string('status')->default('Pending');
             $table->text('notes')->nullable();
-            $table->bigInteger('refID');
             $table->timestamps();
         });
     }

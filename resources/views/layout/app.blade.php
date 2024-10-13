@@ -238,6 +238,14 @@
 
         window.open(route, '_blank', `width=${width},height=${height}`);
     }
+
+    function newWindowMobile(route)
+    {
+        var width = 412;
+        var height = screen.height;
+
+        window.open(route, '_blank', `width=${width},height=${height}`);
+    }
 </script>
 
     @yield('page-js')

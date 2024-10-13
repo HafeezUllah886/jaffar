@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\accounts;
 use App\Models\orders;
+use App\Models\products;
+use App\Models\units;
 use Illuminate\Http\Request;
 
 class OrdersController extends Controller
@@ -12,7 +15,16 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        //
+        if(Auth()->user()->role == "Admin")
+        {
+            $orders = orders::orderBy('id', 'desc')->get();
+        }
+        else
+        {
+            $orders = orders::where('orderbookerID', auth()->user()->id)->orderBy('id', 'desc')->get();
+        }
+
+        return view('orders.index', compact('orders'));
     }
 
     /**
@@ -20,7 +32,10 @@ class OrdersController extends Controller
      */
     public function create()
     {
-        //
+        $products = products::all();
+        $customers = accounts::Customer()->get();
+        $units = units::all();
+        return view('orders.create', compact('products', 'customers', 'units'));
     }
 
     /**

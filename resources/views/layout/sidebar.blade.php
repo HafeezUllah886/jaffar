@@ -79,6 +79,11 @@
                     </div>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link menu-link" href="{{route('orders.index')}}">
+                        <i class="ri-shopping-cart-fill"></i><span data-key="t-apps">Orders</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link menu-link" href="#purchase" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarApps">
                         <i class="ri-shopping-cart-line"></i><span data-key="t-apps">Purchase</span>
@@ -210,17 +215,9 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#orderbooker" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarApps">
+                    <a class="nav-link menu-link" href="{{ route('orderbooker.index') }}" >
                         <i class="ri-apps-2-line"></i> <span data-key="t-apps">Orderbookers</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="orderbooker">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('orderbooker.index') }}" class="nav-link" data-key="t-chat">List </a>
-                            </li>
-                        </ul>
-                    </div>
                 </li>
             </ul>
         </div>
