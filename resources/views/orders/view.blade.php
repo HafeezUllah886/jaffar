@@ -21,20 +21,20 @@
                                                 </div>
                                                 <div class="col-6">
                                                     <p class="text-muted mb-2 text-uppercase fw-semibold">Customer</p>
-                                                    <h5 class="fs-14 mb-0"> <span class="text-muted">M/S :</span> {{$sale->customer->title}}</h5>
-                                                    <h5 class="fs-14 mb-0"> <span class="text-muted">CNIC :</span> {{$sale->customer->cnic ?? "NA"}} | <span class="text-muted">Contact :</span> {{$sale->customer->contact ?? "NA"}}</h5>
-                                                    <h5 class="fs-14 mb-0"> <span class="text-muted">NTN #</span> {{$sale->customer->ntn ?? "NA"}} | <span class="text-muted">STRN #</span> {{$sale->customer->strn ?? "NA"}}</h5>
-                                                    <h5 class="fs-14 mb-0"> <span class="text-muted">Address :</span> {{$sale->customer->address ?? "NA"}}</h5>
+                                                    <h5 class="fs-14 mb-0"> <span class="text-muted">M/S :</span> {{$order->customer->title}}</h5>
+                                                    <h5 class="fs-14 mb-0"> <span class="text-muted">CNIC :</span> {{$order->customer->cnic ?? "NA"}} | <span class="text-muted">Contact :</span> {{$order->customer->contact ?? "NA"}}</h5>
+                                                    <h5 class="fs-14 mb-0"> <span class="text-muted">NTN #</span> {{$order->customer->ntn ?? "NA"}} | <span class="text-muted">STRN #</span> {{$order->customer->strn ?? "NA"}}</h5>
+                                                    <h5 class="fs-14 mb-0"> <span class="text-muted">Address :</span> {{$order->customer->address ?? "NA"}}</h5>
                                                 </div>
                                             </div>
 
                                         </div>
                                     </div>
                                     <div class="flex-shrink-0 mt-sm-0 mt-3">
-                                        <h3>Sales Tax Invoice</h3>
-                                        <p> <span class="text-muted text-uppercase fw-semibold mt-0 m-0 p-0">Inv # </span><span class="fs-14 m-0 p-0">{{$sale->id}}</span></p>
-                                        <p> <span class="text-muted text-uppercase fw-semibold mt-0 m-0 p-0">Date : </span><span class="fs-14 m-0 p-0">{{date("d M Y" ,strtotime($sale->date))}}</span></p>
-                                        <p> <span class="text-muted text-uppercase fw-semibold mt-0 m-0 p-0">Order Booker : </span><span class="fs-14 m-0 p-0">{{$sale->orderbooker->name}}</span></p>
+                                        <h3>Order Receipt</h3>
+                                        <p> <span class="text-muted text-uppercase fw-semibold mt-0 m-0 p-0">Order # </span><span class="fs-14 m-0 p-0">{{$order->id}}</span></p>
+                                        <p> <span class="text-muted text-uppercase fw-semibold mt-0 m-0 p-0">Date : </span><span class="fs-14 m-0 p-0">{{date("d M Y" ,strtotime($order->date))}}</span></p>
+                                        <p> <span class="text-muted text-uppercase fw-semibold mt-0 m-0 p-0">Order Booker : </span><span class="fs-14 m-0 p-0">{{$order->orderbooker->name}}</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -50,104 +50,36 @@
                                                 <th scope="col" class="text-start">Product</th>
                                                 <th scope="col" class="text-start">Unit</th>
                                                 <th scope="col" class="text-end">Qty</th>
-                                                <th scope="col" class="text-end">T-Qty</th>
                                                 <th scope="col" class="text-end">Price</th>
                                                 <th scope="col" class="text-end">Discount</th>
-                                                <th scope="col" class="text-end">Tax (Inc)</th>
-                                                <th scope="col" class="text-end">RP</th>
-                                                <th scope="col" class="text-end">GST%</th>
-                                                <th scope="col" class="text-end">GST</th>
+                                                <th scope="col" class="text-end">Amount</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="products-list">
-                                           @foreach ($sale->details as $key => $product)
+                                        <tbody>
+                                           @foreach ($order->details as $key => $product)
                                                <tr class="border-1 border-dark">
                                                 <td class="m-1 p-1 border-1 border-dark">{{$key+1}}</td>
                                                 <td class="text-start m-1 p-1 border-1 border-dark">{{$product->product->name}}</td>
                                                 <td class="text-start m-1 p-1 border-1 border-dark">{{$product->unit->name}}</td>
                                                 <td class="text-end m-1 p-1 border-1 border-dark">{{number_format($product->qty / $product->unitValue)}}</td>
-                                                <td class="text-end m-1 p-1 border-1 border-dark">{{number_format($product->qty)}}</td>
                                                 <td class="text-end m-1 p-1 border-1 border-dark">{{number_format($product->price, 2)}}</td>
                                                 <td class="text-end m-1 p-1 border-1 border-dark">{{number_format($product->discount, 2)}}</td>
-                                                <td class="text-end m-1 p-1 border-1 border-dark">{{number_format($product->ti, 2)}}</td>
-                                                <td class="text-end m-1 p-1 border-1 border-dark">{{number_format($product->tp, 2)}}</td>
-                                                <td class="text-end m-1 p-1 border-1 border-dark">{{number_format($product->gst, 2)}}</td>
-                                                <td class="text-end m-1 p-1 border-1 border-dark">{{number_format($product->gstValue, 2)}}</td>
+                                                <td class="text-end m-1 p-1 border-1 border-dark">{{number_format($product->amount, 2)}}</td>
                                                </tr>
                                            @endforeach
                                         </tbody>
                                         <tfoot>
-                                            @php
-                                                $totalDisc = $sale->details->sum('discount');
-                                                $totalTi = $sale->details->sum('ti');
-                                                $totalGstVal = $sale->details->sum('gstValue');
-
-                                                $due = $sale->net - $sale->payments->sum('amount');
-                                                $paid = $sale->payments->sum('amount');
-                                            @endphp
-                                            <tr class="border-1 border-dark">
-                                                <th colspan="6" class="text-end">Total</th>
-                                                <th class="text-end">{{number_format($totalDisc,2)}}</th>
-                                                <th class="text-end">{{number_format($totalTi,2)}}</th>
-                                                <th class="text-end"></th>
-                                                <th class="text-end"></th>
-                                                <th class="text-end">{{number_format($totalGstVal,2)}}</th>
-                                            </tr>
                                             <tr class="m-0 p-0">
-                                                <th colspan="10" class="text-end p-0 m-0">Tax Exclusive</th>
-                                                <th class="text-end p-0 m-0">{{number_format($totalTi - $totalGstVal,2)}}</th>
-                                            </tr>
-                                            <tr class="m-0 p-0">
-                                                <th colspan="10" class="text-end p-0 m-0">Sales Tax</th>
-                                                <th class="text-end p-0 m-0">{{number_format($totalGstVal,2)}}</th>
-                                            </tr>
-                                            <tr class="m-0 p-0">
-                                                <th colspan="10" class="text-end p-0 m-0">Gross</th>
-                                                <th class="text-end p-0 m-0 border-2 border-start-0 border-end-0 border-dark">{{number_format($totalTi,2)}}</th>
-                                            </tr>
-                                            <tr class="m-0 p-0">
-                                                <th colspan="10" class="text-end p-0 m-0">WH Tax {{$sale->wh}}% (+)</th>
-                                                <th class="text-end p-0 m-0">{{number_format($sale->whValue,2)}}</th>
-                                            </tr>
-                                            <tr class="m-0 p-0">
-                                                <th colspan="10" class="text-end p-0 m-0">Discount (-)</th>
-                                                <th class="text-end p-0 m-0 ">{{number_format($sale->discount,2)}}</th>
-                                            </tr>
-                                            <tr class="m-0 p-0">
-                                                <th colspan="10" class="text-end p-0 m-0">Fright (-)</th>
-                                                <th class="text-end p-0 m-0 ">{{number_format($sale->fright,2)}}</th>
-                                            </tr>
-                                            <tr class="m-0 p-0">
-                                                <th colspan="10" class="text-end p-0 m-0">Fright (+)</th>
-                                                <th class="text-end p-0 m-0 ">{{number_format($sale->fright1,2)}}</th>
-                                            </tr>
-                                            <tr class="m-0 p-0">
-                                                <th colspan="10" class="text-end p-0 m-0">Net Bill</th>
-                                                <th class="text-end p-0 m-0 border-2 border-start-0 border-end-0 border-dark">{{number_format($sale->net,2)}}</th>
-                                            </tr>
-                                            <tr class="m-0 p-0">
-                                                <th colspan="10" class="text-end p-0 m-0">Paid</th>
-                                                <th class="text-end p-0 m-0">{{number_format($paid,2)}}</th>
-                                            </tr>
-                                            <tr class="m-0 p-0">
-                                                <th colspan="10" class="text-end p-0 m-0">Due</th>
-                                                <th class="text-end p-0 m-0">{{number_format($due,2)}}</th>
-                                            </tr>
-                                            <tr class="m-0 p-0">
-                                                <th colspan="10" class="text-end p-0 m-0">Previous Balance</th>
-                                                <th class="text-end p-0 m-0">{{number_format(spotBalanceBefore($sale->customerID, $sale->refID),2)}}</th>
-                                            </tr>
-                                            <tr class="m-0 p-0">
-                                                <th colspan="10" class="text-end p-0 m-0">Net Account Balance</th>
-                                                <th class="text-end p-0 m-0">{{number_format(spotBalance($sale->customerID, $sale->refID),2)}}</th>
+                                                <th colspan="6" class="text-end p-0 m-0">Total Order</th>
+                                                <th class="text-end p-0 m-0">{{number_format($order->details->sum('amount'),2)}}</th>
                                             </tr>
                                         </tfoot>
                                     </table><!--end table-->
                                 </div>
                             </div>
                             <div class="card-footer">
-                                @if ($sale->notes != "")
-                                <p><strong>Notes: </strong>{{$sale->notes}}</p>
+                                @if ($order->notes != "")
+                                <p><strong>Notes: </strong>{{$order->notes}}</p>
                                 @endif
                                <p class="text-center urdu"><strong>نوٹ: مال آپ کے آرڈر کے مطابق بھیجا جا رہا ہے۔ مال ایکسپائر یا خراب ہونے کی صورت میں واپس نہیں لیا جائے گا۔ دکاندار سیلزمین کے ساتھ کسی قسم کے ذاتی لین دین کا ذمہ دار خود ہوگا۔</strong></p>
 

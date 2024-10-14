@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\accounts;
+use App\Models\order_details;
 use App\Models\orders;
 use App\Models\products;
 use App\Models\units;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrdersController extends Controller
 {
@@ -43,15 +46,73 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try
+        {
+            if($request->isNotFilled('id'))
+            {
+                throw new Exception('Please Select Atleast One Product');
+            }
+
+            DB::beginTransaction();
+            $ref = getRef();
+            $order = orders::create(
+                [
+                  'orderbookerID'  => auth()->user()->id,
+                  'customerID'  => $request->customerID,
+                  'date'        => $request->date,
+                  'notes'       => $request->notes,
+                ]
+            );
+
+            $ids = $request->id;
+
+            $total = 0;
+            foreach($ids as $key => $id)
+            {
+                $unit = units::find($request->unit[$key]);
+                $product = products::find($id);
+                $qty = $request->qty[$key] * $unit->value;
+                $price = $product->price - $product->discount;
+                $amount = $qty * $price;
+                $total += $amount;
+                order_details::create(
+                    [
+                        'orderID'       => $order->id,
+                        'productID'     => $id,
+                        'price'         => $product->price,
+                        'qty'           => $qty,
+                        'discount'      => $product->discount,
+                        'amount'        => $amount,
+                        'date'          => $request->date,
+                        'unitID'        => $unit->id,
+                        'unitValue'     => $unit->value,
+                    ]
+                );
+            }
+
+            $order->update(
+                [
+                    'net' => $total,
+                ]
+            );
+
+           DB::commit();
+            return to_route('orders.show', $order->id)->with('success', "Order Created");
+
+        }
+        catch(\Exception $e)
+        {
+            DB::rollback();
+            return back()->with('error', $e->getMessage());
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(orders $orders)
+    public function show(orders $order)
     {
-        //
+        return view('orders.view',compact('order'));
     }
 
     /**

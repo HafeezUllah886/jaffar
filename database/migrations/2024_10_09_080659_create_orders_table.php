@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('customerID')->constrained('accounts', 'id');
             $table->foreignId('orderbookerID')->constrained('users', 'id');
             $table->date('date');
+            $table->integer('saleID')->nullable();
             $table->float('net')->default(0);
             $table->string('status')->default('Pending');
             $table->text('notes')->nullable();

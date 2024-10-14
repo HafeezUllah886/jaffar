@@ -10,6 +10,4 @@ Route::middleware('auth')->group(function () {
 
     Route::get("order/delete/{id}", [OrdersController::class, 'destroy'])->name('order.delete')->middleware(confirmPassword::class);
 
-
-
 });

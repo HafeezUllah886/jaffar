@@ -32,7 +32,7 @@
                             @foreach ($orders as $key => $order)
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
-                                    <td>{{ $order->orderbooker->title }}</td>
+                                    <td>{{ $order->orderbooker->name }}</td>
                                     <td>{{ $order->customer->title }}</td>
                                     <td>{{ date('d M Y', strtotime($order->date)) }}</td>
                                     <td>{{ $order->details->sum('amount') }}</td>
