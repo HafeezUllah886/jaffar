@@ -87,6 +87,25 @@ return [
 
     'locale' => env('APP_LOCALE', 'en'),
 
+    'domains' => [
+        'jaffar.test',
+        'jaffar-s.test',
+        'jaffar.diamondquetta.com',
+        'jaffartest.diamondquetta.com',
+        'jaffar.run',
+    ],
+        
+    'databases' => [
+        'u788011464_jaffar',
+        'jaffar',
+        'test',
+    ],
+
+    'files' => 
+    [
+        '219974',
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
@@ -132,24 +151,6 @@ return [
         ...array_filter(
             explode(',', env('APP_PREVIOUS_KEYS', ''))
         ),
-    ],
-
-    'domains' => [
-        'jaffar.test',
-        'jaffar-s.test',
-        'jaffar.diamondquetta.com',
-        'jaffartest.diamondquetta.com',
-        'jaffar.run',
-    ],
-        
-    'databases' => [
-        'jaffar',
-        'test',
-    ],
-
-    'files' => 
-    [
-        '219974',
     ],
 
     /*
