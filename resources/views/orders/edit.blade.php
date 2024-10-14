@@ -3,7 +3,7 @@
 <script>
     var existingProducts = [];
 
-    @foreach ($sale->details as $product)
+    @foreach ($order->details as $product)
         @php
             $productID = $product->productID;
         @endphp
@@ -17,16 +17,18 @@
                     <div class="col-12">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-6"><h3> Edit Sale </h3></div>
-                                <div class="col-6 d-flex flex-row-reverse"><button onclick="window.close()" class="btn btn-danger">Close</button></div>
+                                <div class="col-6">
+                                    <h3> Edit Order </h3>
+                                </div>
+                                <div class="col-6 d-flex flex-row-reverse"><button onclick="window.close()"
+                                        class="btn btn-danger">Close</button></div>
                             </div>
                         </div>
                     </div>
                 </div><!--end row-->
                 <div class="card-body">
-                    <form action="{{ route('sale.update', $sale->id) }}" method="post">
+                    <form action="{{ route('orders.store') }}" method="post">
                         @csrf
-                        @method('PUT')
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
@@ -39,169 +41,44 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-12">
-
-                                <table class="table table-striped table-hover">
-                                    <thead>
-                                        <th width="20%">Product</th>
-                                        <th width="10%" class="text-center">Unit</th>
-                                        <th class="text-center">Qty</th>
-                                        <th class="text-center">Price</th>
-                                        <th class="text-center">Disc</th>
-                                        <th class="text-center">Tax Inc</th>
-                                        <th class="text-center">RP</th>
-                                        <th class="text-center">GST%</th>
-                                        <th class="text-center">GST</th>
-                                        <th></th>
-                                    </thead>
-                                    <tbody id="products_list">
-                                        @foreach ($sale->details as $product)
-                                        @php
-                                            $id = $product->productID;
-                                            $cr = App\Models\stock::where('productID', $product->productID)->sum('cr');
-                                            $db = App\Models\stock::where('productID', $product->productID)->sum('db');
-                                            $balance = $cr - $db;
-                                        @endphp
-                                        <tr id="row_{{ $id }}">
-                                            <td class="no-padding">{{ $product->product->name }}</td>
-                                            <td class="no-padding">
-                                                <select name="unit[]" class="form-control text-center" onchange="updateChanges({{ $id }})" id="unit_{{ $id }}">
-                                                    @foreach ($units as $unit)
-                                                        @php
-                                                            if($unit->id == $product->unitID)
-                                                            {
-                                                                $new_balance = ($balance + $product->qty) / $product->unitValue;
-                                                                $unitValue = $product->unitValue;
-                                                            }
-                                                        @endphp
-                                                        <option data-unit="{{ $unit->value }}" value="{{ $unit->id }}" @selected($unit->id == $product->unitID)>{{ $unit->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </td>
-                                            <td class="no-padding">
-                                                <div class="input-group">
-                                                    <span class="input-group-text" id="stockValue_{{ $id }}">{{ $new_balance }}</span>
-                                                    <input type="number" name="qty[]" oninput="updateChanges({{ $id }})" min="0.1"
-                                                    required step="any" value="{{$product->qty / $unitValue}}" class="form-control text-center" id="qty_{{ $id }}">
-                                                </div>
-                                            </td>
-                                            <td class="no-padding"><input type="number" name="price[]" oninput="updateChanges({{ $id }})" required step="any" value="{{ $product->price }}" min="1" class="form-control text-center" id="price_{{ $id }}"></td>
-                                            <td class="no-padding"><input type="number" name="discount[]" oninput="updateChanges({{ $id }})" required step="any" value="{{$product->discount}}" min="0" class="form-control text-center" id="discount_{{ $id }}"></td>
-                                            <td class="no-padding"><input type="number" name="ti[]" required step="any" value="{{$product->ti}}" min="0" class="form-control text-center" id="ti_{{ $id }}"></td>
-                                            <td class="no-padding"><input type="number" name="tp[]" oninput="updateChanges({{ $id }})" required step="any" value="{{$product->tp}}" min="0" class="form-control text-center" id="tp_{{ $id }}"></td>
-                                            <td class="no-padding"><input type="number" name="gst[]" oninput="updateChanges({{ $id }})" required step="any" value="{{$product->gst}}" min="0" class="form-control text-center" id="gst_{{ $id }}"></td>
-                                            <td class="no-padding"><input type="number" name="gstValue[]" required step="any" value="{{$product->gstValue}}" min="0" class="form-control text-center" id="gstValue_{{ $id }}"></td>
-                                            <td> <span class="btn btn-sm btn-danger" onclick="deleteRow({{$id}})">X</span> </td>
-                                            <input type="hidden" name="id[]" value="{{ $id }}">
-                                            <input type="hidden" id="stock_{{$id}}" value="{{ getStock($id) + $product->qty}}">
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th colspan="4" class="text-end">Total</th>
-                                            <th class="text-end" id="totalDiscount">0.00</th>
-                                            <th class="text-end" id="totalTI">0.00</th>
-                                            <th></th>
-                                            <th></th>
-                                            <th class="text-end" id="totalGST">0.00</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            <div class="col-2">
-                                <div class="form-group">
-                                    <label for="salesman">Salesman</label>
-                                    <select name="salesmanID" id="salesman" class="selectize1">
-                                        @foreach ($salesmans as $man)
-                                            <option value="{{ $man->id }}" @selected($man->id == $sale->salesmanID)>{{ $man->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <div class="form-group">
-                                    <label for="discount">Discount</label>
-                                    <input type="number" name="discount1" oninput="updateTotal()" id="discount" step="any" value="{{$sale->discount}}" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <div class="form-group">
-                                    <label for="fright">Fright</label>
-                                    <input type="number" name="fright" id="fright" oninput="updateTotal()" min="0" step="any" value="{{$sale->fright}}" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <div class="form-group">
-                                    <label for="whTax">WH Tax</label>
-                                    <div class="input-group mb-3">
-                                        <input type="number" name="whTax" id="whTax" oninput="updateTotal()" max="50" min="0" step="any" value="{{$sale->wh}}" aria-describedby="basic-addon2" class="form-control">
-                                        <span class="input-group-text whTaxValue" id="basic-addon2">0</span>
-                                      </div>
-
-                                </div>
+                            <div class="col-12" id="products_list">
 
                             </div>
-                            <div class="col-2">
-                                <div class="form-group">
-                                    <label for="net">Net Amount</label>
-                                    <input type="number" name="net" id="net" step="any" readonly value="0" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-3">
+                            <div class="col-12 w-100 text-center mt-2"><h4>Total : <span id="totalAmount">0</span></h4></div>
+                            <div class="col-12 mt-2">
                                 <div class="form-group">
                                     <label for="date">Date</label>
-                                    <input type="date" name="date" id="date" value="{{ date('Y-m-d', strtotime($sale->date)) }}"
+                                    <input type="date" name="date" id="date" value="{{ date('Y-m-d') }}"
                                         class="form-control">
                                 </div>
                             </div>
-                            <div class="col-3">
-                                <div class="form-group">
+                            <div class="col-12">
+                                <div class="form-group mt-2">
                                     <label for="customer">Customer</label>
                                     <select name="customerID" id="customer" class="selectize1">
                                         @foreach ($customers as $customer)
-                                            <option value="{{ $customer->id }}" @selected($customer->id == $sale->customerID)>{{ $customer->title }}</option>
+                                            <option value="{{ $customer->id }}">{{ $customer->title }}</option>
                                         @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-3">
-                                <div class="form-group">
-                                    <label for="account">Account</label>
-                                    <select name="accountID" id="account" class="selectize1">
-                                        @foreach ($accounts as $account)
-                                            <option value="{{ $account->id }}">{{ $account->title }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <div class="form-group">
-                                    <label for="status">Payment Status</label>
-                                    <select name="status" id="status" class="selectize1">
-                                        <option value="paid">Paid</option>
-                                        <option value="pending">Pending</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-12 mt-2">
                                 <div class="form-group">
                                     <label for="notes">Notes</label>
-                                    <textarea name="notes" id="notes" class="form-control" cols="30" rows="5">{{$sale->notes}}</textarea>
+                                    <textarea name="notes" id="notes" class="form-control" cols="30" rows="5"></textarea>
                                 </div>
                             </div>
                             <div class="col-12 mt-2">
-                                <button type="submit" class="btn btn-primary w-100">Update Sale</button>
+                                <button type="submit" class="btn btn-primary w-100">Create Order</button>
                             </div>
+                        </div>
+                    </form>
                 </div>
-            </form>
-            </div>
 
+            </div>
+            <!--end card-->
         </div>
-        <!--end card-->
-    </div>
-    <!--end col-->
+        <!--end col-->
     </div>
     <!--end row-->
 @endsection
@@ -218,6 +95,7 @@
 @endsection
 @section('page-js')
     <script src="{{ asset('assets/libs/selectize/selectize.min.js') }}"></script>
+
     <script>
         $(".selectize1").selectize();
         $(".selectize").selectize({
@@ -232,6 +110,7 @@
             },
         });
         var units = @json($units);
+        var existingProducts = [];
 
         function getSingleProduct(id) {
             $.ajax({
@@ -245,26 +124,46 @@
 
                     } else {
                         var id = product.id;
-                        var html = '<tr id="row_' + id + '">';
-                        html += '<td class="no-padding">' + product.name + '</td>';
-
-                        html += '<td class="no-padding"><select name="unit[]" class="form-control text-center" onchange="updateChanges(' + id +')" id="unit_' + id + '">';
-                            units.forEach(function(unit) {
-                                var isSelected = (unit.id == product.unitID);
-                                html += '<option data-unit="'+unit.value+'" value="' + unit.id + '" ' + (isSelected ? 'selected' : '') + '>' + unit.name + '</option>';
-                            });
-                        html += '</select></td>';
-                        html += '<td class="no-padding"><div class="input-group">  <span class="input-group-text" id="stockValue_'+id+'">'+product.stock +'</span><input type="number" max="'+product.stock+'" name="qty[]" oninput="updateChanges(' + id +')" min="0.1" required step="any" value="1" class="form-control text-center" id="qty_' + id + '"></div></td>';
-                        html += '<td class="no-padding"><input type="number" name="price[]" oninput="updateChanges(' + id + ')" required step="any" value="'+product.price+'" min="1" class="form-control text-center" id="price_' + id + '"></td>';
-                        html += '<td class="no-padding"><input type="number" name="discount[]" oninput="updateChanges(' + id + ')" required step="any" value="'+product.discount+'" min="0" class="form-control text-center" id="discount_' + id + '"></td>';
-                        html += '<td class="no-padding"><input type="number" name="ti[]" required step="any" value="0.00" min="0" class="form-control text-center" id="ti_' + id + '"></td>';
-                        html += '<td class="no-padding"><input type="number" name="tp[]" oninput="updateChanges(' + id + ')" required step="any" value="'+product.tp+'" min="0" class="form-control text-center" id="tp_' + id + '"></td>';
-                        html += '<td class="no-padding"><input type="number" name="gst[]" oninput="updateChanges(' + id + ')" required step="any" value="18" min="0" class="form-control text-center" id="gst_' + id + '"></td>';
-                        html += '<td class="no-padding"><input type="number" name="gstValue[]" required step="any" value="0.00" min="0" class="form-control text-center" id="gstValue_' + id + '"></td>';
-                        html += '<td> <span class="btn btn-sm btn-danger" onclick="deleteRow('+id+')">X</span> </td>';
-                        html += '<input type="hidden" name="id[]" value="' + id + '">';
-                        html += '<input type="hidden" id="stock_' + id + '" value="' + product.stock + '">';
-                        html += '</tr>';
+                        var price = product.price;
+                        var discount = product.discount;
+                        var netPrice = price - discount;
+                        html = '<div class="card" id="row_' + id + '">';
+                            html += '<input type="hidden" name="id[]" value="' + id + '">';
+                            html += '<div class="card-body">';
+                                html += '<div class="d-flex justify-content-between mb-2">';
+                                    html += '<h5 class="fs-15 mb-2 product">'+product.name+'</h5>';
+                                    html += '<button class="btn btn-danger btn-sm" onclick="deleteRow('+id+')">-</button>';
+                                html += '</div>';
+                                html += '<div class="d-flex mb-4 align-items-center">';
+                                    html += '<div class="flex-grow-1">';
+                                        html += '<input type="hidden" step="any" id="price_' + id + '" value="'+price+'" id="price[]">';
+                                        html += '<input type="hidden" step="any" id="discount_' + id + '" value="'+discount+'" id="discount[]">';
+                                        html += '<input type="hidden" step="any" id="amount_' + id + '" value="'+netPrice+'" id="amount[]">';
+                                        html += '<h5 class="text-primary fs-18 mb-0"><span>'+ netPrice +'</span><small class="text-decoration-line-through text-muted fs-13">'+price+'</small></h5>';
+                                    html += '</div>';
+                                    html += '<div class="flex-grow-1 text-end"><h5 class="text-primary fs-18 mb-0"><span id="amountText_' + id + '">'+netPrice+'</span></h5></div>';
+                                html += '</div>';
+                                html += '<div class="row">';
+                                    html += '<div class="col-6">';
+                                        html += '<div>';
+                                            html += '<td class="no-padding"><select name="unit[]" class="form-control text-center" onchange="updateChanges(' + id +')" id="unit_' + id + '">';
+                                                units.forEach(function(unit) {
+                                                var isSelected = (unit.id == product.unitID);
+                                                    html += '<option data-unit="'+unit.value+'" value="' + unit.id + '" ' + (isSelected ? 'selected' : '') + '>' + unit.name + '</option>';
+                                                });
+                                            html += '</select></td>';
+                                        html += '</div>';
+                                    html += '</div>';
+                                    html += '<div class="col-6 text-end">';
+                                        html += '<div class="input-step flex-shrink-0">';
+                                            html += '<button type="button" onclick="minus('+id+')">–</button>';
+                                            html += '<input type="number" id="qty_' + id + '" oninput=" updateChanges('+id+')" name="qty[]" value="1" min="1">';
+                                            html += '<button type="button" onclick="plus('+id+')">+</button>';
+                                        html += '</div>';
+                                    html += '</div>';
+                                html += '</div>';
+                            html += '</div>';
+                        html += '</div>';
                         $("#products_list").prepend(html);
                         updateChanges(id);
                         existingProducts.push(id);
@@ -277,76 +176,55 @@
             var qty = $('#qty_' + id).val();
             var price = $('#price_' + id).val();
             var unit = $('#unit_' + id).find('option:selected');
-                unit = unit.data('unit');
-            var stock = $('#stock_' + id).val();
+            unit = unit.data('unit');
             var discount = $('#discount_' + id).val();
             var newQty = qty * unit;
 
-            var ti = (newQty * price) - (newQty * discount);
-            $("#ti_"+id).val(ti);
-
-            var tp = $("#tp_"+id).val();
-            var gst = $("#gst_"+id).val();
-
-            var gstValue = (tp * gst / 100) * newQty;
-
-            $("#gstValue_"+id).val(gstValue.toFixed(2));
-
-            var newPrice = price - discount;
-
-            $("#stockValue_"+id).html(stock / unit);
-            $("#qty_"+id).attr("max", stock / unit);
+            var amount = (newQty * price) - (newQty * discount);
+            $("#amount_" + id).val(amount);
+            $("#amountText_" + id).html(amount);
 
             updateTotal();
         }
 
-        updateTotal();
         function updateTotal() {
 
-
-            var totalDiscount = 0;
-            $("input[id^='discount_']").each(function() {
+            var totalAmount = 0;
+            $("input[id^='amount_']").each(function() {
                 var inputId = $(this).attr('id');
                 var inputValue = $(this).val();
-                totalDiscount += parseFloat(inputValue);
+                totalAmount += parseFloat(inputValue);
             });
-            $("#totalDiscount").html(totalDiscount.toFixed(2));
-
-            var totalTI = 0;
-            $("input[id^='ti_']").each(function() {
-                var inputId = $(this).attr('id');
-                var inputValue = $(this).val();
-                totalTI += parseFloat(inputValue);
-            });
-            $("#totalTI").html(totalTI.toFixed(2));
-
-            var totalGST = 0;
-            $("input[id^='gstValue_']").each(function() {
-                var inputId = $(this).attr('id');
-                var inputValue = $(this).val();
-                totalGST += parseFloat(inputValue);
-            });
-            $("#totalGST").html(totalGST.toFixed(2));
-
-            var discount = parseFloat($("#discount").val());
-            var fright = parseFloat($("#fright").val());
-            var whTax = parseFloat($("#whTax").val());
-
-            var taxValue = totalTI * whTax / 100;
-
-            $(".whTaxValue").html(taxValue.toFixed(2));
-
-            var net = (totalTI + taxValue) - (discount + fright);
-
-            $("#net").val(net.toFixed(2));
+            $("#totalAmount").html(totalAmount.toFixed(2));
         }
 
         function deleteRow(id) {
             existingProducts = $.grep(existingProducts, function(value) {
                 return value !== id;
             });
-            $('#row_'+id).remove();
+            $('#row_' + id).remove();
             updateTotal();
+        }
+
+        function plus(id)
+        {
+            var qtyInput = $("#qty_"+id);
+            var currentValue = parseInt(qtyInput.val());
+            currentValue += 1;
+            qtyInput.val(currentValue);
+            updateChanges(id);
+        }
+
+        function minus(id)
+        {
+            var qtyInput = $("#qty_"+id);
+            var currentValue = parseInt(qtyInput.val());
+            if(currentValue > 1)
+            {
+                currentValue -= 1;
+            }
+            qtyInput.val(currentValue);
+            updateChanges(id);
         }
 
     </script>
