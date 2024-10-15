@@ -27,7 +27,7 @@
                     </div>
                 </div><!--end row-->
                 <div class="card-body">
-                    <form action="{{ route('orders.store') }}" method="post">
+                    <form action="{{ route('orders.update', $order->id) }}" method="post">
                         @csrf
                         <div class="row">
                             <div class="col-12">
@@ -42,14 +42,60 @@
                                 </div>
                             </div>
                             <div class="col-12" id="products_list">
-
+                                @foreach ($order->details as $product)
+                                        @php
+                                            $id = $product->productID;
+                                            $price = $product->price;
+                                            $discount = $product->discount;
+                                            $netPrice = $price - $discount;
+                                        @endphp
+                                        <div class="card" id="row_{{$id}}">
+                                           <input type="hidden" name="id[]" value="{{$id}}">
+                                           <div class="card-body">
+                                               <div class="d-flex justify-content-between mb-2">
+                                                   <h5 class="fs-15 mb-2 product">{{$product->product->name}}</h5>
+                                                   <button class="btn btn-danger btn-sm" onclick="deleteRow({{$id}})">-</button>
+                                               </div>
+                                               <div class="d-flex mb-4 align-items-center">
+                                                   <div class="flex-grow-1">
+                                                       <input type="hidden" step="any" id="price_{{$id}}" value="{{$product->price}}" id="price[]">
+                                                       <input type="hidden" step="any" id="discount_{{$id}}" value="{{$product->discount}}" id="discount[]">
+                                                       <input type="hidden" step="any" id="amount_{{$id}}" value="{{$netPrice}}" id="amount[]">
+                                                       <h5 class="text-primary fs-18 mb-0"><span>{{$netPrice}}</span><small class="text-decoration-line-through text-muted fs-13">{{$product->price}}</small></h5>
+                                                   </div>
+                                                   <div class="flex-grow-1 text-end"><h5 class="text-primary fs-18 mb-0"><span id="amountText_{{$id}}">{{$product->amount}}</span></h5></div>
+                                               </div>
+                                               <div class="row">
+                                                   <div class="col-6">
+                                                    <select name="unit[]" class="form-control text-center" onchange="updateChanges({{ $id }})" id="unit_{{ $id }}">
+                                                        @foreach ($units as $unit)
+                                                            @php
+                                                                if($unit->id == $product->unitID)
+                                                                {
+                                                                    $unitValue = $product->unitValue;
+                                                                }
+                                                            @endphp
+                                                            <option data-unit="{{ $unit->value }}" value="{{ $unit->id }}" @selected($unit->id == $product->unitID)>{{ $unit->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                   </div>
+                                                   <div class="col-6 text-end">
+                                                       <div class="input-step flex-shrink-0">
+                                                           <button type="button" onclick="minus({{$id}})">–</button>
+                                                           <input type="number" id="qty_{{$id}}" oninput=" updateChanges({{$id}})" name="qty[]" value="{{$product->qty}}" min="1">
+                                                           <button type="button" onclick="plus({{$id}})">+</button>
+                                                       </div>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                       </div>
+                                    @endforeach
                             </div>
-                            <div class="col-12 w-100 text-center mt-2"><h4>Total : <span id="totalAmount">0</span></h4></div>
+                            <div class="col-12 w-100 text-center mt-2"><h4>Total : <span id="totalAmount">{{$order->details->sum('amount')}}</span></h4></div>
                             <div class="col-12 mt-2">
                                 <div class="form-group">
                                     <label for="date">Date</label>
-                                    <input type="date" name="date" id="date" value="{{ date('Y-m-d') }}"
-                                        class="form-control">
+                                    <input type="date" name="date" id="date" value="{{ date('Y-m-d', strtotime($order->date)) }}" class="form-control">
                                 </div>
                             </div>
                             <div class="col-12">
@@ -57,7 +103,7 @@
                                     <label for="customer">Customer</label>
                                     <select name="customerID" id="customer" class="selectize1">
                                         @foreach ($customers as $customer)
-                                            <option value="{{ $customer->id }}">{{ $customer->title }}</option>
+                                            <option value="{{ $customer->id }}" {{$order->customerID == $customer->id ?? "selected"}}>{{ $customer->title }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -65,11 +111,11 @@
                             <div class="col-12 mt-2">
                                 <div class="form-group">
                                     <label for="notes">Notes</label>
-                                    <textarea name="notes" id="notes" class="form-control" cols="30" rows="5"></textarea>
+                                    <textarea name="notes" id="notes" class="form-control" cols="30" rows="5">{{$order->notes}}</textarea>
                                 </div>
                             </div>
                             <div class="col-12 mt-2">
-                                <button type="submit" class="btn btn-primary w-100">Create Order</button>
+                                <button type="submit" class="btn btn-primary w-100">Update Order</button>
                             </div>
                         </div>
                     </form>

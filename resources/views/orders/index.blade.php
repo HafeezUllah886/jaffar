@@ -51,18 +51,33 @@
                                                         View
                                                     </button>
                                                 </li>
+                                                @if ($order->status == "Pending")
+                                                @if (auth()->user()->role == "Admin")
                                                 <li>
-                                                    <a class="dropdown-item" onclick="newWindow('{{route('orders.edit', $order->id)}}')">
-                                                        <i class="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                                                        Edit
-                                                    </a>
+                                                    <button class="dropdown-item" onclick="newWindow('{{route('order.sale', $order->id)}}')"
+                                                        onclick=""><i
+                                                            class="ri-eye-fill align-bottom me-2 text-muted"></i>
+                                                        Finalize Order
+                                                    </button>
+                                                </li>
+                                                @endif
+                                               @if (auth()->user()->role == "Admin" || $order->orderbookerID == Auth::id())
+                                               <li>
+                                                <a class="dropdown-item" onclick="newWindowMobile('{{route('orders.edit', $order->id)}}')">
+                                                    <i class="ri-pencil-fill align-bottom me-2 text-muted"></i>
+                                                    Edit
+                                                </a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item text-danger" href="{{route('order.delete', $order->id)}}">
-                                                        <i class="ri-delete-bin-2-fill align-bottom me-2 text-danger"></i>
-                                                        Delete
-                                                    </a>
+                                                <a class="dropdown-item text-danger" href="{{route('order.delete', $order->id)}}">
+                                                    <i class="ri-delete-bin-2-fill align-bottom me-2 text-danger"></i>
+                                                    Delete
+                                                </a>
                                                 </li>
+                                               @endif
+                                               
+                                                @endif
+                                               
                                             </ul>
                                         </div>
                                     </td>

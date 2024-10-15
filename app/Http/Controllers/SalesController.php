@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\accounts;
+use App\Models\orders;
 use App\Models\products;
 use App\Models\sale_details;
 use App\Models\sale_payments;
@@ -133,6 +134,17 @@ class SalesController extends Controller
             else
             {
                 createTransaction($request->customerID, $request->date, 0, $net, "Pending Amount of Inv No. $sale->id", $ref);
+            }
+
+            if($request->orderID)
+            {
+                $order = orders::find($request->orderID);
+                $order->update(
+                    [
+                        'saleID' => $sale->id,
+                        'status' => "Completed",
+                    ]
+                );
             }
 
            DB::commit();
