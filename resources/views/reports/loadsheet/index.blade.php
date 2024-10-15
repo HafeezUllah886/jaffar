@@ -4,25 +4,22 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h3>View Salesman Report</h3>
+                    <h3>View Load Sheet Report</h3>
                 </div>
                 <div class="card-body">
                     <div class="form-group">
-                        <label for="salesman">Sales Man</label>
-                        <select name="salesman" class="form-control" id="salesmanID">
-                            @foreach ($salesmans as $man)
+                        <label for="orderbooker">Order Booker</label>
+                        <select name="orderbooker" class="form-control" id="orderbookerID">
+                            @foreach ($orderbookers as $man)
                                 <option value="{{$man->id}}">{{$man->name}}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="form-group mt-2">
-                        <label for="from">From</label>
-                        <input type="date" name="from" id="from" value="{{firstDayOfMonth()}}" class="form-control">
+                        <label for="date">Date</label>
+                        <input type="date" name="date" id="date" value="{{date('Y-m-d')}}" class="form-control">
                     </div>
-                    <div class="form-group mt-2">
-                        <label for="to">To</label>
-                                <input type="date" name="to" id="to" value="{{lastDayOfMonth()}}" class="form-control">
-                    </div>
+
                     <div class="form-group mt-2">
                         <button class="btn btn-success w-100" id="viewBtn">View Report</button>
                     </div>
@@ -38,13 +35,11 @@
     <script>
 
         $("#viewBtn").on("click", function (){
-            var from = $("#from").val();
-            var to = $("#to").val();
-            var id = $("#salesmanID").find("option:selected").val();
+            var date = $("#date").val();
+            var id = $("#orderbookerID").find("option:selected").val();
             console.log(id);
-            var url = "{{ route('reportSalesmanData', ['id' => ':id','from' => ':from', 'to' => ':to', ]) }}"
-        .replace(':from', from)
-        .replace(':to', to)
+            var url = "{{ route('reportLoadsheetData', ['id' => ':id','date' => ':date' ]) }}"
+        .replace(':date', date)
         .replace(':id', id);
             window.open(url, "_blank", "width=1000,height=800");
         });
