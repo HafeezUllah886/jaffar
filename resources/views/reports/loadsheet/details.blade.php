@@ -51,10 +51,10 @@
                                         <thead>
                                             <tr class="table-active">
                                                 <th scope="col" style="width: 50px;">#</th>
-                                                <th scope="col">Product</th>
+                                                <th scope="col" class="text-start">Product</th>
                                                 <th scope="col" class="text-end">Quantity</th>
                                                 <th scope="col" class="text-end">CTN / Boxes</th>
-                                                <th scope="col" class="text-end">Amount</th>
+                                              {{--   <th scope="col" class="text-end">Amount</th> --}}
                                             </tr>
                                         </thead>
                                         <tbody >
@@ -69,16 +69,16 @@
                                                     <td>{{ $key+1 }}</td>
                                                     <td class="text-start">{{ $productDetails['name'] }}</td>
                                                     <td class="text-end">{{ $productDetails['total_qty'] }}</td>
-                                                    <td class="text-end">{{ number_format($productDetails['total_qty'] / $productDetails['pack_size'], 2)}}</td>
-                                                    <td class="text-end">{{ number_format($productDetails['total_amount'], 2) }}</td>  </tr>
+                                                    <td class="text-end">{{ number_format($productDetails['total_qty'] / $productDetails['pack_size'], 2)}} {{$productDetails['pack_size'] > 1 ? "Box" : "Nos"}}</td>
+                                                    {{-- <td class="text-end">{{ number_format($productDetails['total_amount'], 2) }}</td>  </tr> --}}
                                                 @endforeach
                                         </tbody>
-                                        <tfoot>
+                                        {{-- <tfoot>
                                             <tr>
                                                 <th colspan="4" class="text-end">Total</th>
                                                 <th class="text-end">{{number_format($total_amount, 2)}}</th>
                                             </tr>
-                                        </tfoot>
+                                        </tfoot> --}}
                                     </table><!--end table-->
                                 </div>
 
