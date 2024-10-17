@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\targets;
 use App\Http\Controllers\Controller;
+use App\Models\accounts;
+use App\Models\products;
+use App\Models\units;
 use Illuminate\Http\Request;
 
 class TargetsController extends Controller
@@ -13,7 +16,11 @@ class TargetsController extends Controller
      */
     public function index()
     {
-        //
+        $customers = accounts::Customer()->get();
+        $products = products::all();
+        $units = units::all();
+        $targets = targets::orderBy("endDate", 'desc')->get();
+        return view('target.index', compact('customers', 'products', 'units', 'targets'));
     }
 
     /**
