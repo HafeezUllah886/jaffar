@@ -16,6 +16,7 @@
                             <th>Target</th>
                             <th>Achieved</th>
                             <th>Dates</th>
+                            <th>Status</th>
                             <th>Action</th>
                         </thead>
                         <tbody>
@@ -24,9 +25,14 @@
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $item->customer->title }}</td>
                                     <td>{{ $item->product->name }}</td>
-                                    <td>{{ number_format($item->qty) }} <br>{{ $item->unit->name }}</td>
-                                    <td>{{ number_format($item->qty) }} <br>{{ $item->unit->name }}</td>
+                                    <td>{{ number_format($item->qty / $item->unit->value) }} <br>{{ $item->unit->name }}</td>
+                                    <td>{{ number_format($item->sold / $item->unit->value) }} <br>{{ $item->unit->name }}</td>
                                     <td>{{ date('d M Y', strtotime($item->startDate)) }} <br>{{ date('d M Y', strtotime($item->endDate)) }}</td>
+                                    <td>
+                                        <span class="badge bg-{{$item->campain_color}}">{{$item->campain}}</span>
+                                        <br>
+                                        <span class="badge bg-{{$item->goal_color}}">{{$item->goal}}</span>
+                                    </td>
                                     <td>
                                         <a href="{{ route('target.delete', $item->id) }}"
                                             class="btn btn-danger">Delete</a>

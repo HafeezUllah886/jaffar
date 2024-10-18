@@ -21,6 +21,45 @@ class TargetsController extends Controller
         $products = products::all();
         $units = units::all();
         $targets = targets::orderBy("endDate", 'desc')->get();
+        foreach($targets as $target)
+        {
+            $qtySold = DB::table('sales')
+            ->join('sale_details', 'sales.id', '=', 'sale_details.salesID')
+            ->where('sales.customerID', $target->customerID)  // Filter by customer ID
+            ->where('sale_details.productID', $target->productID)  // Filter by product ID
+            ->whereBetween('sale_details.date', [$target->startDate, $target->endDate])  // Filter by date range
+            ->sum('sale_details.qty');
+
+            $target->sold = $qtySold;
+
+            if($target->endDate > now())
+            {
+
+                $target->campain = "Open";
+                $target->campain_color = "success";
+            }
+            else
+            {
+                $target->campain = "Closed";
+                $target->campain_color = "warning";
+            }
+
+            if($target->sold > $target->qty)
+            {
+                $target->goal = "Target Achieved";
+                $target->goal_color = "success";
+            }
+            elseif($target->endDate > now() && $target->sold < $target->qty)
+            {
+                $target->goal = "In Progress";
+                $target->goal_color = "info";
+            }
+            else
+            {
+                $target->goal = "Not Achieved";
+                $target->goal_color = "danger";
+            }
+        }
         return view('target.index', compact('customers', 'products', 'units', 'targets'));
     }
 
@@ -90,8 +129,11 @@ class TargetsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(targets $targets)
+    public function destroy($id)
     {
-        //
+        $target = targets::find($id);
+        $target->delete();
+        session()->forget('confirmed_password');
+        return to_route('targets.index')->with("success", "Target Deletes");
     }
 }
