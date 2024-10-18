@@ -8,6 +8,7 @@ use App\Models\accounts;
 use App\Models\products;
 use App\Models\units;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TargetsController extends Controller
 {
@@ -36,7 +37,30 @@ class TargetsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try
+        {
+            DB::beginTransaction();
+            $unit = units::find($request->unitID);
+            $qty = $request->qty * $unit->value;
+            targets::create(
+                [
+                    'productID'     => $request->productID,
+                    'customerID'    => $request->customerID,
+                    'qty'           => $qty,
+                    'unitID'        => $request->unitID,
+                    'startDate'     => $request->startDate,
+                    'endDate'       => $request->endDate,
+                ]
+            );
+
+            DB::commit();
+            return back()->with("success", "Target Saved");
+        }
+        catch(\Exception $e)
+        {
+            DB::rollBack();
+            return back()->with("error", $e->getMessage());
+        }
     }
 
     /**

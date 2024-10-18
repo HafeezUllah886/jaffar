@@ -30,7 +30,7 @@
                                     <td>{{ date('d M Y', strtotime($item->start)) }}</td>
                                     <td>{{ date('d M Y', strtotime($item->end)) }}</td>
                                     <td>
-                                        <a href="{{ route('stockAdjustment.delete', $item->refID) }}"
+                                        <a href="{{ route('target.delete', $item->id) }}"
                                             class="btn btn-danger">Delete</a>
                                     </td>
                                 </tr>
@@ -86,12 +86,12 @@
                         </div>
                         <div class="form-group mt-2">
                             <label for="start">Start</label>
-                            <input type="date" name="start" required id="start" value="{{ date('Y-m-d') }}"
+                            <input type="date" name="startDate" required id="start" value="{{ date('Y-m-d') }}"
                                 class="form-control">
                         </div>
                         <div class="form-group mt-2">
                             <label for="end">End</label>
-                            <input type="date" name="end" required id="end" value="{{ date('Y-m-d') }}"
+                            <input type="date" name="endDate" required id="end" value="{{ date('Y-m-d') }}"
                                 class="form-control">
                         </div>
                     </div>
