@@ -171,6 +171,12 @@ class SalesController extends Controller
         return view('sales.view', compact('sale', 'balance'));
     }
 
+    public function gatePass($id)
+    {
+        $sale = sales::find($id);
+        return view('sales.gatepass', compact('sale'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      */

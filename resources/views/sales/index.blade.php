@@ -75,6 +75,13 @@
                                                     </button>
                                                 </li>
                                                 <li>
+                                                    <button class="dropdown-item" onclick="newWindow('{{route('sale.gatePass', $sale->id)}}')"
+                                                        onclick=""><i
+                                                            class="ri-eye-fill align-bottom me-2 text-muted"></i>
+                                                        Gate Pass
+                                                    </button>
+                                                </li>
+                                                <li>
                                                     <a class="dropdown-item" onclick="newWindow('{{route('sale.edit', $sale->id)}}')">
                                                         <i class="ri-pencil-fill align-bottom me-2 text-muted"></i>
                                                         Edit
