@@ -87,7 +87,6 @@
                                                 $totalDisc = $sale->details->sum('discount');
                                                 $totalTi = $sale->details->sum('ti');
                                                 $totalGstVal = $sale->details->sum('gstValue');
-
                                                 $due = $sale->net - $sale->payments->sum('amount');
                                                 $paid = $sale->payments->sum('amount');
                                             @endphp

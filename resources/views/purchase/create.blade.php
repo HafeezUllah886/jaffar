@@ -35,11 +35,12 @@
                                 <table class="table table-striped table-hover">
                                     <thead>
                                         <th width="30%">Item</th>
+                                        <th class="text-center">Qty</th>
+                                        <th width="10%" class="text-center">Unit</th>
                                         <th class="text-center">P-Price</th>
                                         <th class="text-center">S-Price</th>
                                         <th class="text-center">WS Price</th>
                                         <th class="text-center">RT Price</th>
-                                        <th class="text-center">Qty</th>
                                         <th class="text-center">GST 18%</th>
                                         <th class="text-center">Amount</th>
                                         <th class="text-center">Bonus</th>
@@ -200,11 +201,17 @@
                         var id = product.id;
                         var html = '<tr id="row_' + id + '">';
                         html += '<td class="no-padding">' + product.code + ' | ' + product.name + '</td>';
+                        html += '<td class="no-padding"><input type="number" name="qty[]" oninput="updateChanges(' + id + ')" min="0" required step="any" value="0" class="form-control text-center no-padding" id="qty_' + id + '"></td>';
+                        html += '<td class="no-padding"><select name="unit[]" class="form-control text-center no-padding" onchange="updateChanges(' + id +')" id="unit_' + id + '">';
+                            units.forEach(function(unit) {
+                                var isSelected = (unit.id == product.unitID);
+                                html += '<option data-unit="'+unit.value+'" value="' + unit.id + '" ' + (isSelected ? 'selected' : '') + '>' + unit.name + '</option>';
+                            });
+                        html += '</select></td>';
                         html += '<td class="no-padding"><input type="number" name="pprice[]" oninput="updateChanges(' + id + ')" required step="any" value="'+product.pprice+'" min="1" class="form-control text-center no-padding" id="pprice_' + id + '"></td>';
                         html += '<td class="no-padding"><input type="number" name="price[]" required step="any" value="'+product.price+'" min="0" class="form-control text-center no-padding" id="price_' + id + '"></td>';
                         html += '<td class="no-padding"><input type="number" name="wsprice[]" required step="any" value="'+product.wsprice+'" min="1" class="form-control text-center no-padding" id="wsprice_' + id + '"></td>';
                         html += '<td class="no-padding"><input type="number" name="tp[]" required step="any" value="'+product.tp+'" min="1" class="form-control text-center no-padding" id="tp_' + id + '"></td>';
-                        html += '<td class="no-padding"><input type="number" name="qty[]" oninput="updateChanges(' + id + ')" min="0" required step="any" value="0" class="form-control text-center no-padding" id="qty_' + id + '"></td>';
                         html += '<td class="no-padding"><input type="number" name="gstValue[]" readonly required step="any" value="0" class="form-control text-center no-padding" id="gstValue_' + id + '"></td>';
                         html += '<td class="no-padding"><input type="number" name="amount[]" min="0.1" readonly required step="any" value="1" class="form-control text-center no-padding" id="amount_' + id + '"></td>';
                         html += '<td class="no-padding"><input type="number" name="bonus[]" min="0" required step="any" value="0" oninput="updateChanges(' + id + ')" class="form-control text-center no-padding" id="bonus_' + id + '"></td>';
@@ -221,12 +228,15 @@
 
         function updateChanges(id) {
             var qty = parseFloat($('#qty_' + id).val());
+            var unit = $('#unit_' + id).find('option:selected');
+            unit = unit.data('unit');
+            var newQty = qty * unit;
             var pprice = parseFloat($('#pprice_' + id).val());
             var tp = parseFloat($('#tp_' + id).val());
             var bonus = parseFloat($('#bonus_' + id).val());
 
-            var gstValue = (tp * 18 / 100) * (qty + bonus);
-            var amount = qty * pprice;
+            var gstValue = (tp * 18 / 100) * (newQty + bonus);
+            var amount = newQty * pprice;
             $("#amount_"+id).val(amount.toFixed(2));
             $("#gstValue_"+id).val(gstValue.toFixed(2));
             updateTotal();

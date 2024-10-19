@@ -66,10 +66,12 @@
                                                     <tr class="table-active">
                                                         <th scope="col" style="width: 50px;">#</th>
                                                         <th scope="col" class="text-start">Product</th>
+                                                        <th scope="col" class="text-start">Unit</th>
+                                                        <th scope="col" class="text-end">CTN</th>
+                                                        <th scope="col" class="text-end">T-Qty</th>
                                                         <th scope="col" class="text-end">P-Price</th>
                                                         <th scope="col" class="text-end">S-Price</th>
                                                         <th scope="col" class="text-end">WS-Price</th>
-                                                        <th scope="col" class="text-end">Qty</th>
                                                         <th scope="col" class="text-end">Bonus</th>
                                                         <th scope="col" class="text-end">RT Price</th>
                                                         <th scope="col" class="text-end">GST 18%</th>
@@ -77,25 +79,39 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody id="products-list">
+                                                    @php
+                                                        $totalQty = 0;
+                                                    @endphp
                                                    @foreach ($purchase->details as $key => $product)
+                                                   @php
+                                                   $totalQty += $product->qty / $product->unitValue;
+                                                    @endphp
                                                        <tr>
                                                         <td class="p-1 m-1">{{$key+1}}</td>
                                                         <td class="text-start p-1 m-1">{{$product->product->code}} | {{$product->product->name}}</td>
+                                                        <td class="text-start m-1 p-1">{{$product->unit->name}}</td>
+                                                        <td class="text-end m-1 p-1">{{number_format($product->qty / $product->unitValue)}}</td>
+                                                        <td class="text-end p-1 m-1">{{number_format($product->qty)}}</td>
                                                         <td class="text-end p-1 m-1">{{number_format($product->pprice,2)}}</td>
                                                         <td class="text-end p-1 m-1">{{number_format($product->price,2)}}</td>
                                                         <td class="text-end p-1 m-1">{{number_format($product->wsprice,2)}}</td>
-                                                        <td class="text-end p-1 m-1">{{number_format($product->qty)}}</td>
                                                         <td class="text-end p-1 m-1">{{number_format($product->bonus)}}</td>
                                                         <td class="text-end p-1 m-1">{{number_format($product->tp,2)}}</td>
                                                         <td class="text-end p-1 m-1">{{number_format($product->gstValue, 2)}}</td>
                                                         <td class="text-end p-1 m-1">{{number_format($product->amount,2)}}</td>
-
                                                        </tr>
                                                    @endforeach
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
-                                                        <th colspan="10" class="text-end">Total</th>
+                                                        <th colspan="3" class="text-end">Total</th>
+                                                        <th class="text-end">{{number_format($totalQty)}}</th>
+                                                        <th class="text-end">{{number_format($purchase->details->sum('qty'))}}</th>
+                                                        <th></th>
+                                                        <th></th>
+                                                        <th></th>
+                                                        <th></th>
+                                                        <th></th>
                                                         <th class="text-end">{{number_format($purchase->details->sum('gstValue'), 2)}}</th>
                                                         <th class="text-end">{{number_format($purchase->details->sum('amount'), 2)}}</th>
                                                     </tr>

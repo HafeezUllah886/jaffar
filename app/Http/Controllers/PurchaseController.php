@@ -73,9 +73,10 @@ class PurchaseController extends Controller
             $total = 0;
             foreach($ids as $key => $id)
             {
-                $qty = $request->qty[$key] + $request->bonus[$key];
-                $qty1 = $request->qty[$key];
-                $pprice = $request->pprice[$key];
+                $unit = units::find($request->unit[$key]);
+                $qty = ($request->qty[$key] * $unit->value) + $request->bonus[$key];
+                $qty1 = $request->qty[$key] * $unit->value;
+                $pprice = $request->pprice[$key] ;
                 $price = $request->price[$key];
                 $wsprice = $request->wsprice[$key];
                 $tp = $request->tp[$key];
@@ -95,6 +96,8 @@ class PurchaseController extends Controller
                         'amount'        => $amount,
                         'date'          => $request->date,
                         'bonus'         => $request->bonus[$key],
+                        'unitID'        => $unit->id,
+                        'unitValue'     => $unit->value,
                         'refID'         => $ref,
                     ]
                 );
