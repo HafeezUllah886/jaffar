@@ -66,8 +66,6 @@
                                                     <tr class="table-active">
                                                         <th scope="col" style="width: 50px;">#</th>
                                                         <th scope="col" class="text-start">Product</th>
-                                                        <th scope="col" class="text-start">Batch</th>
-                                                        <th scope="col" class="text-start">Exp Date</th>
                                                         <th scope="col" class="text-end">P-Price</th>
                                                         <th scope="col" class="text-end">S-Price</th>
                                                         <th scope="col" class="text-end">WS-Price</th>
@@ -83,8 +81,6 @@
                                                        <tr>
                                                         <td class="p-1 m-1">{{$key+1}}</td>
                                                         <td class="text-start p-1 m-1">{{$product->product->code}} | {{$product->product->name}}</td>
-                                                        <td class="text-start p-1 m-1">{{$product->batch ?? "-"}}</td>
-                                                        <td class="text-start p-1 m-1">{{date("d-m-Y", strtotime($product->expDate)) ?? "-"}}</td>
                                                         <td class="text-end p-1 m-1">{{number_format($product->pprice,2)}}</td>
                                                         <td class="text-end p-1 m-1">{{number_format($product->price,2)}}</td>
                                                         <td class="text-end p-1 m-1">{{number_format($product->wsprice,2)}}</td>

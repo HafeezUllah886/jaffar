@@ -13,7 +13,6 @@ class OrderbookerController extends Controller
      */
     public function index()
     {
-       
         $orderbookers = User::where('role', 'Orderbooker')->get();
         return view('orderbookers.index', compact('orderbookers'));
     }
@@ -88,7 +87,7 @@ class OrderbookerController extends Controller
                 'contact' => $request->contact,
             ]
         );
-        
+
         if($request->password != "")
         {
             $user->update(

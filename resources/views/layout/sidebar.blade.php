@@ -73,13 +73,13 @@
                                     data-key="t-chat">Create Sale</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('sale.index') }}" class="nav-link" data-key="t-chat"> Sales History</a>
+                                <a href="{{ route('sale.index', ['start' => firstDayOfMonth(), 'end' => now()->toDateString()]) }}" class="nav-link" data-key="t-chat"> Sales History</a>
                             </li>
                         </ul>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="{{route('orders.index')}}">
+                    <a class="nav-link menu-link" href="{{route('orders.index', ['start' => firstDayOfMonth(), 'end' => now()->toDateString()])}}">
                         <i class="ri-shopping-cart-fill"></i><span data-key="t-apps">Orders</span>
                     </a>
                 </li>
@@ -95,7 +95,7 @@
                                     data-key="t-chat">Create Purchase</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('purchase.index') }}" class="nav-link" data-key="t-chat"> Purchase
+                                <a href="{{ route('purchase.index', ['start' => firstDayOfMonth(), 'end' => now()->toDateString()]) }}" class="nav-link" data-key="t-chat"> Purchase
                                     History </a>
                             </li>
                         </ul>
@@ -127,6 +127,9 @@
                             <li class="nav-item">
                                 <a href="{{ route('product.index') }}" class="nav-link" data-key="t-chat">Products
                                     List </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('categories.index') }}" class="nav-link" data-key="t-chat"> Categories </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('units.index') }}" class="nav-link" data-key="t-chat"> Units </a>

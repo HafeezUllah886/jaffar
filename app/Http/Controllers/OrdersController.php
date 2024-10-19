@@ -14,20 +14,23 @@ use Illuminate\Support\Facades\DB;
 
 class OrdersController extends Controller
 {
-   
-   
-    public function index()
+
+
+    public function index(Request $request)
     {
+        $start = $request->start ?? now()->toDateString();
+        $end = $request->end ?? now()->toDateString();
+
         if(Auth()->user()->role == "Admin")
         {
-            $orders = orders::orderBy('id', 'desc')->get();
+            $orders = orders::whereBetween("date", [$start, $end])->orderBy('id', 'desc')->get();
         }
         else
         {
-            $orders = orders::where('orderbookerID', auth()->user()->id)->orderBy('id', 'desc')->get();
+            $orders = orders::where('orderbookerID', auth()->user()->id)->whereBetween("date", [$start, $end])->orderBy('id', 'desc')->get();
         }
 
-        return view('orders.index', compact('orders'));
+        return view('orders.index', compact('orders', 'start', 'end'));
     }
 
     /**
@@ -192,7 +195,7 @@ class OrdersController extends Controller
             DB::rollback();
             return back()->with('error', $e->getMessage());
         }
-           
+
     }
 
     /**
@@ -204,7 +207,7 @@ class OrdersController extends Controller
         {
             DB::beginTransaction();
             $order = orders::find($id);
-            
+
             foreach($order->details as $product)
             {
                 $product->delete();

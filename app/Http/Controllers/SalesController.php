@@ -22,10 +22,14 @@ class SalesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $sales = sales::with('payments')->orderby('id', 'desc')->paginate(10);
-        return view('sales.index', compact('sales'));
+
+        $start = $request->start ?? now()->toDateString();
+        $end = $request->end ?? now()->toDateString();
+
+        $sales = sales::with('payments')->whereBetween("date", [$start, $end])->orderby('id', 'desc')->paginate(10);
+        return view('sales.index', compact('sales', 'start', 'end'));
     }
 
     /**

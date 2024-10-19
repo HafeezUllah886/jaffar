@@ -19,10 +19,13 @@ class PurchaseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $purchases = purchase::with('payments')->orderby('id', 'desc')->paginate(10);
-        return view('purchase.index', compact('purchases'));
+        $start = $request->start ?? now()->toDateString();
+        $end = $request->end ?? now()->toDateString();
+
+        $purchases = purchase::with('payments')->whereBetween("date", [$start, $end])->orderby('id', 'desc')->paginate(10);
+        return view('purchase.index', compact('purchases', 'start', 'end'));
     }
 
     /**

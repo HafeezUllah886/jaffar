@@ -49,8 +49,8 @@
                                                 <th scope="col" style="width: 50px;">#</th>
                                                 <th scope="col" class="text-start">Product</th>
                                                 <th scope="col" class="text-start">Unit</th>
-                                                <th scope="col" class="text-end">Qty</th>
-                                                <th scope="col" class="text-end">T-Qty</th>
+                                                <th scope="col" class="text-end">CTN</th>
+                                                <th scope="col" class="text-end">Items Qty</th>
                                                 <th scope="col" class="text-end">Price</th>
                                                 <th scope="col" class="text-end">Discount</th>
                                                 <th scope="col" class="text-end">Tax (Inc)</th>
@@ -60,7 +60,13 @@
                                             </tr>
                                         </thead>
                                         <tbody id="products-list">
+                                            @php
+                                                $totalQty = 0;
+                                            @endphp
                                            @foreach ($sale->details as $key => $product)
+                                           @php
+                                               $totalQty += $product->qty / $product->unitValue;
+                                           @endphp
                                                <tr class="border-1 border-dark">
                                                 <td class="m-1 p-1 border-1 border-dark">{{$key+1}}</td>
                                                 <td class="text-start m-1 p-1 border-1 border-dark">{{$product->product->name}}</td>
@@ -86,7 +92,9 @@
                                                 $paid = $sale->payments->sum('amount');
                                             @endphp
                                             <tr class="border-1 border-dark">
-                                                <th colspan="6" class="text-end">Total</th>
+                                                <th colspan="3" class="text-end">Total</th>
+                                                <th class="text-end">{{number_format($totalQty)}}</th>
+                                                <th class="text-end">{{number_format($sale->details->sum('qty'))}}</th>
                                                 <th class="text-end">{{number_format($totalDisc,2)}}</th>
                                                 <th class="text-end">{{number_format($totalTi,2)}}</th>
                                                 <th class="text-end"></th>
