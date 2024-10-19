@@ -73,8 +73,8 @@ class OrderbookerController extends Controller
     {
         $request->validate(
             [
-                'name' => 'required|unique:Users,name,'.$id,
-                'email' => 'required|unique:Users,email,'.$id
+                'name' => 'required|unique:users,name,'.$id,
+                'email' => 'required|unique:users,email,'.$id
             ]
         );
 
