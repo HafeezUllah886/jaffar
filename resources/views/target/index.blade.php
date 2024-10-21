@@ -5,15 +5,13 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h3>Targets</h3>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#new">Create New</button>
+                    <button type="button" class="btn btn-primary" onclick="newWindow('{{ route('targets.create') }}')">Create New</button>
                 </div>
                 <div class="card-body">
                     <table class="table" id="buttons-datatables">
                         <thead>
                             <th>#</th>
                             <th>Customer</th>
-                            <th>Product</th>
-                            <th>Target</th>
                             <th>Achieved</th>
                             <th>Dates</th>
                             <th>Status</th>
@@ -24,9 +22,7 @@
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $item->customer->title }}</td>
-                                    <td>{{ $item->product->name }}</td>
-                                    <td>{{ number_format($item->qty / $item->unit->value) }} <br>{{ $item->unit->name }}</td>
-                                    <td>{{ number_format($item->sold / $item->unit->value) }} <br>{{ $item->unit->name }}</td>
+                                    <td>{{ $item->totalPer }}%</td>
                                     <td>{{ date('d M Y', strtotime($item->startDate)) }} <br>{{ date('d M Y', strtotime($item->endDate)) }}</td>
                                     <td>
                                         <span class="badge bg-{{$item->campain_color}}">{{$item->campain}}</span>
@@ -34,8 +30,33 @@
                                         <span class="badge bg-{{$item->goal_color}}">{{$item->goal}}</span>
                                     </td>
                                     <td>
-                                        <a href="{{ route('target.delete', $item->id) }}"
-                                            class="btn btn-danger">Delete</a>
+                                        <div class="dropdown">
+                                            <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="ri-more-fill align-middle"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                <li>
+                                                    <button class="dropdown-item" onclick="newWindow('{{route('targets.show', $item->id)}}')"
+                                                        onclick=""><i
+                                                            class="ri-eye-fill align-bottom me-2 text-muted"></i>
+                                                        View
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" onclick="newWindow('{{route('targets.edit', $item->id)}}')">
+                                                        <i class="ri-pencil-fill align-bottom me-2 text-muted"></i>
+                                                        Edit
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item text-danger" href="{{route('target.delete', $item->id)}}">
+                                                        <i class="ri-delete-bin-2-fill align-bottom me-2 text-danger"></i>
+                                                        Delete
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
@@ -47,66 +68,7 @@
     </div>
     <!-- Default Modals -->
 
-    <div id="new" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true"
-        style="display: none;">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Create Target</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
-                </div>
-                <form action="{{ route('targets.store') }}" method="post">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="form-group mt-2">
-                            <label for="product">Product</label>
-                            <select name="productID" id="product" required class="selectize">
-                                <option value=""></option>
-                                @foreach ($products as $product)
-                                    <option value="{{ $product->id }}">{{ $product->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group mt-2">
-                            <label for="customer">Customer</label>
-                            <select name="customerID" id="customer" class="selectize">
-                                @foreach ($customers as $customer)
-                                    <option value="{{ $customer->id }}">{{ $customer->title }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group mt-2">
-                            <label for="unit">Unit</label>
-                            <select name="unitID" id="unit" class="form-control">
-                                @foreach ($units as $unit)
-                                    <option value="{{$unit->id}}">{{$unit->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group mt-2">
-                            <label for="qty">Qty</label>
-                            <input type="number" name="qty" required id="qty"
-                                class="form-control">
-                        </div>
-                        <div class="form-group mt-2">
-                            <label for="start">Start</label>
-                            <input type="date" name="startDate" required id="start" value="{{ date('Y-m-d') }}"
-                                class="form-control">
-                        </div>
-                        <div class="form-group mt-2">
-                            <label for="end">End</label>
-                            <input type="date" name="endDate" required id="end" value="{{ date('Y-m-d') }}"
-                                class="form-control">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </form>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+    
 @endsection
 @section('page-css')
     <link rel="stylesheet" href="{{ asset('assets/libs/datatable/datatable.bootstrap5.min.css') }}" />

@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('targets', function (Blueprint $table) {
+        Schema::create('target_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customerID')->constrained('accounts', 'id');
-            $table->date('startDate');
-            $table->date('endDate');
-            $table->text('notes')->nullable();
+            $table->foreignId('targetID')->constrained('targets', 'id');
+            $table->foreignId('productID')->constrained('products', 'id');
+            $table->float('qty');
+            $table->foreignId('unitID')->constrained('units', 'id');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('targets');
+        Schema::dropIfExists('target_details');
     }
 };

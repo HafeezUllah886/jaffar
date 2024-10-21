@@ -9,18 +9,14 @@ class targets extends Model
 {
     use HasFactory;
     protected $guarded = [];
-    public function product()
-    {
-        return $this->belongsTo(products::class, 'productID');
-    }
-
-    public function unit()
-    {
-        return $this->belongsTo(units::class, 'unitID');
-    }
-
+   
     public function customer()
     {
         return $this->belongsTo(accounts::class, 'customerID');
+    }
+
+    public function details()
+    {
+        return $this->hasMany(targetDetails::class, 'targetID');
     }
 }
