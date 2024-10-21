@@ -10,9 +10,10 @@ use App\Http\Controllers\reports\purchaseGstReportController;
 use App\Http\Controllers\reports\salesGstReportController;
 use App\Http\Controllers\reports\salesManReportController;
 use App\Http\Controllers\reports\salesReportController;
+use App\Http\Middleware\adminCheck;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth', adminCheck::class)->group(function () {
 
     Route::get('/reports/profit', [profitController::class, 'index'])->name('reportProfit');
     Route::get('/reports/profitData/{from}/{to}', [profitController::class, 'data'])->name('reportProfitData');

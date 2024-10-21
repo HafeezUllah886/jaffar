@@ -18,7 +18,7 @@ class dashboardController extends Controller
     public function index()
     {
 
-       
+
         $months = [];
 
         for ($i = 0; $i < 12; $i++) {
@@ -138,7 +138,10 @@ class dashboardController extends Controller
 
             }
 
-
+            if(auth()->user()->role != "Admin")
+            {
+                return to_route('orders.index');
+            }
 
         return view('dashboard.index', compact('sales', 'monthNames', 'expenses', 'profits', 'last_sale', 'last_expense', 'last_profit', 'topProductsArray', 'topCustomersArray'));
     }

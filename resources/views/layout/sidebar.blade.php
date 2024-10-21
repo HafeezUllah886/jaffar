@@ -56,6 +56,7 @@
             </div>
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+                @if (auth()->user()->role == "Admin")
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="{{ route('dashboard') }}">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboards</span>
@@ -78,11 +79,14 @@
                         </ul>
                     </div>
                 </li>
+                @endif
+
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="{{route('orders.index', ['start' => firstDayOfMonth(), 'end' => now()->toDateString()])}}">
                         <i class="ri-shopping-cart-fill"></i><span data-key="t-apps">Orders</span>
                     </a>
                 </li>
+                @if (auth()->user()->role == "Admin")
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#purchase" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarApps">
@@ -230,6 +234,7 @@
                         <i class="ri-apps-2-line"></i> <span data-key="t-apps">Targets</span>
                     </a>
                 </li>
+                @endif
             </ul>
         </div>
         <!-- Sidebar -->

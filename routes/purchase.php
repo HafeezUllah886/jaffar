@@ -6,7 +6,7 @@ use App\Http\Middleware\adminCheck;
 use App\Http\Middleware\confirmPassword;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth', adminCheck::class)->group(function () {
 
     Route::resource('purchase', PurchaseController::class)->middleware(adminCheck::class);
 
