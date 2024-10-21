@@ -17,6 +17,16 @@ class salesGstReportController extends Controller
     {
         $sales = sales::with('customer', 'details')->whereBetween('date', [$from, $to])->get();
 
+        foreach($sales as $sale)
+        {
+            $totalRP = 0;
+            foreach($sale->details as $product)
+            {
+                $totalRP += $product->qty * $product->tp;
+            }
+            $sale->totalBill = $totalRP;
+        }
+
         return view('reports.salesGst.details', compact('from', 'to', 'sales'));
     }
 }

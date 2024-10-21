@@ -57,6 +57,7 @@
                                                 <th scope="col">STRN #</th>
                                                 <th scope="col">Bill Date</th>
                                                 <th scope="col">Tax Exc</th>
+                                                <th scope="col">Bill Amount (RP)</th>
                                                 <th scope="col" class="text-end">GST (18%)</th>
                                                 <th scope="col" class="text-end">Qty</th>
                                             </tr>
@@ -67,17 +68,20 @@
                                                 $totalGst = 0;
                                                 $totalQty = 0;
                                                 $totalTe = 0;
+                                                $totalBA = 0;
                                             @endphp
                                         @foreach ($sales as $key => $item)
                                         @php
                                         $ti = $item->details->sum('ti');
                                         $gst = $item->details->sum('gstValue');
                                         $qty = $item->details->sum('qty');
+                                        $ba = $item->totalBill;
                                         $te = $ti - $gst;
                                         $totalTi += $ti;
                                         $totalGst += $gst;
                                         $totalQty += $qty;
                                         $totalTe += $te;
+                                        $totalBA += $ba;
 
                                         @endphp
                                             <tr>
@@ -88,6 +92,7 @@
                                                 <td >{{ $item->customer->strn ?? "-" }}</td>
                                                 <td>{{ date("d M Y", strtotime($item->date))}}</td>
                                                 <td class="text-end">{{ number_format($te, 2) }}</td>
+                                                <td class="text-end">{{ number_format($ba, 2) }}</td>
                                                 <td class="text-end">{{ number_format($gst, 2) }}</td>
                                                 <td class="text-end">{{ number_format($qty, 2) }}</td>
                                             </tr>
@@ -97,6 +102,7 @@
                                             <tr>
                                                 <th colspan="6" class="text-end">Total</th>
                                                 <th class="text-end">{{number_format($totalTe, 2)}}</th>
+                                                <th class="text-end">{{number_format($totalBA, 2)}}</th>
                                                 <th class="text-end">{{number_format($totalGst, 2)}}</th>
                                                 <th class="text-end">{{number_format($totalQty, 2)}}</th>
                                             </tr>

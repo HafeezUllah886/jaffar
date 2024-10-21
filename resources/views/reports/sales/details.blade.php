@@ -52,7 +52,7 @@
                                             <tr class="table-active">
                                                 <th scope="col" style="width: 50px;">Inv #</th>
                                                 <th scope="col" class="text-start">Customer Name</th>
-                                                <th scope="col" class="text-start">Sales Man</th>
+                                                <th scope="col" class="text-start">Order Booker</th>
                                                 <th scope="col">Date</th>
                                                 <th scope="col">Amount</th>
                                             </tr>
@@ -62,7 +62,7 @@
                                             <tr>
                                                 <td>{{ $item->id}}</td>
                                                 <td class="text-start">{{ $item->customer->title }}</td>
-                                                <td class="text-start">{{ $item->salesman->name }}</td>
+                                                <td class="text-start">{{ $item->orderbooker->name }}</td>
                                                 <td>{{ date("d M Y", strtotime($item->date))}}</td>
                                                 <td class="text-end">{{ number_format($item->net, 2) }}</td>
                                             </tr>

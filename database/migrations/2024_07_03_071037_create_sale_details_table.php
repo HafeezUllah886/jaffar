@@ -23,6 +23,7 @@ return new class extends Migration
             $table->float('gst');
             $table->float('gstValue');
             $table->date('date');
+            $table->float('bonus')->default(0);
             $table->foreignId('unitID')->constrained('units', 'id');
             $table->float('unitValue');
             $table->bigInteger('refID');

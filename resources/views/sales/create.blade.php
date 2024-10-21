@@ -43,6 +43,7 @@
                                         <th class="text-center">RP</th>
                                         <th class="text-center">GST%</th>
                                         <th class="text-center">GST</th>
+                                        <th class="text-center">Bonus</th>
                                         <th></th>
                                     </thead>
                                     <tbody id="products_list"></tbody>
@@ -203,19 +204,20 @@
                         var id = product.id;
                         var html = '<tr id="row_' + id + '">';
                         html += '<td class="no-padding">' + product.name + '</td>';
-                        html += '<td class="no-padding"><div class="input-group">  <span class="input-group-text" id="stockValue_'+id+'">'+product.stock +'</span><input type="number" max="'+product.stock+'" name="qty[]" oninput="updateChanges(' + id +')" min="0.1" required step="any" value="1" class="form-control text-center" id="qty_' + id + '"></div></td>';
+                        html += '<td class="no-padding"><div class="input-group">  <span class="input-group-text" id="stockValue_'+id+'">'+product.stock +'</span><input type="number" max="'+product.stock+'" name="qty[]" oninput="updateChanges(' + id +')" min="0" required step="any" value="1" class="form-control text-center" id="qty_' + id + '"></div></td>';
                         html += '<td class="no-padding"><select name="unit[]" class="form-control text-center" onchange="updateChanges(' + id +')" id="unit_' + id + '">';
                             units.forEach(function(unit) {
                                 var isSelected = (unit.id == product.unitID);
                                 html += '<option data-unit="'+unit.value+'" value="' + unit.id + '" ' + (isSelected ? 'selected' : '') + '>' + unit.name + '</option>';
                             });
                         html += '</select></td>';
-                        html += '<td class="no-padding"><input type="number" name="price[]" oninput="updateChanges(' + id + ')" required step="any" value="'+product.price+'" min="1" class="form-control text-center" id="price_' + id + '"></td>';
+                        html += '<td class="no-padding"><input type="number" name="price[]" oninput="updateChanges(' + id + ')" required step="any" value="'+product.price+'" min="0" class="form-control text-center" id="price_' + id + '"></td>';
                         html += '<td class="no-padding"><input type="number" name="discount[]" oninput="updateChanges(' + id + ')" required step="any" value="'+product.discount+'" min="0" class="form-control text-center" id="discount_' + id + '"></td>';
                         html += '<td class="no-padding"><input type="number" name="ti[]" required step="any" value="0.00" min="0" class="form-control text-center" id="ti_' + id + '"></td>';
                         html += '<td class="no-padding"><input type="number" name="tp[]" oninput="updateChanges(' + id + ')" required step="any" value="'+product.tp+'" min="0" class="form-control text-center" id="tp_' + id + '"></td>';
                         html += '<td class="no-padding"><input type="number" name="gst[]" oninput="updateChanges(' + id + ')" required step="any" value="18" min="0" class="form-control text-center" id="gst_' + id + '"></td>';
                         html += '<td class="no-padding"><input type="number" name="gstValue[]" required step="any" value="0.00" min="0" class="form-control text-center" id="gstValue_' + id + '"></td>';
+                        html += '<td class="no-padding"><input type="number" name="bonus[]" min="0" required step="any" value="0" oninput="updateChanges(' + id + ')" class="form-control text-center no-padding" id="bonus_' + id + '"></td>';
                         html += '<td> <span class="btn btn-sm btn-danger" onclick="deleteRow('+id+')">X</span> </td>';
                         html += '<input type="hidden" name="id[]" value="' + id + '">';
                         html += '<input type="hidden" id="stock_'+id+'" value="' + product.stock + '">';
@@ -235,6 +237,7 @@
                 unit = unit.data('unit');
             var stock = $('#stock_' + id).val();
             var discount = $('#discount_' + id).val();
+            var bonus = parseFloat($('#bonus_' + id).val());
             var newQty = qty * unit;
 
             var ti = (newQty * price) - (newQty * discount);
@@ -243,7 +246,7 @@
             var tp = $("#tp_"+id).val();
             var gst = $("#gst_"+id).val();
 
-            var gstValue = (tp * gst / 100) * newQty;
+            var gstValue = (tp * gst / 100) * (newQty + bonus);
 
             $("#gstValue_"+id).val(gstValue.toFixed(2));
 

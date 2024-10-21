@@ -31,7 +31,7 @@
                                                     @endphp
                                                    @foreach ($sale->details as $key => $product)
                                                    @php
-                                                       $totalQty += $product->qty / $product->unitValue;
+                                                       $totalQty += ($product->qty + $product->bonus) / $product->unitValue;
                                                    @endphp
                                                    @endforeach
                                                         <td style="width:20%;" class="p-4 pb-1"><strong>Quantity of Goods</strong></td>
@@ -90,14 +90,14 @@
                                             @endphp
                                            @foreach ($sale->details as $key => $product)
                                            @php
-                                               $totalQty += $product->qty / $product->unitValue;
+                                               $totalQty += ($product->qty + $product->bonus) / $product->unitValue;
                                            @endphp
                                                <tr class="border-1 border-dark">
                                                 <td class="m-1 p-1 border-1 border-dark">{{$key+1}}</td>
                                                 <td class="text-start m-1 p-1 border-1 border-dark">{{$product->product->name}}</td>
                                                 <td class="text-start m-1 p-1 border-1 border-dark">{{$product->unit->name}}</td>
                                                 <td class="text-end m-1 p-1 border-1 border-dark">{{number_format($product->qty / $product->unitValue)}}</td>
-                                                <td class="text-end m-1 p-1 border-1 border-dark">{{number_format($product->qty)}}</td>
+                                                <td class="text-end m-1 p-1 border-1 border-dark">{{number_format($product->qty + $product->bonus)}}</td>
                                                </tr>
                                            @endforeach
                                         </tbody>
@@ -105,7 +105,7 @@
                                             <tr class="border-1 border-dark">
                                                 <th colspan="3" class="text-end">Total</th>
                                                 <th class="text-end">{{number_format($totalQty)}}</th>
-                                                <th class="text-end">{{number_format($sale->details->sum('qty'))}}</th>
+                                                <th class="text-end">{{number_format($sale->details->sum('qty') + $sale->details->sum('bonus'))}}</th>
                                             </tr>
                                         </tfoot>
                                     </table><!--end table-->

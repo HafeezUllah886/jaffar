@@ -34,10 +34,6 @@ function myBalance()
         $balance += getAccountBalance($account->id);
     }
 
-    $stockValue = stockValue();
-
-    $balance = $balance + $stockValue;
-
     return $balance;
 }
 

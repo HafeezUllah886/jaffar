@@ -85,6 +85,7 @@ class SalesController extends Controller
             foreach($ids as $key => $id)
             {
                 $unit = units::find($request->unit[$key]);
+                $qty1 = ($request->qty[$key] * $unit->value) + $request->bonus[$key];
                 $qty = $request->qty[$key] * $unit->value;
                 $price = $request->price[$key];
                 $total += $request->ti[$key];
@@ -100,12 +101,13 @@ class SalesController extends Controller
                         'gst'           => $request->gst[$key],
                         'gstValue'      => $request->gstValue[$key],
                         'date'          => $request->date,
+                        'bonus'         => $request->bonus[$key],
                         'unitID'        => $unit->id,
                         'unitValue'     => $unit->value,
                         'refID'         => $ref,
                     ]
                 );
-                createStock($id,0, $qty, $request->date, "Sold in Inv # $sale->id", $ref);
+                createStock($id,0, $qty1, $request->date, "Sold in Inv # $sale->id", $ref);
             }
 
             $whTax = $total * $request->whTax / 100;
