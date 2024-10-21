@@ -31,7 +31,7 @@
                                         </div>
                                     </div>
                                     <div class="flex-shrink-0 mt-sm-0 mt-3">
-                                        <h3>Sales Tax Invoice</h3>
+                                        <h3>Target Report</h3>
                                         <p> <span class="text-muted text-uppercase fw-semibold mt-0 m-0 p-0">Target # </span><span class="fs-14 m-0 p-0">{{$target->id}}</span></p>
                                     </div>
                                 </div>

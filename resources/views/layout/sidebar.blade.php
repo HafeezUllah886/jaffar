@@ -2,21 +2,21 @@
     <!-- LOGO -->
     <div class="navbar-brand-box">
         <!-- Dark Logo-->
-        <a href="index.html" class="logo logo-dark">
+        <a href="{{route('dashboard')}}" class="logo logo-dark">
             <span class="logo-sm">
-                <h3 class="text-white">J&B</h3>
+                <h3 class="text-white">JB</h3>
             </span>
             <span class="logo-lg">
-                <h3 class="text-white mt-2">JABBAR & BROTHERS</h3>
+                <h3 class="text-white mt-3">JAFFAR & BROTHERS</h3>
             </span>
         </a>
         <!-- Light Logo-->
-        <a href="index.html" class="logo logo-light">
+        <a href="{{route('dashboard')}}" class="logo logo-light">
             <span class="logo-sm">
-                <h3 class="text-white">J&B</h3>
+                <h3 class="text-white">JB</h3>
             </span>
             <span class="logo-lg">
-                <h3 class="text-white mt-2">JABBAR & BROTHERS</h3>
+                <h3 class="text-white mt-3">JAFFAR & BROTHERS</h3>
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
