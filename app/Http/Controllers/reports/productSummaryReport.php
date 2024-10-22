@@ -27,7 +27,7 @@ class productSummaryReport extends Controller
             $profit = $ppu * $product->sale_details_sum_qty;
             $stockValue = $pprice * $stock;
 
-            $topProductsArray[] = ['name' => $product->name, 'price' => $price, 'pprice' => $pprice, 'profit' => $profit, 'stock' => $stock, 'stockValue' => $stockValue, 'amount' => $product->sale_details_sum_ti, 'sold' => $product->sale_details_sum_qty];
+            $topProductsArray[] = ['name' => $product->name, 'unit' => $product->unit->name, 'unitValue' => $product->unit->value, 'price' => $price, 'pprice' => $pprice, 'profit' => $profit, 'stock' => $stock, 'stockValue' => $stockValue, 'amount' => $product->sale_details_sum_ti, 'sold' => $product->sale_details_sum_qty];
         }
 
         return view('reports.productSummary.details', compact('topProductsArray'));

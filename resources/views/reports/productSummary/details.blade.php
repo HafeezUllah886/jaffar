@@ -28,7 +28,8 @@
                                         <thead>
                                             <tr class="table-active">
                                                 <th scope="col" style="width: 50px;">#</th>
-                                                <th scope="col">Product</th>
+                                                <th scope="col" class="text-start">Product</th>
+                                                <th scope="col" class="text-start">Packing</th>
                                                 <th scope="col" class="text-end">Avg Purchase Rate</th>
                                                 <th scope="col" class="text-end">Avg Sale Price</th>
                                                 <th scope="col" class="text-end">Sold Qty</th>
@@ -43,13 +44,14 @@
                                         
                                             <tr>
                                                 <td>{{ $key+1 }}</td>
-                                                <td>{{ $item['name'] }}</td>
-                                                <td class="text-end">{{ number_format($item['pprice'],2) }}</td>
-                                                <td class="text-end">{{ number_format($item['price'],2) }}</td>
-                                                <td class="text-end">{{ number_format($item['sold'],2) }}</td>
+                                                <td class="text-start">{{ $item['name'] }}</td>
+                                                <td class="text-start">{{ $item['unit'] }}</td>
+                                                <td class="text-end">{{ number_format($item['pprice'] * $item['unitValue'],2) }}</td>
+                                                <td class="text-end">{{ number_format($item['price'] * $item['unitValue'],2) }}</td>
+                                                <td class="text-end">{{ number_format($item['sold'] / $item['unitValue'],2) }}</td>
                                                 <td class="text-end">{{ number_format($item['amount'],2) }}</td>
                                                 <td class="text-end">{{ number_format($item['profit'],2) }}</td>
-                                                <td class="text-end">{{ number_format($item['stock'],2) }}</td>
+                                                <td class="text-end">{{ number_format($item['stock'] / $item['unitValue'],2) }}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>
