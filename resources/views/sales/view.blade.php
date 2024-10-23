@@ -6,39 +6,50 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="hstack gap-2 justify-content-end d-print-none p-2 mt-4">
-                                <a href="javascript:window.print()" class="btn btn-success ml-4"><i class="ri-printer-line mr-4"></i> Print</a>
+                                <a href="{{url('sales/pdf/')}}/{{$sale->id}}" class="btn btn-info ml-4"><i class="ri-file-line mr-4"></i> Generate PDF</a>
+                                <a href="https://web.whatsapp.com/" target="_blank" class="btn btn-success ml-4"><i class="ri-whatsapp-line mr-4"></i> Whatsapp</a>
+                                <a href="javascript:window.print()" class="btn btn-primary ml-4"><i class="ri-printer-line mr-4"></i> Print</a>
                             </div>
                             <div class="card-header border-bottom-dashed p-4">
-                                <div class="d-flex">
-                                    <div class="flex-grow-1">
-                                        <img src="{{asset('assets/images/logo.png')}}" style="width:250px;">
-                                        <div class="mt-sm-5 mt-4">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <h6 class="text-muted text-uppercase fw-semibold">Industrial Area, Sirki Road, Quetta</h6>
-                                                    <p class="text-muted mb-1" id="address-details">NTN: 2645388-6</p>
-                                                    <p class="text-muted mb-0" id="zip-code"><span>0331-8358638 | </span> jaffarqta92@gmail.com</p>
-                                                </div>
-                                                <div class="col-6">
-                                                    <p class="text-muted mb-2 text-uppercase fw-semibold">Customer</p>
-                                                    <h5 class="fs-14 mb-0"> <span class="text-muted">M/S :</span> {{$sale->customer->title}}</h5>
-                                                    <h5 class="fs-14 mb-0"> <span class="text-muted">CNIC :</span> {{$sale->customer->cnic ?? "NA"}} | <span class="text-muted">Contact :</span> {{$sale->customer->contact ?? "NA"}}</h5>
-                                                    <h5 class="fs-14 mb-0"> <span class="text-muted">NTN #</span> {{$sale->customer->ntn ?? "NA"}} | <span class="text-muted">STRN #</span> {{$sale->customer->strn ?? "NA"}}</h5>
-                                                    <h5 class="fs-14 mb-0"> <span class="text-muted">Address :</span> {{$sale->customer->address ?? "NA"}}</h5>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div class="flex-shrink-0 mt-sm-0 mt-3">
-                                        <h3>Sales Tax Invoice</h3>
-                                        <p> <span class="text-muted text-uppercase fw-semibold mt-0 m-0 p-0">Inv # </span><span class="fs-14 m-0 p-0">{{$sale->id}}</span></p>
-                                        <p> <span class="text-muted text-uppercase fw-semibold mt-0 m-0 p-0">Date : </span><span class="fs-14 m-0 p-0">{{date("d M Y" ,strtotime($sale->date))}}</span></p>
-                                        <p> <span class="text-muted text-uppercase fw-semibold mt-0 m-0 p-0">Order Booker : </span><span class="fs-14 m-0 p-0">{{$sale->orderbooker->name}}</span></p>
-                                    </div>
-                                </div>
+                                @include('layout.header')
                             </div>
                             <!--end card-header-->
+                        </div><!--end col-->
+                        <div class="col-lg-12 ">
+                            <div class="row">
+                                <div class="col-4"></div>
+                                <div class="col-4 text-center"><h2>SALES INVOICE</h2></div>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="row g-3">
+                                    <div class="col-3">
+                                        <p class="text-muted mb-2 text-uppercase fw-semibold">Inv #</p>
+                                        <h5 class="fs-14 mb-0">{{$sale->id}}</h5>
+                                    </div>
+                                    <div class="col-3">
+                                        <p class="text-muted mb-2 text-uppercase fw-semibold">Customer</p>
+                                        <h5 class="fs-14 mb-0"> <span class="text-muted">M/S :</span> {{$sale->customer->title}}</h5>
+                                        @if ($sale->customerID != 2)
+                                        <h5 class="fs-14 mb-0"> <span class="text-muted">CNIC :</span> {{$sale->customer->cnic ?? "NA"}} | <span class="text-muted">Contact :</span> {{$sale->customer->contact ?? "NA"}}</h5>
+                                        <h5 class="fs-14 mb-0"> <span class="text-muted">NTN #</span> {{$sale->customer->ntn ?? "NA"}} | <span class="text-muted">STRN #</span> {{$sale->customer->strn ?? "NA"}}</h5>
+                                        <h5 class="fs-14 mb-0"> <span class="text-muted">Address :</span> {{$sale->customer->address ?? "NA"}}</h5>
+                                        @endif
+                                       
+                                    </div>
+                                    <div class="col-3">
+                                        <p class="text-muted mb-2 text-uppercase fw-semibold">Order Booker</p>
+                                        <h5 class="fs-14 mb-0">{{$sale->orderbooker->name}}</h5>
+                                    </div>
+                                    <div class="col-3">
+                                        <p class="text-muted mb-2 text-uppercase fw-semibold">Date</p>
+                                        <h5 class="fs-14 mb-0">{{date("d M Y" ,strtotime($sale->date))}}</h5>
+                                    </div>
+                                    <!--end col-->
+                                    <!--end col-->
+                                </div>
+                                <!--end row-->
+                            </div>
+                            <!--end card-body-->
                         </div><!--end col-->
                         <div class="col-lg-12">
                             <div class="card-body p-4">
