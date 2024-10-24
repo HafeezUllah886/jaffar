@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountsController;
 use App\Http\Controllers\authController;
 use App\Http\Controllers\DepositWithdrawController;
 use App\Http\Controllers\ExpensesController;
+use App\Http\Controllers\PaymentReceivingController;
 use App\Http\Controllers\profileController;
 use App\Http\Controllers\TransferController;
 use App\Http\Middleware\adminCheck;
@@ -23,5 +24,9 @@ Route::middleware('auth', adminCheck::class)->group(function () {
 
     Route::resource('expenses', ExpensesController::class);
     Route::get('expense/delete/{ref}', [ExpensesController::class, 'delete'])->name('expense.delete')->middleware(confirmPassword::class);
+
+    Route::resource('receivings', PaymentReceivingController::class);
+    Route::get('receiving/delete/{ref}', [PaymentReceivingController::class, 'delete'])->name('receiving.delete')->middleware(confirmPassword::class);
+    Route::get('receiving/pdf/{id}', [PaymentReceivingController::class, 'pdf'])->name('receiving.pdf');
 });
 

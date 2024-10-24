@@ -116,3 +116,23 @@
     <!-- Default Modals -->
 @endsection
 
+@section('page-css')
+<link rel="stylesheet" href="{{ asset('assets/libs/datatable/datatable.bootstrap5.min.css') }}" />
+<!--datatable responsive css-->
+<link rel="stylesheet" href="{{ asset('assets/libs/datatable/responsive.bootstrap.min.css') }}" />
+
+<link rel="stylesheet" href="{{ asset('assets/libs/datatable/buttons.dataTables.min.css') }}">
+@endsection
+@section('page-js')
+    <script src="{{ asset('assets/libs/datatable/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('assets/libs/datatable/dataTables.bootstrap5.min.js')}}"></script>
+    <script src="{{ asset('assets/libs/datatable/dataTables.responsive.min.js')}}"></script>
+    <script src="{{ asset('assets/libs/datatable/dataTables.buttons.min.js')}}"></script>
+    <script src="{{ asset('assets/libs/datatable/buttons.print.min.js')}}"></script>
+    <script src="{{ asset('assets/libs/datatable/buttons.html5.min.js')}}"></script>
+    <script src="{{ asset('assets/libs/datatable/vfs_fonts.js')}}"></script>
+    <script src="{{ asset('assets/libs/datatable/pdfmake.min.js')}}"></script>
+    <script src="{{ asset('assets/libs/datatable/jszip.min.js')}}"></script>
+
+    <script src="{{ asset('assets/js/pages/datatables.init.js') }}"></script>
+@endsection

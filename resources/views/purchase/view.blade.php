@@ -11,7 +11,7 @@
                             <div class="card-header border-bottom-dashed p-4">
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
-                                        <h1>JABBAR & BROTHERS</h1>
+                                        <h1>JAFFAR & BROTHERS</h1>
 
                                         {{-- <div class="mt-sm-5 mt-4">
                                             <h6 class="text-muted text-uppercase fw-semibold">Address</h6>
