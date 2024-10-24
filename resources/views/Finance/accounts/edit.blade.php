@@ -44,6 +44,18 @@
                             @if ($account->type == 'Customer')
                             <div class="col-6 mt-2 customer" >
                                 <div class="form-group">
+                                    <label for="cnic">Customer Category</label>
+                                    <select name="c_type" id="c_type" class="form-control">
+                                        <option value="Distributor" @selected($account->c_type == "Distributor")>Distributor</option>
+                                        <option value="Retailer" @selected($account->c_type == "Retailer")>Retailer</option>
+                                        <option value="Wholeseller" @selected($account->c_type == "Wholeseller")>Wholeseller</option>
+                                        <option value="Super Mart" @selected($account->c_type == "Super Mart")>Super Mart</option>
+                                        <option value="Other" @selected($account->c_type == "Other")>Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-6 mt-2 customer" >
+                                <div class="form-group">
                                     <label for="cnic">CNIC #</label>
                                     <input type="text" name="cnic" id="cnic" value="{{ $account->cnic }}"
                                         class="form-control">

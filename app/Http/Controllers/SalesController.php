@@ -222,7 +222,7 @@ class SalesController extends Controller
                     'fright'      => $request->fright,
                     'fright1'      => $request->fright1,
                     'wh'          => $request->whTax,
-                    'salesmanID'  => $request->salesmanID,
+                    'orderbookerID'  => $request->orderbookerID,
                     'refID'       => $ref,
                   ]
             );

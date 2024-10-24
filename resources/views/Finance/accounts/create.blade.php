@@ -48,6 +48,18 @@
                             </div>
                             <div class="col-6 mt-2 customer" >
                                 <div class="form-group">
+                                    <label for="cnic">Customer Category</label>
+                                    <select name="c_type" id="c_type" class="form-control">
+                                        <option value="Distributor">Distributor</option>
+                                        <option value="Retailer">Retailer</option>
+                                        <option value="Wholeseller">Wholeseller</option>
+                                        <option value="Super Mart">Super Mart</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-6 mt-2 customer" >
+                                <div class="form-group">
                                     <label for="cnic">CNIC #</label>
                                     <input type="text" name="cnic" id="cnic" value="{{ old('cnic') }}"
                                         class="form-control">

@@ -22,16 +22,16 @@
                             </div>
                             <div class="card-body p-4">
                                 <div class="row g-3">
-                                    <div class="col-3">
+                                    <div class="col-2">
                                         <p class="text-muted mb-2 text-uppercase fw-semibold">Inv #</p>
                                         <h5 class="fs-14 mb-0">{{$sale->id}}</h5>
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-5">
                                         <p class="text-muted mb-2 text-uppercase fw-semibold">Customer</p>
                                         <h5 class="fs-14 mb-0"> <span class="text-muted">M/S :</span> {{$sale->customer->title}}</h5>
                                         @if ($sale->customerID != 2)
                                         <h5 class="fs-14 mb-0"> <span class="text-muted">CNIC :</span> {{$sale->customer->cnic ?? "NA"}} | <span class="text-muted">Contact :</span> {{$sale->customer->contact ?? "NA"}}</h5>
-                                        <h5 class="fs-14 mb-0"> <span class="text-muted">NTN #</span> {{$sale->customer->ntn ?? "NA"}} | <span class="text-muted">STRN #</span> {{$sale->customer->strn ?? "NA"}}</h5>
+                                        <h5 class="fs-14 mb-0"> <span class="text-muted">Type :</span> {{$sale->customer->c_type}} | NTN #</span> {{$sale->customer->ntn ?? "NA"}} | <span class="text-muted">STRN #</span> {{$sale->customer->strn ?? "NA"}}</h5>
                                         <h5 class="fs-14 mb-0"> <span class="text-muted">Address :</span> {{$sale->customer->address ?? "NA"}}</h5>
                                         @endif
                                        
@@ -40,7 +40,7 @@
                                         <p class="text-muted mb-2 text-uppercase fw-semibold">Order Booker</p>
                                         <h5 class="fs-14 mb-0">{{$sale->orderbooker->name}}</h5>
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-2">
                                         <p class="text-muted mb-2 text-uppercase fw-semibold">Date</p>
                                         <h5 class="fs-14 mb-0">{{date("d M Y" ,strtotime($sale->date))}}</h5>
                                     </div>
@@ -59,7 +59,7 @@
                                             <tr class="table-active">
                                                 <th scope="col" style="width: 50px;">#</th>
                                                 <th scope="col" class="text-start">Product</th>
-                                                <th scope="col" class="text-end">CTN</th>
+                                                <th scope="col" class="text-end">Unit</th>
                                                 <th scope="col" class="text-end">Qty</th>
                                                 <th scope="col" class="text-end">Price</th>
                                                 <th scope="col" class="text-end">Discount</th>
@@ -71,16 +71,18 @@
                                         <tbody id="products-list">
                                             @php
                                                 $totalQty = 0;
+                                                $discount= 0;
                                             @endphp
                                            @foreach ($sale->details as $key => $product)
                                            @php
+                                                $discount += $product->qty * $product->discount;
                                                $totalQty += ($product->qty + $product->bonus) / $product->unitValue;
                                            @endphp
                                                <tr class="border-1 border-dark">
                                                 <td class="m-1 p-1 border-1 border-dark">{{$key+1}}</td>
                                                 <td class="text-start m-1 p-1 border-1 border-dark">{{$product->product->name}}</td>
+                                                <td class="text-end m-1 p-1 border-1 border-dark">{{$product->unit->name}}</td>
                                                 <td class="text-end m-1 p-1 border-1 border-dark">{{number_format(($product->qty + $product->bonus) / $product->unitValue)}}</td>
-                                                <td class="text-end m-1 p-1 border-1 border-dark">{{number_format($product->qty)}} {{$product->bonus > 0 ? " + ".number_format($product->bonus) : ""}}</td>
                                                 <td class="text-end m-1 p-1 border-1 border-dark">{{number_format($product->price, 2)}}</td>
                                                 <td class="text-end m-1 p-1 border-1 border-dark">{{number_format($product->discount, 2)}}</td>
                                                 <td class="text-end m-1 p-1 border-1 border-dark">{{number_format($product->ti, 2)}}</td>
@@ -98,11 +100,10 @@
                                                 $paid = $sale->payments->sum('amount');
                                             @endphp
                                             <tr class="border-1 border-dark">
-                                                <th colspan="2" class="text-end">Total</th>
+                                                <th colspan="3" class="text-end">Total</th>
                                                 <th class="text-end">{{number_format($totalQty)}}</th>
-                                                <th class="text-end">{{number_format($sale->details->sum('qty') + $sale->details->sum('bonus'))}}</th>
                                                 <th></th>
-                                                <th class="text-end">{{number_format($totalDisc,2)}}</th>
+                                                <th class="text-end">{{number_format($discount,2)}}</th>
                                                 <th class="text-end">{{number_format($totalTi,2)}}</th>
                                                 <th class="text-end"></th>
                                                 <th class="text-end">{{number_format($totalGstVal,2)}}</th>

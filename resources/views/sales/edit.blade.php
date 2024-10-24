@@ -52,6 +52,7 @@
                                         <th class="text-center">RP</th>
                                         <th class="text-center">GST%</th>
                                         <th class="text-center">GST</th>
+                                        <th class="text-center">Bonus</th>
                                         <th></th>
                                     </thead>
                                     <tbody id="products_list">
@@ -91,6 +92,7 @@
                                             <td class="no-padding"><input type="number" name="tp[]" oninput="updateChanges({{ $id }})" required step="any" value="{{$product->tp}}" min="0" class="form-control text-center" id="tp_{{ $id }}"></td>
                                             <td class="no-padding"><input type="number" name="gst[]" oninput="updateChanges({{ $id }})" required step="any" value="{{$product->gst}}" min="0" class="form-control text-center" id="gst_{{ $id }}"></td>
                                             <td class="no-padding"><input type="number" name="gstValue[]" required step="any" value="{{$product->gstValue}}" min="0" class="form-control text-center" id="gstValue_{{ $id }}"></td>
+                                            <td class="no-padding"><input type="number" name="bonus[]" min="0" required step="any" value="0" oninput="updateChanges({{ $id }})" class="form-control text-center no-padding" id="bonus_{{ $id }}"></td>
                                             <td> <span class="btn btn-sm btn-danger" onclick="deleteRow({{$id}})">X</span> </td>
                                             <input type="hidden" name="id[]" value="{{ $id }}">
                                             <input type="hidden" id="stock_{{$id}}" value="{{ getStock($id) + $product->qty}}">
@@ -105,16 +107,17 @@
                                             <th></th>
                                             <th></th>
                                             <th class="text-end" id="totalGST">0.00</th>
+                                            <th></th>
                                         </tr>
                                     </tfoot>
                                 </table>
                             </div>
                             <div class="col-2">
                                 <div class="form-group">
-                                    <label for="salesman">Salesman</label>
-                                    <select name="salesmanID" id="salesman" class="selectize1">
-                                        @foreach ($salesmans as $man)
-                                            <option value="{{ $man->id }}" @selected($man->id == $sale->salesmanID)>{{ $man->name }}</option>
+                                    <label for="orderbooker">Order Booker</label>
+                                    <select name="orderbookerID" id="orderbooker" class="selectize1">
+                                        @foreach ($orderbookers as $booker)
+                                            <option value="{{ $booker->id }}" @selected($booker->id == $sale->orderbookerID)>{{ $booker->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -125,13 +128,19 @@
                                     <input type="number" name="discount1" oninput="updateTotal()" id="discount" step="any" value="{{$sale->discount}}" class="form-control">
                                 </div>
                             </div>
-                            <div class="col-3">
+                            <div class="col-2">
                                 <div class="form-group">
-                                    <label for="fright">Fright</label>
+                                    <label for="fright">Fright (-)</label>
                                     <input type="number" name="fright" id="fright" oninput="updateTotal()" min="0" step="any" value="{{$sale->fright}}" class="form-control">
                                 </div>
                             </div>
-                            <div class="col-3">
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label for="fright">Fright (+)</label>
+                                    <input type="number" name="fright1" id="fright1" oninput="updateTotal()" min="0" step="any" value="{{$sale->fright1}}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-2">
                                 <div class="form-group">
                                     <label for="whTax">WH Tax</label>
                                     <div class="input-group mb-3">
@@ -261,6 +270,7 @@
                         html += '<td class="no-padding"><input type="number" name="tp[]" oninput="updateChanges(' + id + ')" required step="any" value="'+product.tp+'" min="0" class="form-control text-center" id="tp_' + id + '"></td>';
                         html += '<td class="no-padding"><input type="number" name="gst[]" oninput="updateChanges(' + id + ')" required step="any" value="18" min="0" class="form-control text-center" id="gst_' + id + '"></td>';
                         html += '<td class="no-padding"><input type="number" name="gstValue[]" required step="any" value="0.00" min="0" class="form-control text-center" id="gstValue_' + id + '"></td>';
+                        html += '<td class="no-padding"><input type="number" name="bonus[]" min="0" required step="any" value="0" oninput="updateChanges(' + id + ')" class="form-control text-center no-padding" id="bonus_' + id + '"></td>';
                         html += '<td> <span class="btn btn-sm btn-danger" onclick="deleteRow('+id+')">X</span> </td>';
                         html += '<input type="hidden" name="id[]" value="' + id + '">';
                         html += '<input type="hidden" id="stock_' + id + '" value="' + product.stock + '">';
@@ -280,6 +290,7 @@
                 unit = unit.data('unit');
             var stock = $('#stock_' + id).val();
             var discount = $('#discount_' + id).val();
+            var bonus = parseFloat($('#bonus_' + id).val());
             var newQty = qty * unit;
 
             var ti = (newQty * price) - (newQty * discount);
@@ -288,7 +299,7 @@
             var tp = $("#tp_"+id).val();
             var gst = $("#gst_"+id).val();
 
-            var gstValue = (tp * gst / 100) * newQty;
+            var gstValue = (tp * gst / 100) * (newQty + bonus);
 
             $("#gstValue_"+id).val(gstValue.toFixed(2));
 
@@ -296,7 +307,6 @@
 
             $("#stockValue_"+id).html(stock / unit);
             $("#qty_"+id).attr("max", stock / unit);
-
             updateTotal();
         }
 
@@ -330,13 +340,15 @@
 
             var discount = parseFloat($("#discount").val());
             var fright = parseFloat($("#fright").val());
+            var fright1 = parseFloat($("#fright1").val());
             var whTax = parseFloat($("#whTax").val());
 
             var taxValue = totalTI * whTax / 100;
 
             $(".whTaxValue").html(taxValue.toFixed(2));
 
-            var net = (totalTI + taxValue) - (discount + fright);
+            var net = (totalTI + taxValue + fright1) - (discount + fright);
+
 
             $("#net").val(net.toFixed(2));
         }
