@@ -50,10 +50,14 @@
                                     <table class="table table-borderless text-center table-nowrap align-middle mb-0">
                                         <thead>
                                             <tr class="table-active">
-                                                <th scope="col" style="width: 50px;">Inv #</th>
+                                                <th scope="col" style="width: 50px;">#</th>
+                                                <th scope="col">Inv #</th>
                                                 <th scope="col" class="text-start">Customer Name</th>
                                                 <th scope="col" class="text-start">Order Booker</th>
                                                 <th scope="col">Date</th>
+                                                <th scope="col">Discount</th>
+                                                <th scope="col">Fright (-)</th>
+                                                <th scope="col">Fright (+)</th>
                                                 <th scope="col">Amount</th>
                                             </tr>
                                         </thead>
@@ -61,16 +65,23 @@
                                         @foreach ($sales as $key => $item)
                                             <tr>
                                                 <td>{{ $item->id}}</td>
+                                                <td class="text-start">{{ $item->inv}}</td>
                                                 <td class="text-start">{{ $item->customer->title }}</td>
                                                 <td class="text-start">{{ $item->orderbooker->name }}</td>
                                                 <td>{{ date("d M Y", strtotime($item->date))}}</td>
+                                                <td class="text-end">{{ number_format($item->discount, 2) }}</td>
+                                                <td class="text-end">{{ number_format($item->fright, 2) }}</td>
+                                                <td class="text-end">{{ number_format($item->fright1, 2) }}</td>
                                                 <td class="text-end">{{ number_format($item->net, 2) }}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th colspan="4" class="text-end">Total</th>
+                                                <th colspan="5" class="text-end">Total</th>
+                                                <th class="text-end">{{number_format($sales->sum('discount'), 2)}}</th>
+                                                <th class="text-end">{{number_format($sales->sum('fright'), 2)}}</th>
+                                                <th class="text-end">{{number_format($sales->sum('fright1'), 2)}}</th>
                                                 <th class="text-end">{{number_format($sales->sum('net'), 2)}}</th>
                                             </tr>
                                         </tfoot>
