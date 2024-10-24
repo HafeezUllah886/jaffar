@@ -85,15 +85,15 @@
                                         <tfoot>
                                             <tr>
                                                 <th colspan="6" class="text-end">Total</th>
-                                                <th>{{number_format($total, 2)}}</th>
+                                                <th class="text-end">{{number_format($total, 2)}}</th>
                                             </tr>
                                             <tr>
                                                 <th colspan="6" class="text-end">Expense</th>
-                                                <th>{{number_format($expenses, 2)}}</th>
+                                                <th class="text-end">{{number_format($expenses, 2)}}</th>
                                             </tr>
                                             <tr>
                                                 <th colspan="6" class="text-end">Net Profit</th>
-                                                <th>{{number_format($total - $expenses, 2)}}</th>
+                                                <th class="text-end">{{number_format($total - $expenses, 2)}}</th>
                                             </tr>
                                         </tfoot>
                                     </table><!--end table-->

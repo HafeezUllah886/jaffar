@@ -11,8 +11,14 @@
                             <div class="card-header border-bottom-dashed p-4">
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
-                                        <img src="{{asset('assets/images/logo.png')}}" style="width:250px;">
+                                        <div class="card-header border-bottom-dashed p-4">
+                                            @include('layout.header')
+                                        </div>
                                         <div class="mt-sm-5 mt-4">
+                                            <div class="row">
+                                                <div class="col-4"></div>
+                                                <div class="col-4 text-center"><h2>GATE PASS</h2></div>
+                                            </div>
 
                                                 <table style="width:100%;">
                                                     <tr>
