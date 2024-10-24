@@ -22,7 +22,7 @@ class salesGstReportController extends Controller
             $totalRP = 0;
             foreach($sale->details as $product)
             {
-                $totalRP += $product->qty * $product->tp;
+                $totalRP += ($product->qty + $product->bonus) * $product->tp;
             }
             $sale->totalBill = $totalRP;
         }

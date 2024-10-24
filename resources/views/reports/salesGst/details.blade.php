@@ -75,14 +75,14 @@
                                         $ti = $item->details->sum('ti');
                                         $gst = $item->details->sum('gstValue');
                                         $qty = $item->details->sum('qty');
+                                        $bonus = $item->details->sum('bonus');
                                         $ba = $item->totalBill;
                                         $te = $ti - $gst;
                                         $totalTi += $ti;
                                         $totalGst += $gst;
-                                        $totalQty += $qty;
+                                        $totalQty += ($qty + $bonus);
                                         $totalTe += $te;
                                         $totalBA += $ba;
-
                                         @endphp
                                             <tr>
                                                 <td>{{ $item->id}}</td>
@@ -94,7 +94,7 @@
                                                 <td class="text-end">{{ number_format($te, 2) }}</td>
                                                 <td class="text-end">{{ number_format($ba, 2) }}</td>
                                                 <td class="text-end">{{ number_format($gst, 2) }}</td>
-                                                <td class="text-end">{{ number_format($qty, 2) }}</td>
+                                                <td class="text-end">{{ number_format($qty + $bonus, 2) }}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>
